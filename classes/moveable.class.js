@@ -1,7 +1,12 @@
 class MoveableObject{
-    x=120;
-    y=400;
+    x=30;
+    y=0;
     img;
+
+    loadImage(path){
+        this.img = new Image();
+        this.img.src = path;
+    }
 
     moveLeft(){
         

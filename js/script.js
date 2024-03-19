@@ -1,9 +1,9 @@
 let canvas;
-let ctx;
-let world = new World();
+let world;
 
 function init(){
     canvas = sdoc('canvas');
-    ctx = canvas.getContext('2d');
+    world = new World(canvas);
     console.log('My Character is: ', world.character);
+    console.log('Chicken is: ', world.enemies);
 }
