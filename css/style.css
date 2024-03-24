@@ -8,3 +8,11 @@ canvas {
     border-radius: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.500);
 }
+
+.button{
+    width: 720px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}

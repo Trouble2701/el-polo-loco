@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +18,14 @@
     <script src="js/db.js"></script>
     <script src="js/script.js"></script>
 </head>
+
 <body onload="init()">
     <h1>El Pollo Loco</h1>
     <canvas id="canvas" width="720px" height="480px"></canvas>
+    <div class="button">
+        <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')" onmousedown="mouseDown('left')" onmouseup="mouseUp('left')">Left</button>
+        <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')" onmousedown="mouseDown('right')" onmouseup="mouseUp('right')">Right</button>
+    </div>
 </body>
+
 </html>

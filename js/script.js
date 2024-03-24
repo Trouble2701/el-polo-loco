@@ -47,3 +47,23 @@ window.addEventListener('keyup', (event) => {
         keyboard.shoot = false;
     }
 });
+
+function mouseDown(key){
+    if(key == 'left'){
+        keyboard.left = true;
+    }
+
+    if(key == 'right'){
+        keyboard.right = true;
+    }
+}
+
+function mouseUp(key){
+    if(key == 'left'){
+        keyboard.left = false;
+    }
+
+    if(key == 'right'){
+        keyboard.right = false;
+    }
+}
