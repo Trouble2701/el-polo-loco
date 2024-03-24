@@ -3,9 +3,10 @@ class MoveableObject{
     y=135;
     height = 300;
     width = 100;
+    speed = 0.15 + Math.random() * 0.25;
     img;
     ImageCache = {};
-
+    otherDirection = false;
     loadImage(path){
         this.img = new Image();
         this.img.src = path;
@@ -19,8 +20,10 @@ class MoveableObject{
         });
     }
 
-    moveLeft(){
-        
+    moveLeft(max){
+        setInterval(() => {
+            this.x -= this.speed * max;
+        }, 1000 / 60);   
     }
 
     moveRight(){
