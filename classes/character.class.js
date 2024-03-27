@@ -1,5 +1,5 @@
 class Character extends MoveableObject {
-    speed = 1;
+    speed = 10.5;
     longIdle = false;
     IMAGES_IDLE = [
         './img/2_character_pepe/1_idle/idle/I-1.png',
@@ -66,6 +66,9 @@ class Character extends MoveableObject {
 
     currentImage = 0;
     world;
+    walking_sound = new Audio('./audio/pepe_walking.mp3');
+    jump_sound = new Audio('./audio/pepe_jump.mp3');
+    sleep_sound = new Audio('./audio/pepe_sleep.mp3');
     constructor() {
         super().loadImage('./img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.IMAGES_WALK);
@@ -79,20 +82,25 @@ class Character extends MoveableObject {
                 let path = this.IMAGES_WALK[i];
                 this.img = this.ImageCache[path];
                 this.currentImage++;
-                this.longIdle = false;
             }
         }, 70);
         
         setInterval(() => {
-            if (this.world.keyboard.right) {
-                if (this.x <= 620) this.x += this.speed;
+            this.walking_sound.pause();
+            if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
+                this.x += this.speed;
+                this.longIdle = false;
                 this.otherDirection = false;
+                this.walking_sound.play();
             }
 
-            if (this.world.keyboard.left) {
-                if (this.x >= 10) this.x -= this.speed;
+            if (this.world.keyboard.left && this.x > 0) {
+                this.x -= this.speed;
+                this.longIdle = false;
                 this.otherDirection = true;
+                this.walking_sound.play();
             }
+            this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
         setInterval(() => {
@@ -109,14 +117,24 @@ class Character extends MoveableObject {
         }, 200);
 
         setInterval(() => {
+            this.sleep_sound.pause();
             if (!this.world.keyboard.right && !this.world.keyboard.left && this.longIdle) {
                 this.loadImages(this.IMAGES_LONG_IDLE);
                 let i = this.currentImage % this.IMAGES_LONG_IDLE.length;
                 let path = this.IMAGES_LONG_IDLE[i];
                 this.img = this.ImageCache[path];
                 this.currentImage++;
+                this.sleep_sound.play();
             }
         }, 400);
+
+        setInterval(() => {
+            this.jump_sound.pause();  
+            if (this.world.keyboard.space) {
+                this.walking_sound.pause();
+                this.jump_sound.play();  
+            }
+        }, 200);
 
     }
 

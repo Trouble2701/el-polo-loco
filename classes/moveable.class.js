@@ -1,5 +1,5 @@
 class MoveableObject{
-    x=10;
+    x=0;
     y=135;
     height = 300;
     width = 100;
