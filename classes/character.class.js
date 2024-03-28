@@ -63,8 +63,6 @@ class Character extends MoveableObject {
         './img/2_character_pepe/5_dead/D-56.png',
         './img/2_character_pepe/5_dead/D-57.png'
     ];
-
-    currentImage = 0;
     world;
     walking_sound = new Audio('./audio/pepe_walking.mp3');
     jump_sound = new Audio('./audio/pepe_jump.mp3');
@@ -78,10 +76,7 @@ class Character extends MoveableObject {
     animation() {
         setInterval(() => {
             if (this.world.keyboard.right || this.world.keyboard.left) {
-                let i = this.currentImage % this.IMAGES_WALK.length;
-                let path = this.IMAGES_WALK[i];
-                this.img = this.ImageCache[path];
-                this.currentImage++;
+                this.playAnimation(this.IMAGES_WALK);
             }
         }, 70);
         
