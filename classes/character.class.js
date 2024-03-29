@@ -76,6 +76,7 @@ class Character extends MoveableObject {
     animation() {
         setInterval(() => {
             if (this.world.keyboard.right || this.world.keyboard.left) {
+                this.longIdle = false;
                 this.playAnimation(this.IMAGES_WALK);
             }
         }, 70);
@@ -84,14 +85,12 @@ class Character extends MoveableObject {
             this.walking_sound.pause();
             if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
-                this.longIdle = false;
                 this.otherDirection = false;
                 this.walking_sound.play();
             }
 
             if (this.world.keyboard.left && this.x > 0) {
                 this.x -= this.speed;
-                this.longIdle = false;
                 this.otherDirection = true;
                 this.walking_sound.play();
             }

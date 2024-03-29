@@ -3,7 +3,7 @@ class Clouds extends MoveableObject{
     width = 300;
     constructor(cloud, y, x){
         super().loadImage(cloud);
-        this.x = Math.random() * 720 + x;
+        this.x = this.calcPosition(0, 3000);
         this.y = y;
         this.animation();
     }

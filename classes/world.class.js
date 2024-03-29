@@ -1,5 +1,6 @@
 class World {
     character = new Character();
+    endboss = new Endboss();
     level = level1;
     canvas;
     ctx;
@@ -16,6 +17,7 @@ class World {
 
     setWorld(){
         this.character.world = this;
+        this.endboss.world = this;
     }
     
     draw(){
@@ -23,8 +25,11 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.coin);
+        this.addObjectsToMap(this.level.bottle);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.endboss);
         this.ctx.translate(-this.camera_x, 0);
         requestAnimationFrame(function (){
             self.draw();

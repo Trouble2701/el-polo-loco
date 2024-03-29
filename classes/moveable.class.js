@@ -37,4 +37,8 @@ class MoveableObject {
         this.img = this.ImageCache[path];
         this.currentImage++;
     }
+
+    calcPosition(min, max){
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 }
