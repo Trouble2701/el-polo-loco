@@ -1,4 +1,5 @@
 class SmallChicken extends MoveableObject{
+    name = 'smallchicken';
     IMAGES_WALK = [
         `img/3_enemies_chicken/chicken_small/1_walk/1_w.png`,
         `img/3_enemies_chicken/chicken_small/1_walk/2_w.png`,
@@ -16,7 +17,9 @@ class SmallChicken extends MoveableObject{
     }
 
     animation(){
-        this.moveLeft(0.2);
+        setInterval(() => {
+            this.moveLeft(0.2);
+        }, 1000 / 60);
         this.walking_sound.pause();
         setInterval(() => {
             this.playAnimation(this.IMAGES_WALK);

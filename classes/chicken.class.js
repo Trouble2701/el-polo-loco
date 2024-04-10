@@ -1,4 +1,5 @@
 class Chicken extends MoveableObject{
+    name = 'chicken';
     IMAGES_WALK = [
         `img/3_enemies_chicken/chicken_normal/1_walk/1_w.png`,
         `img/3_enemies_chicken/chicken_normal/1_walk/2_w.png`,
@@ -16,7 +17,9 @@ class Chicken extends MoveableObject{
     }
 
     animation(){
-        this.moveLeft(0.7);
+        setInterval(() => {
+            this.moveLeft(0.7);
+        }, 1000 / 60);
         this.walking_sound.pause();
         setInterval(() => {
             this.playAnimation(this.IMAGES_WALK);
