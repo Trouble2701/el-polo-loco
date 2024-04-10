@@ -56,6 +56,10 @@ function mouseDown(key){
     if(key == 'right'){
         keyboard.right = true;
     }
+
+    if(key == 'Jump'){
+        keyboard.space = true;
+    }
 }
 
 function mouseUp(key){
@@ -65,5 +69,9 @@ function mouseUp(key){
 
     if(key == 'right'){
         keyboard.right = false;
+    }
+
+    if(key == 'Jump'){
+        keyboard.space = false;
     }
 }
