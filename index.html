@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/mobile.css">
     <script src="classes/world.class.js"></script>
+    <script src="classes/drawableObject.class.js"></script>
+    <script src="classes/healthBar.class.js"></script>
+    <script src="classes/coinBar.class.js"></script>
+    <script src="classes/bottleBar.class.js"></script>
     <script src="classes/moveable.class.js"></script>
     <script src="classes/background.class.js"></script>
     <script src="classes/chicken.class.js"></script>
@@ -20,17 +24,22 @@
     <script src="classes/coin.class.js"></script>
     <script src="classes/bottle.class.js"></script>
     <script src="levels/level1.js"></script>
-    <script src="js/db.js"></script>
     <script src="js/script.js"></script>
 </head>
 
 <body onload="init()">
+    <div id="landscape">Please go to landscape</div>
     <h1>El Pollo Loco</h1>
     <canvas id="canvas" width="720px" height="480px"></canvas>
-    <div class="button">
-        <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')" onmousedown="mouseDown('left')" onmouseup="mouseUp('left')">Left</button>
-        <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')" onmousedown="mouseDown('right')" onmouseup="mouseUp('right')">Right</button>
-        <button id="Jump" ontouchstart="mouseDown('Jump')" ontouchend="mouseUp('Jump')" onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')">Jump</button>
+    <div class="button" id="button">
+        <div class="steering">
+            <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')" onmousedown="mouseDown('left')" onmouseup="mouseUp('left')">Left</button>
+            <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')" onmousedown="mouseDown('right')" onmouseup="mouseUp('right')">Right</button>
+        </div>
+        <div class="action">
+            <button id="Jump" ontouchstart="mouseDown('Jump')" ontouchend="mouseUp('Jump')" onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')">Jump</button>
+            <button id="shoot" ontouchstart="mouseDown('shoot')" ontouchend="mouseUp('shoot')" onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')">Shoot</button>
+        </div>
     </div>
 </body>
 

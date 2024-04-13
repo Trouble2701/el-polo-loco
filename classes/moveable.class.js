@@ -1,12 +1,5 @@
-class MoveableObject {
-    x = 0;
-    y = 135;
-    height = 300;
-    width = 100;
+class MoveableObject extends DrawableObject {
     speed = 0.15 + Math.random() * 0.25;
-    img;
-    ImageCache = {};
-    currentImage = 0;
     otherDirection = false;
     speedY = 0;
     acceleration = 1.5;
@@ -25,24 +18,6 @@ class MoveableObject {
     isAboveGround() {
         return this.y < 135;
     }
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-    drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss) {
-            ctx.beginPath();
-            ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-    }
 
     isColliding(obj) {
         return this.x + this.width > obj.x &&
@@ -58,7 +33,6 @@ class MoveableObject {
         }else{
             this.pepeColl = new Date().getTime();
         }
-        
     }
 
     pepeDead() {
@@ -79,14 +53,6 @@ class MoveableObject {
                 (this.Y + this.offsetY) <= (obj.Y + obj.height) && 
                 obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
     }*/
-
-    loadImages(arr) {
-        arr.forEach((path) => {
-            let img = new Image();
-            img.src = path;
-            this.ImageCache[path] = img;
-        });
-    }
 
     moveLeft(max) {
         let setmax = this.speed;

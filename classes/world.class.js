@@ -6,6 +6,9 @@ class World {
     ctx;
     keyboard;
     camera_x;
+    healthBar = new Healthbar();
+    coinBar = new CoinBar();
+    bottleBar = new BottleBar();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -41,6 +44,7 @@ class World {
             } else if (enemy.name == 'smallchicken') {
                 this.character.setDownCalc(4);
             }
+            this.healthBar.setPercentage(this.character.energy);
         }
     }
 
@@ -60,6 +64,11 @@ class World {
         this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.bottle);
         this.addToMap(this.character);
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.healthBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
+        this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.endboss);
         this.ctx.translate(-this.camera_x, 0);

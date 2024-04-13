@@ -3,15 +3,11 @@ let world;
 let keyboard = new Keyboard();
 
 function init(){
-    canvas = sdoc('canvas');
+    canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-    console.log('My Character is: ', world.character);
-    console.log('Chicken is: ', world.enemies);
-    console.log('Cloud is: ', world.clouds);
 }
 
 window.addEventListener('keydown', (event) => {
-    console.log(event.keyCode);
     if(event.keyCode == 37){
         keyboard.left = true;
     }
@@ -30,7 +26,6 @@ window.addEventListener('keydown', (event) => {
 });
 
 window.addEventListener('keyup', (event) => {
-    console.log(event.keyCode);
     if(event.keyCode == 37){
         keyboard.left = false;
     }
@@ -60,6 +55,10 @@ function mouseDown(key){
     if(key == 'Jump'){
         keyboard.space = true;
     }
+
+    if(key == 'shoot'){
+        keyboard.shoot = true;
+    }
 }
 
 function mouseUp(key){
@@ -74,4 +73,21 @@ function mouseUp(key){
     if(key == 'Jump'){
         keyboard.space = false;
     }
+    if(key == 'shoot'){
+        keyboard.shoot = false;
+    }
 }
+
+window.addEventListener("resize", function () {
+    let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    if (width <= 1001) {
+        if(height > width){
+            document.getElementById('landscape').style.display = 'flex';
+        }else{
+            document.getElementById('landscape').style.display = 'none';
+        }
+    }else{
+        document.getElementById('landscape').style.display = 'none';
+    }
+});

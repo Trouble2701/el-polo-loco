@@ -82,7 +82,7 @@ class Character extends MoveableObject {
     animation() {
         setInterval(() => {
             this.walking_sound.pause();
-            if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
+            if (this.world.keyboard.right && this.x < this.world.level.level_end_x && !this.pepeDead()) {
                 this.longIdle = false;
                 this.otherDirection = false;
                 this.moveRight();
@@ -91,7 +91,7 @@ class Character extends MoveableObject {
                 }
             }
 
-            if (this.world.keyboard.left && this.x > 0) {
+            if (this.world.keyboard.left && this.x > 0 && !this.pepeDead()) {
                 this.longIdle = false;
                 this.otherDirection = true;
                 this.moveLeft();
@@ -100,7 +100,7 @@ class Character extends MoveableObject {
                 }
             }
 
-            if (this.world.keyboard.space && !this.isAboveGround()) {
+            if (this.world.keyboard.space && !this.isAboveGround() && !this.pepeDead()) {
                 this.walking_sound.pause();
                 this.jump_sound.play();
                 this.jump('23');
@@ -109,7 +109,7 @@ class Character extends MoveableObject {
         }, 1000 / 60);
 
         setInterval(() => {
-            if (!this.world.keyboard.right && !this.world.keyboard.left && !this.longIdle) {
+            if (!this.world.keyboard.right && !this.world.keyboard.left && !this.longIdle && !this.pepeDead()) {
                 this.playAnimation(this.IMAGES_IDLE);
                 setTimeout(() => {
                     this.longIdle = true;
@@ -119,7 +119,7 @@ class Character extends MoveableObject {
 
         setInterval(() => {
             this.sleep_sound.pause();
-            if (!this.world.keyboard.right && !this.world.keyboard.left && this.longIdle) {
+            if (!this.world.keyboard.right && !this.world.keyboard.left && this.longIdle && !this.pepeDead()) {
                 this.playAnimation(this.IMAGES_LONG_IDLE);
                 this.sleep_sound.play();
             }
@@ -127,6 +127,7 @@ class Character extends MoveableObject {
 
         setInterval(() => {
             if(this.pepeDead()){
+                this.sleep_sound.pause();
                     this.playAnimation(this.IMAGES_DEAD);
                 setTimeout(() => {
                     setInterval(() => {
@@ -134,12 +135,13 @@ class Character extends MoveableObject {
                     }, 50);
                 }, 1000);
             }else
-            if(this.pepeCollision()){
+            if(this.pepeCollision() && !this.pepeDead()){
+                    this.sleep_sound.pause();
                     this.playAnimation(this.IMAGES_HURT);
             }else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMP);
             } else {
-                if (this.world.keyboard.right || this.world.keyboard.left) {
+                if (this.world.keyboard.right || this.world.keyboard.left && !this.pepeDead()) {
                     this.playAnimation(this.IMAGES_WALK);
                 }
             }
