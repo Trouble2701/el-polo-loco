@@ -28,17 +28,23 @@
 </head>
 
 <body onload="init()">
-    <div id="landscape">Please go to landscape</div>
-    <h1>El Pollo Loco</h1>
-    <canvas id="canvas" width="720px" height="480px"></canvas>
-    <div class="button" id="button">
-        <div class="steering">
-            <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')" onmousedown="mouseDown('left')" onmouseup="mouseUp('left')">Left</button>
-            <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')" onmousedown="mouseDown('right')" onmouseup="mouseUp('right')">Right</button>
-        </div>
-        <div class="action">
-            <button id="Jump" ontouchstart="mouseDown('Jump')" ontouchend="mouseUp('Jump')" onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')">Jump</button>
-            <button id="shoot" ontouchstart="mouseDown('shoot')" ontouchend="mouseUp('shoot')" onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')">Shoot</button>
+    <div class="mobile">
+        <div id="landscape">Please go to landscape</div>
+        <h1>El Pollo Loco</h1>
+        <canvas id="canvas" width="720px" height="480px"></canvas>
+        <div class="button" id="button">
+            <div class="steering">
+                <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')"
+                    onmousedown="mouseDown('left')" onmouseup="mouseUp('left')">Left</button>
+                <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')"
+                    onmousedown="mouseDown('right')" onmouseup="mouseUp('right')">Right</button>
+            </div>
+            <div class="action">
+                <button id="Jump" ontouchstart="mouseDown('Jump')" ontouchend="mouseUp('Jump')"
+                    onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')">Jump</button>
+                <button id="shoot" ontouchstart="mouseDown('shoot')" ontouchend="mouseUp('shoot')"
+                    onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')">Shoot</button>
+            </div>
         </div>
     </div>
 </body>

@@ -6,6 +6,16 @@ body {
     -moz-user-select: None;
     -webkit-user-select: None;
     user-select: None;
+    margin: 0;
+}
+
+.mobile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    overflow-x: hidden;
 }
 
 canvas {
@@ -21,7 +31,6 @@ canvas {
     align-items: center;
     margin-top: -1px;
     background-color: #994409;
-    border-radius: 0 0 20px 20px;
 }
 
 .steering{
@@ -56,10 +65,14 @@ canvas {
 
 @media (max-width: 1000px){
     canvas {
-        border-radius: 20px 20px 0 0;
+        border-radius: 0;
     }
     
     .button {
         display: flex;
+    }
+
+    h1 {
+        display: none;
     }
 }

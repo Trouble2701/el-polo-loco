@@ -76,6 +76,7 @@ class World {
             self.draw();
         });
         let self = this;
+        this.init();
     }
 
     addObjectsToMap(object) {
@@ -106,5 +107,35 @@ class World {
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
+    }
+
+    init(){
+        this.windowResize();
+    }
+
+   windowResize() {
+        let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        if (width <= 1001) {
+            if (height > width) {
+                document.getElementById('landscape').style.display = 'flex';
+            } else {
+                this.resizeAction();
+            }
+        } else {
+            document.getElementById('landscape').style.display = 'none';
+        }
+    }
+
+    resizeAction(){
+        setTimeout(function() { window.scrollTo(0, 1) }, 100);
+        document.getElementById('landscape').style.display = 'none';
+        document.getElementById('canvas').style.width = '100vw';
+        document.getElementById('canvas').style.height = 'calc(100vh - 49px)';
+        document.getElementById('button').style.width = '100vw';
+
+        this.healthBar.width = 100;
+        this.coinBar.width = 100;
+        this.bottleBar.width = 100;
     }
 }

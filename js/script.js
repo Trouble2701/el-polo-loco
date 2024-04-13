@@ -3,7 +3,6 @@ let world;
 let keyboard = new Keyboard();
 
 function init() {
-    windowResize();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 }
@@ -78,21 +77,3 @@ function mouseUp(key) {
         keyboard.shoot = false;
     }
 }
-
-function windowResize() {
-    let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    if (width <= 1001) {
-        if (height > width) {
-            document.getElementById('landscape').style.display = 'flex';
-        } else {
-            document.getElementById('landscape').style.display = 'none';
-        }
-    } else {
-        document.getElementById('landscape').style.display = 'none';
-    }
-}
-
-window.addEventListener("resize", function () {
-    windowResize();
-});
