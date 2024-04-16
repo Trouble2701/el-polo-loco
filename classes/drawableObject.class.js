@@ -49,5 +49,5 @@ class DrawableObject {
         }else{
             return 0;
         }
-    }   
+    }
 }

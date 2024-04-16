@@ -30,8 +30,18 @@ class World {
                 if (this.character.isColliding(enemy)) {
                     this.character.pepeCollision(1);
                     this.chickenCollision(enemy);
-                }else{
+                } else {
                     this.character.pepeCollision(0);
+                }
+            });
+        }, 200);
+        setInterval(() => {
+            this.level.coin.forEach((coins) => {
+                if (this.character.isColliding(coins)) {
+                    this.character.pepeCoins += 100 / this.level.coin.length;
+                    coins.x = -200;
+                    coins.y = -200;
+                    this.coinBar.setCoins(this.character.pepeCoins);
                 }
             });
         }, 200);
@@ -109,11 +119,11 @@ class World {
         this.ctx.restore();
     }
 
-    init(){
+    init() {
         this.windowResize();
     }
 
-   windowResize() {
+    windowResize() {
         let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
         let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
         if (width <= 1001) {
@@ -127,15 +137,11 @@ class World {
         }
     }
 
-    resizeAction(){
-        setTimeout(function() { window.scrollTo(0, 1) }, 100);
+    resizeAction() {
+        window.scrollTo(0, 0);
         document.getElementById('landscape').style.display = 'none';
         document.getElementById('canvas').style.width = '100vw';
         document.getElementById('canvas').style.height = 'calc(100vh - 49px)';
         document.getElementById('button').style.width = '100vw';
-
-        this.healthBar.width = 100;
-        this.coinBar.width = 100;
-        this.bottleBar.width = 100;
     }
 }
