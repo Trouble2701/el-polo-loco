@@ -12,8 +12,8 @@ class Coin extends MoveableObject{
     constructor(){
         super().loadImage(`img/8_coin/coin_1.png`);
         this.loadImages(this.IMAGES_WALK);
-        this.x = this.calcPosition(0, 2000);
-        this.y = this.calcPosition(30, 300);
+        this.x = this.calcPosition(150, 1980);
+        this.y = this.calcPosition(30, 280);
         this.animation();
     }
 

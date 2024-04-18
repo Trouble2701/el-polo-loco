@@ -36,7 +36,7 @@ class DrawableObject {
     }
 
     resolveImageIndex(setImages){
-        if(setImages == 100){
+        if(setImages >= 100){
             return 5;
         }else if(setImages > 80){
             return 4;

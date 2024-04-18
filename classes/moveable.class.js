@@ -6,6 +6,7 @@ class MoveableObject extends DrawableObject {
     energy = 100;
     pepeColl = 0;
     pepeCoins = 0;
+    pepeBottle = 0;
 
     applyGravity() {
         setInterval(() => {

@@ -17,6 +17,7 @@ class World {
         this.draw();
         this.setWorld();
         this.checkColliding();
+        this.bottleReplace();
     }
 
     setWorld() {
@@ -38,13 +39,48 @@ class World {
         setInterval(() => {
             this.level.coin.forEach((coins) => {
                 if (this.character.isColliding(coins)) {
-                    this.character.pepeCoins += 100 / this.level.coin.length;
-                    coins.x = -200;
-                    coins.y = -200;
+                    this.character.pepeCoins += Math.round(100 / this.level.coin.length);
+                    this.itemAnimation(coins);
                     this.coinBar.setCoins(this.character.pepeCoins);
                 }
             });
         }, 200);
+        setInterval(() => {
+            this.level.bottle.forEach((bottles) => {
+                if (this.character.isColliding(bottles) && this.character.pepeBottle < 5) {
+                    this.character.pepeBottle += 1;
+                    console.log(this.character.pepeBottle);
+                    let calcBottle = 100 / 5 * this.character.pepeBottle;
+                    this.itemAnimation(bottles);
+                    this.bottleBar.setbottles(calcBottle);
+                    console.log(bottles);
+                }
+            });
+        }, 200);
+    }
+
+    bottleReplace(){
+        setTimeout(() => {
+            this.level.bottle.forEach((bottles) => {
+                if (bottles.x > -1000 && bottles.y > -1000) {
+                    bottles.x = this.calcPosition(150, this.level.level_end_x - 266);
+                    bottles.y = 380;
+                }
+            });
+        }, 3000);
+    }
+
+    calcPosition(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    itemAnimation(item) {
+        setInterval(() => {
+            if (item.x > -2000 && item.y > -2000) {
+                item.x -= +5;
+                item.y -= +5;
+            }
+        }, 1000 / 60);
     }
 
     chickenCollision(enemy) {
