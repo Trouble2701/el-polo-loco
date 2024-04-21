@@ -23,14 +23,17 @@
     <script src="classes/endboss.class.js"></script>
     <script src="classes/coin.class.js"></script>
     <script src="classes/bottle.class.js"></script>
+    <script src="classes/gameover.class.js"></script>
+    <script src="classes/newgame.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/script.js"></script>
 </head>
 
 <body onload="init()">
     <div class="mobile">
-        <div id="landscape">Please go to landscape</div>
+        <div id="landscape">Please turn your phone into landscape format</div>
         <h1>El Pollo Loco</h1>
+        <button class="newGame" onclick="startANewGame()" id="newGame">Start New Game</button>
         <canvas id="canvas" width="720px" height="480px"></canvas>
         <div class="button" id="button">
             <div class="steering">

@@ -63,6 +63,14 @@ canvas {
     height: 100vh;
 }
 
+.newGame {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 150px;
+}
+
 @media (max-width: 1000px){
     canvas {
         border-radius: 0;

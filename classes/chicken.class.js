@@ -18,7 +18,11 @@ class Chicken extends MoveableObject{
 
     animation(){
         setInterval(() => {
-            this.moveLeft(0.7);
+            if(document.getElementById('landscape').style.display == 'none'){
+                this.moveLeft(0.7);
+            }else{
+                this.moveLeft('none');
+            }
         }, 1000 / 60);
         this.walking_sound.pause();
         setInterval(() => {

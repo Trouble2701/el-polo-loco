@@ -58,10 +58,12 @@ class MoveableObject extends DrawableObject {
 
     moveLeft(max) {
         let setmax = this.speed;
-        if (max) {
+        if (max && max != 'none') {
             setmax = this.speed * max;
         }
-        this.x -= setmax;
+        if(max != 'none'){
+            this.x -= setmax;
+        }
     }
 
     moveRight() {

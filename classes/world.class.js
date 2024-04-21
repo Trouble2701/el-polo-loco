@@ -9,11 +9,14 @@ class World {
     healthBar = new Healthbar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
+    gameOver = new GameOver();
+    newGame;
 
-    constructor(canvas, keyboard) {
+    constructor(canvas, keyboard, newGame) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.newGame = newGame;
         this.draw();
         this.setWorld();
         this.checkColliding();
@@ -59,7 +62,7 @@ class World {
         }, 200);
     }
 
-    bottleReplace(){
+    bottleReplace() {
         setTimeout(() => {
             this.level.bottle.forEach((bottles) => {
                 if (bottles.x > -1000 && bottles.y > -1000) {
@@ -102,27 +105,58 @@ class World {
         }
     }
 
+    startGame(stop) {
+        if(stop == 'stop'){
+            document.getElementById('newGame').style.display = 'flex';
+        }else if(stop == 'run'){
+            document.getElementById('newGame').style.display = 'none';
+        }
+    }
+
+    startNewGame(){
+        this.newGame.stop = 0;
+        console.log('klick');
+    }
+
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.background);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.coin);
-        this.addObjectsToMap(this.level.bottle);
-        this.addToMap(this.character);
-        this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.healthBar);
-        this.addToMap(this.coinBar);
-        this.addToMap(this.bottleBar);
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.endboss);
-        this.ctx.translate(-this.camera_x, 0);
+        if (this.newGame.stop == 0) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToMap(this.level.background);
+            this.addObjectsToMap(this.level.clouds);
+            this.addObjectsToMap(this.level.coin);
+            this.addObjectsToMap(this.level.bottle);
+            this.addToMap(this.character);
+            this.ctx.translate(-this.camera_x, 0);
+            this.addToMap(this.healthBar);
+            this.addToMap(this.coinBar);
+            this.addToMap(this.bottleBar);
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToMap(this.level.enemies);
+            this.addToMap(this.endboss);
+            this.ctx.translate(-this.camera_x, 0);
+            if (this.checkDead()) {
+                this.addToMap(this.gameOver);
+            }
+            this.startGame('run');
+        } else {
+            this.addToMap(this.newGame);
+            this.startGame('stop');
+        }
         requestAnimationFrame(function () {
             self.draw();
         });
         let self = this;
         this.init();
+    }
+
+    checkDead() {
+        if (this.character.energy == 0) {
+            setTimeout(() => {
+                this.newGame.stop = 1;
+            }, 4000);
+            return true;
+        }
     }
 
     addObjectsToMap(object) {
