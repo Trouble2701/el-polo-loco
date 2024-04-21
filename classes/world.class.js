@@ -153,7 +153,7 @@ class World {
     checkDead() {
         if (this.character.energy == 0) {
             setTimeout(() => {
-                this.newGame.stop = 1;
+                window.location.reload();
             }, 4000);
             return true;
         }
