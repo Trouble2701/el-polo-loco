@@ -9,6 +9,7 @@ class World {
     healthBar = new Healthbar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
+    throw = [];
     gameOver = new GameOver();
     newGame;
 
@@ -30,36 +31,56 @@ class World {
 
     checkColliding() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy)) {
-                    this.character.pepeCollision(1);
-                    this.chickenCollision(enemy);
-                } else {
-                    this.character.pepeCollision(0);
-                }
-            });
-        }, 200);
-        setInterval(() => {
-            this.level.coin.forEach((coins) => {
-                if (this.character.isColliding(coins)) {
-                    this.character.pepeCoins += Math.round(100 / this.level.coin.length);
-                    this.itemAnimation(coins);
-                    this.coinBar.setCoins(this.character.pepeCoins);
-                }
-            });
-        }, 200);
-        setInterval(() => {
-            this.level.bottle.forEach((bottles) => {
-                if (this.character.isColliding(bottles) && this.character.pepeBottle < 5) {
-                    this.character.pepeBottle += 1;
-                    console.log(this.character.pepeBottle);
-                    let calcBottle = 100 / 5 * this.character.pepeBottle;
-                    this.itemAnimation(bottles);
-                    this.bottleBar.setbottles(calcBottle);
-                    console.log(bottles);
-                }
-            });
-        }, 200);
+            this.checkEnemy();
+            this.checkCoin();
+            this.checkBottle();
+            this.checkThrow()
+        }, 200);        
+    }
+
+    checkEnemy(){
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                this.character.pepeCollision(1);
+                this.chickenCollision(enemy);
+            } else {
+                this.character.pepeCollision(0);
+            }
+        });
+    }
+
+    checkCoin(){
+        this.level.coin.forEach((coins) => {
+            if (this.character.isColliding(coins)) {
+                this.character.pepeCoins += Math.round(100 / this.level.coin.length);
+                this.itemAnimation(coins);
+                this.coinBar.setCoins(this.character.pepeCoins);
+            }
+        });
+    }
+
+    checkBottle(){
+        this.level.bottle.forEach((bottles) => {
+            if (this.character.isColliding(bottles) && this.character.pepeBottle < 5) {
+                this.character.pepeBottle += 1;
+                let calcBottle = 100 / 5 * this.character.pepeBottle;
+                this.itemAnimation(bottles);
+                this.bottleBar.setbottles(calcBottle);
+            }
+        });
+    }
+
+    checkThrow(){
+        if(this.keyboard.shoot && this.character.pepeBottle > 0){
+            let direction = 'no';
+            if(this.character.otherDirection){
+                direction = 'yes';
+            }
+            this.throw.push(new ThrowAbleObject(this.character.x + 100, this.character.y + 100, direction));
+            this.character.pepeBottle -= 1;
+            let calcBottle = 100 / 5 * this.character.pepeBottle;
+            this.bottleBar.setbottles(calcBottle);
+        }
     }
 
     bottleReplace() {
@@ -126,6 +147,7 @@ class World {
             this.addObjectsToMap(this.level.clouds);
             this.addObjectsToMap(this.level.coin);
             this.addObjectsToMap(this.level.bottle);
+            this.addObjectsToMap(this.throw)
             this.addToMap(this.character);
             this.ctx.translate(-this.camera_x, 0);
             this.addToMap(this.healthBar);
