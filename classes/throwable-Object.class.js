@@ -1,12 +1,12 @@
 class ThrowAbleObject extends MoveableObject {
-
+    bottle;
     IMAGES = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png'
     ]
-    constructor(x, y, direction) {
+    constructor(x, y, direction, bottle) {
         super().loadImage(`img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png`);
         this.loadImages(this.IMAGES);
         this.y = y;
@@ -14,6 +14,7 @@ class ThrowAbleObject extends MoveableObject {
         this.width = 40;
         this.checkDirection(x, direction);
         this.throw(direction);
+        this.bottle = bottle;
     }
 
     throw(direction) {

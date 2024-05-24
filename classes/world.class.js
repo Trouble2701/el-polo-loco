@@ -34,11 +34,12 @@ class World {
             this.checkEnemy();
             this.checkCoin();
             this.checkBottle();
-            this.checkThrow()
-        }, 200);        
+            this.checkThrow();
+            this.checkAttackBoss()
+        }, 200);
     }
 
-    checkEnemy(){
+    checkEnemy() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
                 this.character.pepeCollision(1);
@@ -49,7 +50,7 @@ class World {
         });
     }
 
-    checkCoin(){
+    checkCoin() {
         this.level.coin.forEach((coins) => {
             if (this.character.isColliding(coins)) {
                 this.character.pepeCoins += Math.round(100 / this.level.coin.length);
@@ -59,7 +60,7 @@ class World {
         });
     }
 
-    checkBottle(){
+    checkBottle() {
         this.level.bottle.forEach((bottles) => {
             if (this.character.isColliding(bottles) && this.character.pepeBottle < 5) {
                 this.character.pepeBottle += 1;
@@ -70,17 +71,28 @@ class World {
         });
     }
 
-    checkThrow(){
-        if(this.keyboard.shoot && this.character.pepeBottle > 0){
+    checkThrow() {
+        if (this.keyboard.shoot && this.character.pepeBottle > 0) {
             let direction = 'no';
-            if(this.character.otherDirection){
+            if (this.character.otherDirection) {
                 direction = 'yes';
             }
-            this.throw.push(new ThrowAbleObject(this.character.x + 100, this.character.y + 100, direction));
+            this.throw.push(new ThrowAbleObject(this.character.x + 100, this.character.y + 100, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
             this.bottleBar.setbottles(calcBottle);
         }
+    }
+
+    checkAttackBoss() {
+        setInterval(() => {
+            this.throw.forEach((throwAttack) => {
+                if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle) {
+                    this.endboss.hit = throwAttack.bottle;
+                    console.log('Hit: Endboss Hit -> '+this.endboss.hit+' Bottle -> '+throwAttack.bottle);
+                }
+            });
+        }, 50);
     }
 
     bottleReplace() {
@@ -127,16 +139,15 @@ class World {
     }
 
     startGame(stop) {
-        if(stop == 'stop'){
+        if (stop == 'stop') {
             document.getElementById('newGame').style.display = 'flex';
-        }else if(stop == 'run'){
+        } else if (stop == 'run') {
             document.getElementById('newGame').style.display = 'none';
         }
     }
 
-    startNewGame(){
+    startNewGame() {
         this.newGame.stop = 0;
-        console.log('klick');
     }
 
     draw() {

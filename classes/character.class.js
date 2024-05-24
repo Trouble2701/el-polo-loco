@@ -101,6 +101,7 @@ class Character extends MoveableObject {
             }
 
             if (this.world.keyboard.space && !this.isAboveGround() && !this.pepeDead()) {
+                this.longIdle = false;
                 this.walking_sound.pause();
                 this.jump_sound.play();
                 this.jump('23');
