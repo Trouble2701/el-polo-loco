@@ -7,6 +7,7 @@ class MoveableObject extends DrawableObject {
     pepeColl = 0;
     pepeCoins = 0;
     pepeBottle = 0;
+    endBossColl = 0;
 
     applyGravity() {
         setInterval(() => {
@@ -39,12 +40,16 @@ class MoveableObject extends DrawableObject {
                 obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
     }*/
 
-    setDownCalc(down) {
+    setDownCalc(down, boss) {
         this.energy -= down;
         if (this.energy < 0) {
             this.energy = 0;   
         }else{
-            this.pepeColl = new Date().getTime();
+            if(boss == 0){
+                this.pepeColl = new Date().getTime();
+            }else if(boss == 1){
+                this.endBossColl = new Date().getTime();
+            }
         }
     }
 
@@ -56,6 +61,12 @@ class MoveableObject extends DrawableObject {
 
     pepeCollision(){
         let timepassed = new Date().getTime() - this.pepeColl;
+        timepassed = timepassed / 1000;
+        return timepassed < 0.5;
+    }
+
+    endBossCollision(){
+        let timepassed = new Date().getTime() - this.endBossColl;
         timepassed = timepassed / 1000;
         return timepassed < 0.5;
     }

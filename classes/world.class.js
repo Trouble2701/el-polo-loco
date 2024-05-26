@@ -9,8 +9,11 @@ class World {
     healthBar = new Healthbar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
+    endbossBar = new EndbossBar();
     throw = [];
+    splashBottle = [];
     gameOver = new GameOver();
+    gameWON = new GameWON();
     newGame;
 
     constructor(canvas, keyboard, newGame) {
@@ -32,10 +35,10 @@ class World {
     checkColliding() {
         setInterval(() => {
             this.checkEnemy();
+            this.checkBoss();
             this.checkCoin();
             this.checkBottle();
-            this.checkThrow();
-            this.checkAttackBoss()
+            this.checkThrow()
         }, 200);
     }
 
@@ -48,6 +51,15 @@ class World {
                 this.character.pepeCollision(0);
             }
         });
+    }
+
+    checkBoss() {
+        if (this.character.isColliding(this.endboss)) {
+            this.character.pepeCollision(1);
+            this.endbossCollision();
+        } else {
+            this.character.pepeCollision(0);
+        }
     }
 
     checkCoin() {
@@ -81,18 +93,35 @@ class World {
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
             this.bottleBar.setbottles(calcBottle);
+            setInterval(() => {
+                this.checkAttackBoss(direction)
+            }, 20);
         }
     }
 
-    checkAttackBoss() {
-        setInterval(() => {
-            this.throw.forEach((throwAttack) => {
-                if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle) {
-                    this.endboss.hit = throwAttack.bottle;
-                    console.log('Hit: Endboss Hit -> '+this.endboss.hit+' Bottle -> '+throwAttack.bottle);
-                }
-            });
-        }, 50);
+    checkAttackBoss(direction) {
+        this.throw.forEach((throwAttack) => {
+            if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle) {
+                this.endboss.hit = throwAttack.bottle;
+                this.endboss.power -= 20;
+                this.endbossBar.setPercentage(this.endboss.power);
+                this.endboss.walktime = 0;
+                this.endboss.endBossCollision();
+                this.endboss.setDownCalc(0, 1);
+                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
+                throwAttack.y = 1000;
+                this.bottlesplash();
+                return true;
+            }
+        });
+    }
+
+    bottlesplash() {
+        this.splashBottle.forEach((splash) => {
+            setInterval(() => {
+                splash.y = 1000;
+            }, 1000);
+        });
     }
 
     bottleReplace() {
@@ -122,10 +151,17 @@ class World {
     chickenCollision(enemy) {
         if (!this.isDead()) {
             if (enemy.name == 'chicken') {
-                this.character.setDownCalc(8);
+                this.character.setDownCalc(8, 0);
             } else if (enemy.name == 'smallchicken') {
-                this.character.setDownCalc(4);
+                this.character.setDownCalc(4, 0);
             }
+            this.healthBar.setPercentage(this.character.energy);
+        }
+    }
+
+    endbossCollision() {
+        if (!this.isDead()) {
+            this.character.setDownCalc(25, 0);
             this.healthBar.setPercentage(this.character.energy);
         }
     }
@@ -158,18 +194,23 @@ class World {
             this.addObjectsToMap(this.level.clouds);
             this.addObjectsToMap(this.level.coin);
             this.addObjectsToMap(this.level.bottle);
-            this.addObjectsToMap(this.throw)
             this.addToMap(this.character);
             this.ctx.translate(-this.camera_x, 0);
             this.addToMap(this.healthBar);
+            this.addToMap(this.endbossBar);
             this.addToMap(this.coinBar);
             this.addToMap(this.bottleBar);
             this.ctx.translate(this.camera_x, 0);
             this.addObjectsToMap(this.level.enemies);
             this.addToMap(this.endboss);
+            this.addObjectsToMap(this.throw);
+            this.addObjectsToMap(this.splashBottle);
             this.ctx.translate(-this.camera_x, 0);
             if (this.checkDead()) {
                 this.addToMap(this.gameOver);
+            }
+            if (this.checkEndboss()) {
+                this.addToMap(this.gameWON);
             }
             this.startGame('run');
         } else {
@@ -185,6 +226,15 @@ class World {
 
     checkDead() {
         if (this.character.energy == 0) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 4000);
+            return true;
+        }
+    }
+
+    checkEndboss() {
+        if (this.endboss.power == 0) {
             setTimeout(() => {
                 window.location.reload();
             }, 4000);

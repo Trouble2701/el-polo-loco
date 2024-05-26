@@ -127,25 +127,25 @@ class Character extends MoveableObject {
         }, 400);
 
         setInterval(() => {
-            if(this.pepeDead()){
+            if (this.pepeDead()) {
                 this.sleep_sound.pause();
-                    this.playAnimation(this.IMAGES_DEAD);
+                this.playAnimation(this.IMAGES_DEAD);
                 setTimeout(() => {
                     setInterval(() => {
                         this.y += 50;
                     }, 50);
                 }, 1000);
-            }else
-            if(this.pepeCollision() && !this.pepeDead()){
+            } else
+                if (this.pepeCollision() && !this.pepeDead()) {
                     this.sleep_sound.pause();
                     this.playAnimation(this.IMAGES_HURT);
-            }else if (this.isAboveGround()) {
-                this.playAnimation(this.IMAGES_JUMP);
-            } else {
-                if (this.world.keyboard.right || this.world.keyboard.left && !this.pepeDead()) {
-                    this.playAnimation(this.IMAGES_WALK);
+                } else if (this.isAboveGround()) {
+                    this.playAnimation(this.IMAGES_JUMP);
+                } else {
+                    if (this.world.keyboard.right || this.world.keyboard.left && !this.pepeDead()) {
+                        this.playAnimation(this.IMAGES_WALK);
+                    }
                 }
-            }
         }, 70);
     }
 }
