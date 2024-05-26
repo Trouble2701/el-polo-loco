@@ -42,7 +42,8 @@ class Endboss extends MoveableObject {
         `img/4_enemie_boss_chicken/5_dead/G26.png`
     ];
     world;
-    walking_sound = new Audio('./audio/chicken_boss.mp3');
+    walking_sound = new Audio('./audio/bossrunning.mp3');
+    alert_sound = new Audio('./audio/chicken_boss.mp3');
     hurt_sound = new Audio('./audio/hurtBoss.mp3');
     constructor() {
         super().loadImage(`img/4_enemie_boss_chicken/2_alert/G5.png`);
@@ -64,6 +65,7 @@ class Endboss extends MoveableObject {
 
     animation() {
         this.walking_sound.pause();
+        this.alert_sound.pause();
         this.hurt_sound.pause();
         setInterval(() => {
             if (this.endBossCollision() && this.power > 0) {
@@ -78,14 +80,17 @@ class Endboss extends MoveableObject {
                     this.playAnimation(this.IMAGES_ALERT);
                 }
                 if (this.world.character.x > 1900 && this.power > 0) {
-                    this.walking_sound.play();
+                    this.alert_sound.play();
+                    this.walking_sound.pause();
                     this.hurt_sound.pause();
                 }
                 if (this.world.character.x < 1900) {
+                    this.alert_sound.pause();
                     this.walking_sound.pause();
                     this.hurt_sound.pause();
                 }
                 if (this.power == 0) {
+                    this.alert_sound.pause();
                     this.walking_sound.pause();
                     this.hurt_sound.pause();
                     this.playAnimation(this.IMAGES_DEAD);
@@ -95,6 +100,7 @@ class Endboss extends MoveableObject {
                     this.timeAttack -= 5;
                     if (this.world.character.x > 1900 && this.power > 0) {
                         this.walking_sound.pause();
+                        this.alert_sound.pause();
                         this.hurt_sound.pause();
                         this.playAnimation(this.IMAGES_ATTACK);
                     }
@@ -112,7 +118,8 @@ class Endboss extends MoveableObject {
     endBossRun() {
         setInterval(() => {
             if(this.walktime > 0){
-                this.walking_sound.pause();
+                this.walking_sound.play();
+                this.alert_sound.pause();
                 this.hurt_sound.pause();
                 this.walktime -= 1;
                 this.playAnimation(this.IMAGES_WALK);
