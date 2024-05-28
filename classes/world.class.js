@@ -115,17 +115,6 @@ class World {
         }
     }
 
-    checkBottleOnGround(direction) {
-        this.throw.forEach((throwAttack) => {
-            if (throwAttack.y >= 500) {
-                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
-                throwAttack.y = 1000;
-                this.bottlesplash();
-                return true;
-            }
-        });
-    }
-
     checkAttackBoss(direction) {
         this.throw.forEach((throwAttack) => {
             if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle) {
