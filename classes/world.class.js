@@ -44,13 +44,29 @@ class World {
 
     checkEnemy() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                this.character.pepeCollision(1);
-                this.chickenCollision(enemy);
+            if (this.character.isColliding(enemy) && enemy.dead == 0) {
+                if (this.chickenKill(enemy)) {
+                    enemy.dead = 1;
+                    setTimeout(() => {
+                        enemy.y = 1000;
+                    }, 2000);
+                } else {
+                    this.character.pepeCollision(1);
+                    this.chickenCollision(enemy);
+                }
             } else {
                 this.character.pepeCollision(0);
             }
         });
+    }
+
+    chickenKill(enemy){
+        let characterX = this.character.x + this.character.width-10;
+        let characterY = this.character.y + this.character.height;
+        let enemyY = enemy.y + enemy.height;
+        return enemy.x < characterX &&
+                enemy.x > this,this.character.x && 
+                enemyY > characterY;
     }
 
     checkBoss() {
@@ -94,13 +110,12 @@ class World {
             let calcBottle = 100 / 5 * this.character.pepeBottle;
             this.bottleBar.setbottles(calcBottle);
             setInterval(() => {
-                this.checkAttackBoss(direction)
-                this.checkBottleOnGround(direction);
+                this.checkAttackBoss(direction);
             }, 20);
         }
     }
 
-    checkBottleOnGround(direction){
+    checkBottleOnGround(direction) {
         this.throw.forEach((throwAttack) => {
             if (throwAttack.y >= 500) {
                 this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
