@@ -14,13 +14,11 @@ class World {
     splashBottle = [];
     gameOver = new GameOver();
     gameWON = new GameWON();
-    newGame;
 
-    constructor(canvas, keyboard, newGame) {
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.newGame = newGame;
         this.draw();
         this.setWorld();
         this.checkColliding();
@@ -190,18 +188,6 @@ class World {
         }
     }
 
-    startGame(stop) {
-        if (stop == 'stop') {
-            document.getElementById('newGame').style.display = 'flex';
-        } else if (stop == 'run') {
-            document.getElementById('newGame').style.display = 'none';
-        }
-    }
-
-    startNewGame() {
-        this.newGame.stop = 0;
-    }
-
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
@@ -226,12 +212,6 @@ class World {
         }
         if (this.checkEndboss()) {
             this.addToMap(this.gameWON);
-        }
-        if (this.newGame.stop == 0) {
-            this.startGame('run');
-        } else {
-            this.addToMap(this.newGame);
-            this.startGame('stop');
         }
         requestAnimationFrame(function () {
             self.draw();
