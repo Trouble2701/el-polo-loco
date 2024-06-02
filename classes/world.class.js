@@ -60,13 +60,13 @@ class World {
         });
     }
 
-    chickenKill(enemy){
-        let characterX = this.character.x + this.character.width-10;
+    chickenKill(enemy) {
+        let characterX = this.character.x + this.character.width - 10;
         let characterY = this.character.y + this.character.height;
         let enemyY = enemy.y + enemy.height;
         return enemy.x < characterX &&
-                enemy.x > this,this.character.x && 
-                enemyY > characterY;
+            enemy.x > this, this.character.x &&
+            enemyY > characterY;
     }
 
     checkBoss() {
@@ -203,31 +203,31 @@ class World {
     }
 
     draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.background);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.coin);
+        this.addObjectsToMap(this.level.bottle);
+        this.addToMap(this.character);
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.healthBar);
+        this.addToMap(this.endbossBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.endboss);
+        this.addObjectsToMap(this.throw);
+        this.addObjectsToMap(this.splashBottle);
+        this.ctx.translate(-this.camera_x, 0);
+        if (this.checkDead()) {
+            this.addToMap(this.gameOver);
+        }
+        if (this.checkEndboss()) {
+            this.addToMap(this.gameWON);
+        }
         if (this.newGame.stop == 0) {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.translate(this.camera_x, 0);
-            this.addObjectsToMap(this.level.background);
-            this.addObjectsToMap(this.level.clouds);
-            this.addObjectsToMap(this.level.coin);
-            this.addObjectsToMap(this.level.bottle);
-            this.addToMap(this.character);
-            this.ctx.translate(-this.camera_x, 0);
-            this.addToMap(this.healthBar);
-            this.addToMap(this.endbossBar);
-            this.addToMap(this.coinBar);
-            this.addToMap(this.bottleBar);
-            this.ctx.translate(this.camera_x, 0);
-            this.addObjectsToMap(this.level.enemies);
-            this.addToMap(this.endboss);
-            this.addObjectsToMap(this.throw);
-            this.addObjectsToMap(this.splashBottle);
-            this.ctx.translate(-this.camera_x, 0);
-            if (this.checkDead()) {
-                this.addToMap(this.gameOver);
-            }
-            if (this.checkEndboss()) {
-                this.addToMap(this.gameWON);
-            }
             this.startGame('run');
         } else {
             this.addToMap(this.newGame);

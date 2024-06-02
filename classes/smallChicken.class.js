@@ -19,7 +19,7 @@ class SmallChicken extends MoveableObject {
 
     animation() {
         setInterval(() => {
-            if (document.getElementById('landscape').style.display == 'none') {
+            if (document.getElementById('landscape').style.display == 'none' && this.dead == 0) {
                 this.moveLeft(0.2);
             } else {
                 this.moveLeft('none');

@@ -10,7 +10,7 @@ function init() {
 
 
 function startANewGame(){
-    world = new World(canvas, keyboard, newGame, world.startNewGame())
+    world = new World(canvas, keyboard, newGame, world.startNewGame());
 }
 
 window.addEventListener('keydown', (event) => {

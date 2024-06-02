@@ -79,6 +79,9 @@ class MoveableObject extends DrawableObject {
         if(max != 'none'){
             this.x -= setmax;
         }
+        if(max == 'stop'){
+            setmax = 0;
+        }
     }
 
     moveRight() {
