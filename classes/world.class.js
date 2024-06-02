@@ -14,6 +14,7 @@ class World {
     splashBottle = [];
     gameOver = new GameOver();
     gameWON = new GameWON();
+    newGame = new NewGame();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -23,6 +24,7 @@ class World {
         this.setWorld();
         this.checkColliding();
         this.bottleReplace();
+        this.startGameCheck();
     }
 
     setWorld() {
@@ -30,13 +32,29 @@ class World {
         this.endboss.world = this;
     }
 
+    stopGameCheck(){
+            return this.newGame.stop;
+    }
+
+    startGameCheck(){
+        setInterval(() => {
+            if(this.keyboard.startGame){
+                setTimeout(() => {
+                    this.newGame.stop = true;
+                }, 100);
+            }
+        }, 100);
+    }
+
     checkColliding() {
         setInterval(() => {
-            this.checkEnemy();
-            this.checkBoss();
-            this.checkCoin();
-            this.checkBottle();
-            this.checkThrow()
+            if (this.stopGameCheck()) {
+                this.checkEnemy();
+                this.checkBoss();
+                this.checkCoin();
+                this.checkBottle();
+                this.checkThrow()
+            }
         }, 200);
     }
 
@@ -140,12 +158,14 @@ class World {
 
     bottleReplace() {
         setTimeout(() => {
-            this.level.bottle.forEach((bottles) => {
-                if (bottles.x > -1000 && bottles.y > -1000) {
-                    bottles.x = this.calcPosition(150, this.level.level_end_x - 266);
-                    bottles.y = 380;
-                }
-            });
+            if (this.stopGameCheck()) {
+                this.level.bottle.forEach((bottles) => {
+                    if (bottles.x > -1000 && bottles.y > -1000) {
+                        bottles.x = this.calcPosition(150, this.level.level_end_x - 266);
+                        bottles.y = 380;
+                    }
+                });
+            }
         }, 3000);
     }
 
@@ -189,29 +209,33 @@ class World {
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.background);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.coin);
-        this.addObjectsToMap(this.level.bottle);
-        this.addToMap(this.character);
-        this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.healthBar);
-        this.addToMap(this.endbossBar);
-        this.addToMap(this.coinBar);
-        this.addToMap(this.bottleBar);
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.endboss);
-        this.addObjectsToMap(this.throw);
-        this.addObjectsToMap(this.splashBottle);
-        this.ctx.translate(-this.camera_x, 0);
-        if (this.checkDead()) {
-            this.addToMap(this.gameOver);
-        }
-        if (this.checkEndboss()) {
-            this.addToMap(this.gameWON);
+        if (this.stopGameCheck()) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToMap(this.level.background);
+            this.addObjectsToMap(this.level.clouds);
+            this.addObjectsToMap(this.level.coin);
+            this.addObjectsToMap(this.level.bottle);
+            this.addToMap(this.character);
+            this.ctx.translate(-this.camera_x, 0);
+            this.addToMap(this.healthBar);
+            this.addToMap(this.endbossBar);
+            this.addToMap(this.coinBar);
+            this.addToMap(this.bottleBar);
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToMap(this.level.enemies);
+            this.addToMap(this.endboss);
+            this.addObjectsToMap(this.throw);
+            this.addObjectsToMap(this.splashBottle);
+            this.ctx.translate(-this.camera_x, 0);
+            if (this.checkDead()) {
+                this.addToMap(this.gameOver);
+            }
+            if (this.checkEndboss()) {
+                this.addToMap(this.gameWON);
+            }
+        }else{
+            this.addToMap(this.newGame);
         }
         requestAnimationFrame(function () {
             self.draw();

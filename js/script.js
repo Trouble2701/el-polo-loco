@@ -59,6 +59,10 @@ function mouseDown(key) {
     if (key == 'shoot') {
         keyboard.shoot = true;
     }
+
+    if(key == 'startGame'){
+        keyboard.startGame = true;
+    }
 }
 
 function mouseUp(key) {

@@ -3,4 +3,5 @@ class Keyboard {
     right = false;
     space = false;
     shoot = false;
+    startGame = false;
 }
