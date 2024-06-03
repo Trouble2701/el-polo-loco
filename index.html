@@ -39,7 +39,7 @@
         <div id="landscape">Please turn your phone into landscape format</div>
         <h1>El Pollo Loco</h1>
         <div id="newGame" class="newGame">
-            <button onmousedown="initLevel(), mouseDown('startGame')" id="newGame">Start New Game</button>
+            <button onclick="initLevel('start'), mouseDown('startGame')" id="newGame">Start New Game</button>
             <div class="control"><p>Arrows Left/Right = Walk</p><p>Space = Jump</p><p>Shoot = S</p></div>
             <div class="config"><img id="sound" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screen" src="./img/icons/fullscreen.png" onclick="fullOn()"></div>
         </div>
@@ -47,15 +47,15 @@
         <div class="button" id="button">
             <div class="steering">
                 <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')"
-                    onmousedown="mouseDown('left')" onmouseup="mouseUp('left')">Left</button>
+                    onmousedown="mouseDown('left')" onmouseup="mouseUp('left')"><img src="./img/icons/left.png"></button>
                 <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')"
-                    onmousedown="mouseDown('right')" onmouseup="mouseUp('right')">Right</button>
+                    onmousedown="mouseDown('right')" onmouseup="mouseUp('right')"><img src="./img/icons/right.png"></button>
             </div>
             <div class="action">
                 <button id="Jump" ontouchstart="mouseDown('Jump')" ontouchend="mouseUp('Jump')"
-                    onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')">Jump</button>
+                    onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')"><img src="./img/icons/jump.png"></button>
                 <button id="shoot" ontouchstart="mouseDown('shoot')" ontouchend="mouseUp('shoot')"
-                    onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')">Shoot</button>
+                    onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')"><img src="./img/icons/shoot.png"></button>
             </div>
         </div>
     </div>

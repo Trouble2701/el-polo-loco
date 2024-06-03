@@ -16,15 +16,16 @@ class World {
     gameWON = new GameWON();
     newGame = new NewGame();
 
-    constructor(canvas, keyboard) {
+    constructor(canvas, keyboard, newGame) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.newGame.stop = newGame;
         this.draw();
         this.setWorld();
         this.checkColliding();
         this.bottleReplace();
-        this.startGameCheck();
+        /*this.startGameCheck();*/
         this.setStartButton();
     }
 
@@ -37,7 +38,7 @@ class World {
         return this.newGame.stop;
     }
 
-    startGameCheck() {
+    /*startGameCheck() {
         setInterval(() => {
             if (this.keyboard.startGame) {
                 setTimeout(() => {
@@ -45,7 +46,7 @@ class World {
                 }, 100);
             }
         }, 100);
-    }
+    }*/
 
     checkColliding() {
         setInterval(() => {
@@ -254,7 +255,7 @@ class World {
     checkDead() {
         if (this.character.energy == 0) {
             setTimeout(() => {
-                window.location.reload();
+                this.newGame.stop = false;
             }, 4000);
             return true;
         }
@@ -263,7 +264,7 @@ class World {
     checkEndboss() {
         if (this.endboss.power == 0) {
             setTimeout(() => {
-                window.location.reload();
+                this.newGame.stop = false;
             }, 4000);
             return true;
         }
