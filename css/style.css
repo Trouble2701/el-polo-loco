@@ -7,6 +7,12 @@ body {
     -webkit-user-select: None;
     user-select: None;
     margin: 0;
+    background-image: url('./../img/5_background/body.png');
+    background-repeat: no-repeat;
+    background-position: top;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: 'Creepster';
 }
 
 .mobile{
@@ -15,7 +21,19 @@ body {
     align-items: center;
     flex-direction: column;
     width: 100vw;
+    height: 100vh;
     overflow-x: hidden;
+}
+
+h1{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: absolute;
+    top: 15px;
+    color: #FFDF00;
+    font-size: 60px;
+    z-index: 1;
 }
 
 canvas {
@@ -51,6 +69,20 @@ canvas {
     padding-right: 20px;
 }
 
+.config{
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+.config img{
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+
 #landscape {
     display: none;
     justify-content: center;
@@ -68,7 +100,44 @@ canvas {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 150px;
+    border-radius: 20px;
+    height: 480px;
+    width: 720px;
+    background-image: url('./../img/9_intro_outro_screens/start/startscreen_1.png');
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    z-index: 3;
+}
+
+.newGame button{
+    position: absolute;
+    top: 20px;
+    border: none;
+    background: none;
+    background-color: #FFA300;
+    border-radius: 10px;
+    height: 50px;
+    width: 200px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Creepster';
+    font-size: 25px;
+}
+
+.newGame button:hover{
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.300);
+}
+
+.newGame .control{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 50px;
+    gap: 50px;
+    color: #FFDF00;
+    font-size: 28px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.500);
 }
 
 @media (max-width: 1000px){

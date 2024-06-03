@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Loco</title>
+    <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/mobile.css">
     <script src="classes/world.class.js"></script>
@@ -34,10 +35,14 @@
 </head>
 
 <body onload="init()">
-    <div class="mobile">
+    <div id="mobile" class="mobile">
         <div id="landscape">Please turn your phone into landscape format</div>
         <h1>El Pollo Loco</h1>
-        <button class="newGame" onmousedown="initLevel(), mouseDown('startGame')" id="newGame">Start New Game</button>
+        <div id="newGame" class="newGame">
+            <button onmousedown="initLevel(), mouseDown('startGame')" id="newGame">Start New Game</button>
+            <div class="control"><p>Arrows Left/Right = Walk</p><p>Space = Jump</p><p>Shoot = S</p></div>
+            <div class="config"><img id="sound" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screen" src="./img/icons/fullscreen.png" onclick="fullOn()"></div>
+        </div>
         <canvas id="canvas" width="720px" height="480px"></canvas>
         <div class="button" id="button">
             <div class="steering">

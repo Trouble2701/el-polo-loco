@@ -25,6 +25,7 @@ class World {
         this.checkColliding();
         this.bottleReplace();
         this.startGameCheck();
+        this.setStartButton();
     }
 
     setWorld() {
@@ -32,13 +33,13 @@ class World {
         this.endboss.world = this;
     }
 
-    stopGameCheck(){
-            return this.newGame.stop;
+    stopGameCheck() {
+        return this.newGame.stop;
     }
 
-    startGameCheck(){
+    startGameCheck() {
         setInterval(() => {
-            if(this.keyboard.startGame){
+            if (this.keyboard.startGame) {
                 setTimeout(() => {
                     this.newGame.stop = true;
                 }, 100);
@@ -208,34 +209,40 @@ class World {
         }
     }
 
+    setStartButton() {
+        setInterval(() => {
+            if (!this.stopGameCheck()) {
+                document.getElementById('newGame').style.display = 'flex';
+            } else {
+                document.getElementById('newGame').style.display = 'none';
+            }
+        }, 100);
+    }
+
     draw() {
-        if (this.stopGameCheck()) {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.translate(this.camera_x, 0);
-            this.addObjectsToMap(this.level.background);
-            this.addObjectsToMap(this.level.clouds);
-            this.addObjectsToMap(this.level.coin);
-            this.addObjectsToMap(this.level.bottle);
-            this.addToMap(this.character);
-            this.ctx.translate(-this.camera_x, 0);
-            this.addToMap(this.healthBar);
-            this.addToMap(this.endbossBar);
-            this.addToMap(this.coinBar);
-            this.addToMap(this.bottleBar);
-            this.ctx.translate(this.camera_x, 0);
-            this.addObjectsToMap(this.level.enemies);
-            this.addToMap(this.endboss);
-            this.addObjectsToMap(this.throw);
-            this.addObjectsToMap(this.splashBottle);
-            this.ctx.translate(-this.camera_x, 0);
-            if (this.checkDead()) {
-                this.addToMap(this.gameOver);
-            }
-            if (this.checkEndboss()) {
-                this.addToMap(this.gameWON);
-            }
-        }else{
-            this.addToMap(this.newGame);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.background);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.coin);
+        this.addObjectsToMap(this.level.bottle);
+        this.addToMap(this.character);
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.healthBar);
+        this.addToMap(this.endbossBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.endboss);
+        this.addObjectsToMap(this.throw);
+        this.addObjectsToMap(this.splashBottle);
+        this.ctx.translate(-this.camera_x, 0);
+        if (this.checkDead()) {
+            this.addToMap(this.gameOver);
+        }
+        if (this.checkEndboss()) {
+            this.addToMap(this.gameWON);
         }
         requestAnimationFrame(function () {
             self.draw();
