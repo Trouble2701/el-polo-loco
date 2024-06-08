@@ -4,16 +4,26 @@ let keyboard = new Keyboard();
 let startSound = new Audio('audio/startsound.mp3');
 
 function init() {
+    keyboard.startGame = false;
     startSound.play();
+    if(document.getElementById('newGame').style.display == 'none'){
+        document.getElementById('newGame').style.display = 'flex';
+    }
+    clearAllIntervals();
+    world = undefined;
+}
+
+function clearAllIntervals() {
+    for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }
 
 function initLevel() {
     startSound.pause();
-    setTimeout(() => {
-        initFirstLevel();
-        canvas = document.getElementById('canvas');
-        world = new World(canvas, keyboard, true);
-    }, 100);
+    document.getElementById('newGame').style.display = 'none';
+    levelStop = 0;
+    initFirstLevel();
+    canvas = document.getElementById('canvas');
+    world = new World(canvas, keyboard);
 }
 
 function soundOff() {
@@ -68,7 +78,7 @@ window.addEventListener('keydown', (event) => {
     if (event.keyCode == 39) {
         keyboard.right = true;
     }
-    
+
     if (event.keyCode == 32) {
         keyboard.space = true;
     }

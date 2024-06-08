@@ -14,19 +14,15 @@ class World {
     splashBottle = [];
     gameOver = new GameOver();
     gameWON = new GameWON();
-    newGame = new NewGame();
 
-    constructor(canvas, keyboard, newGame) {
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.newGame.stop = newGame;
         this.draw();
         this.setWorld();
         this.checkColliding();
         this.bottleReplace();
-        /*this.startGameCheck();*/
-        this.setStartButton();
     }
 
     setWorld() {
@@ -34,29 +30,13 @@ class World {
         this.endboss.world = this;
     }
 
-    stopGameCheck() {
-        return this.newGame.stop;
-    }
-
-    /*startGameCheck() {
-        setInterval(() => {
-            if (this.keyboard.startGame) {
-                setTimeout(() => {
-                    this.newGame.stop = true;
-                }, 100);
-            }
-        }, 100);
-    }*/
-
     checkColliding() {
         setInterval(() => {
-            if (this.stopGameCheck()) {
-                this.checkEnemy();
-                this.checkBoss();
-                this.checkCoin();
-                this.checkBottle();
-                this.checkThrow()
-            }
+            this.checkEnemy();
+            this.checkBoss();
+            this.checkCoin();
+            this.checkBottle();
+            this.checkThrow()
         }, 200);
     }
 
@@ -160,14 +140,12 @@ class World {
 
     bottleReplace() {
         setTimeout(() => {
-            if (this.stopGameCheck()) {
-                this.level.bottle.forEach((bottles) => {
-                    if (bottles.x > -1000 && bottles.y > -1000) {
-                        bottles.x = this.calcPosition(150, this.level.level_end_x - 266);
-                        bottles.y = 380;
-                    }
-                });
-            }
+            this.level.bottle.forEach((bottles) => {
+                if (bottles.x > -1000 && bottles.y > -1000) {
+                    bottles.x = this.calcPosition(150, this.level.level_end_x - 266);
+                    bottles.y = 380;
+                }
+            });
         }, 3000);
     }
 
@@ -210,16 +188,6 @@ class World {
         }
     }
 
-    setStartButton() {
-        setInterval(() => {
-            if (!this.stopGameCheck()) {
-                document.getElementById('newGame').style.display = 'flex';
-            } else {
-                document.getElementById('newGame').style.display = 'none';
-            }
-        }, 100);
-    }
-
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
@@ -255,7 +223,7 @@ class World {
     checkDead() {
         if (this.character.energy == 0) {
             setTimeout(() => {
-                this.newGame.stop = false;
+                init();
             }, 4000);
             return true;
         }
@@ -264,7 +232,7 @@ class World {
     checkEndboss() {
         if (this.endboss.power == 0) {
             setTimeout(() => {
-                this.newGame.stop = false;
+                init();
             }, 4000);
             return true;
         }
