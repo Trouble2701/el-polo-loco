@@ -2,28 +2,49 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let startSound = new Audio('audio/startsound.mp3');
+let pepeDead = 1;
+let endbossDead = 1;
 
-function init() {
-    keyboard.startGame = false;
+function startPage(){
+    document.getElementById('startscreen').style.transform = 'translateY(-2000px)';
+    canvas = document.getElementById('canvas');
     startSound.play();
-    if(document.getElementById('newGame').style.display == 'none'){
-        document.getElementById('newGame').style.display = 'flex';
-    }
+    document.getElementById('newGame').style.display = 'flex';
     clearAllIntervals();
-    world = undefined;
 }
 
 function clearAllIntervals() {
+    world = undefined;
     for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }
 
 function initLevel() {
+    pepeDead = 0;
+    endbossDead = 0;
     startSound.pause();
     document.getElementById('newGame').style.display = 'none';
-    levelStop = 0;
     initFirstLevel();
-    canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+}
+
+function GameDead(dead) {
+    if (dead == 'pepe') {
+        pepeDead = 1;
+    } else {
+        endbossDead = 1;
+    }
+}
+
+function checkpepeDead() {
+    if (pepeDead == 1) {
+        return true;
+    }
+}
+
+function checkendDead() {
+    if (endbossDead == 1) {
+        return true;
+    }
 }
 
 function soundOff() {
@@ -121,10 +142,6 @@ function mouseDown(key) {
 
     if (key == 'shoot') {
         keyboard.shoot = true;
-    }
-
-    if (key == 'startGame') {
-        keyboard.startGame = true;
     }
 }
 

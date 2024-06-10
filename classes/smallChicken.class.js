@@ -18,21 +18,29 @@ class SmallChicken extends MoveableObject {
     }
 
     animation() {
-        setInterval(() => {
-            if (document.getElementById('landscape').style.display == 'none' && this.dead == 0) {
-                this.moveLeft(0.2);
-            } else {
-                this.moveLeft('none');
-            }
-        }, 1000 / 60);
+        setInterval(() => this.moving(), 1000 / 60);
         this.walking_sound.pause();
-        setInterval(() => {
-            if (this.dead == 1) {
-                this.loadImage('img/3_enemies_chicken/chicken_small/2_dead/dead.png');
-            } else {
-                this.playAnimation(this.IMAGES_WALK);
-                this.walking_sound.play();
-            }
-        }, 200 - this.speed * 2);
+        setInterval(() => this.imageWalking(), 100 - this.speed * 2);
+    }
+
+    checkMoving(){
+        return document.getElementById('landscape').style.display == 'none' && this.dead == 0;
+    }
+
+    moving(){
+        if (this.checkMoving()) this.moveLeft(0.2); else this.moveLeft('none');
+    }
+
+    checkDead(){
+        return this.dead == 1
+    }
+
+    imageWalking(){
+        if (this.checkDead()) {
+            this.loadImage('img/3_enemies_chicken/chicken_small/2_dead/dead.png');
+        } else {
+            this.playAnimation(this.IMAGES_WALK);
+            this.walking_sound.play();
+        }
     }
 }

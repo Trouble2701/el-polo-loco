@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/mobile.css">
+    <script src="js/stopGame.js"></script>
     <script src="classes/world.class.js"></script>
     <script src="classes/drawableObject.class.js"></script>
     <script src="classes/healthBar.class.js"></script>
@@ -27,19 +28,19 @@
     <script src="classes/bottle.class.js"></script>
     <script src="classes/gameover.class.js"></script>
     <script src="classes/won.class.js"></script>
-    <script src="classes/newgame.class.js"></script>
     <script src="classes/throwable-Object.class.js"></script>
     <script src="classes/splashBottle.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/script.js"></script>
 </head>
 
-<body onload="init()">
+<body>
     <div id="mobile" class="mobile">
+        <div id="startscreen"><div class="letsPlay" onclick="startPage()">Let's Play</div><img src="./img/9_intro_outro_screens/start/startscreen_2.png"></div>
         <div id="landscape">Please turn your phone into landscape format</div>
         <h1>El Pollo Loco</h1>
         <div id="newGame" class="newGame">
-            <button onclick="mouseDown('startGame'), initLevel()" id="newGame">Start New Game</button>
+            <button onclick="initLevel()" id="newGame">Start New Game</button>
             <div class="control"><p>Arrows Left/Right = Walk</p><p>Space = Jump</p><p>Shoot = S</p></div>
             <div class="config"><img id="sound" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screen" src="./img/icons/fullscreen.png" onclick="fullOn()"></div>
         </div>

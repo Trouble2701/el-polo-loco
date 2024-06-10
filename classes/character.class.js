@@ -80,72 +80,121 @@ class Character extends MoveableObject {
     }
 
     animation() {
-        setInterval(() => {
-            this.walking_sound.pause();
-            if (this.world.keyboard.right && this.x < this.world.level.level_end_x && !this.pepeDead()) {
-                this.longIdle = false;
-                this.otherDirection = false;
-                this.moveRight();
-                if (!this.world.keyboard.space && !this.isAboveGround()) {
-                    this.walking_sound.play();
-                }
-            }
+        //Junus hat dies eingebaut um nach dem Ende alles stoppen zu können, funktioniert bei mir nicht, denn da kommt der nächste fehler. zufinden js/stopGame.js
+        //setStopAbleInterval(this.walking, 1000 / 60);
+        setInterval(() => this.walking(), 1000 / 60);
+        setInterval(() => this.setIdle(), 200);
+        setInterval(() => this.isLongIdle(), 400);
+        setInterval(() => this.checkAll(), 70);
+    }
 
-            if (this.world.keyboard.left && this.x > 0 && !this.pepeDead()) {
-                this.longIdle = false;
-                this.otherDirection = true;
-                this.moveLeft();
-                if (!this.world.keyboard.space && !this.isAboveGround()) {
-                    this.walking_sound.play();
-                }
-            }
+    checkIdle() {
+        return !this.world.keyboard.right && !this.world.keyboard.left && this.longIdle && !this.pepeDead();
+    }
 
-            if (this.world.keyboard.space && !this.isAboveGround() && !this.pepeDead()) {
-                this.longIdle = false;
-                this.walking_sound.pause();
-                this.jump_sound.play();
-                this.jump('23');
-            }
-            this.world.camera_x = -this.x + 100;
-        }, 1000 / 60);
+    checkAll() {
+        if (this.pepeDead()) {
+            this.imagePepeDead();
+        } else if (this.pepeCollision() && !this.pepeDead()) {
+            this.imagePepeHurt();
+        } else if (this.isAboveGround()) {
+            this.imagePepeJump();
+        } else {
+            if (this.checkImageWalk()) this.imagePepeWalk();
+        }
+    }
 
-        setInterval(() => {
-            if (!this.world.keyboard.right && !this.world.keyboard.left && !this.longIdle && !this.pepeDead()) {
-                this.playAnimation(this.IMAGES_IDLE);
-                setTimeout(() => {
-                    this.longIdle = true;
-                }, 6000);
-            }
-        }, 200);
+    imagePepeDead() {
+        this.sleep_sound.pause();
+        this.playAnimation(this.IMAGES_DEAD);
+        setTimeout(() => setInterval(() => this.y += 50, 50), 1000);
+    }
 
-        setInterval(() => {
-            this.sleep_sound.pause();
-            if (!this.world.keyboard.right && !this.world.keyboard.left && this.longIdle && !this.pepeDead()) {
-                this.playAnimation(this.IMAGES_LONG_IDLE);
-                this.sleep_sound.play();
-            }
-        }, 400);
+    imagePepeHurt() {
+        this.sleep_sound.pause();
+        this.setLongIdle();
+        this.playAnimation(this.IMAGES_HURT);
+    }
 
-        setInterval(() => {
-            if (this.pepeDead()) {
-                this.sleep_sound.pause();
-                this.playAnimation(this.IMAGES_DEAD);
-                setTimeout(() => {
-                    setInterval(() => {
-                        this.y += 50;
-                    }, 50);
-                }, 1000);
-            } else
-                if (this.pepeCollision() && !this.pepeDead()) {
-                    this.sleep_sound.pause();
-                    this.playAnimation(this.IMAGES_HURT);
-                } else if (this.isAboveGround()) {
-                    this.playAnimation(this.IMAGES_JUMP);
-                } else {
-                    if (this.world.keyboard.right || this.world.keyboard.left && !this.pepeDead()) {
-                        this.playAnimation(this.IMAGES_WALK);
-                    }
-                }
-        }, 70);
+    imagePepeJump() {
+        this.playAnimation(this.IMAGES_JUMP);
+    }
+
+    imagePepeWalk() {
+        this.playAnimation(this.IMAGES_WALK);
+    }
+
+    checkImageWalk() {
+        return this.world.keyboard.right || this.world.keyboard.left && !this.pepeDead();
+    }
+
+    setIdle() {
+        if (this.checkWalking()) this.dontWalk();
+    }
+
+    setLongIdle() {
+        this.longIdle = false;
+    }
+
+    isLongIdle() {
+        this.sleep_sound.pause();
+        if (this.checkIdle()) {
+            this.playAnimation(this.IMAGES_LONG_IDLE);
+            this.sleep_sound.play();
+        }
+    }
+
+    checkWalking() {
+        return !this.world.keyboard.right && !this.world.keyboard.left && !this.longIdle && !this.pepeDead();
+    }
+
+    dontWalk() {
+        this.playAnimation(this.IMAGES_IDLE);
+        setTimeout(() => this.longIdle = true, 6000);
+    }
+
+    walking() {
+        this.walking_sound.pause();
+        if (this.canWalkRight()) this.walkRight();
+        if (this.canWalkLeft()) this.walkLeft();
+        if (this.canJump()) this.jumping();
+        this.world.camera_x = -this.x + 100;
+    }
+
+    canJump() {
+        return this.world.keyboard.space && !this.isAboveGround() && !this.pepeDead();
+    }
+
+    jumping() {
+        this.setLongIdle();
+        this.walking_sound.pause();
+        this.jump_sound.play();
+        super.jump('23');
+    }
+
+    canWalkRight() {
+        return this.world.keyboard.right && this.x < this.world.level.level_end_x && !this.pepeDead();
+    }
+
+    walkRight() {
+        this.setLongIdle();
+        this.otherDirection = false;
+        this.moveRight();
+        if (this.dontJump()) this.walking_sound.play();
+    }
+
+    canWalkLeft() {
+        return this.world.keyboard.left && this.x > 0 && !this.pepeDead();
+    }
+
+    walkLeft() {
+        this.setLongIdle();
+        this.otherDirection = true;
+        this.moveLeft();
+        if (this.dontJump()) this.walking_sound.play();
+    }
+
+    dontJump() {
+        return !this.world.keyboard.space && !this.isAboveGround();
     }
 }

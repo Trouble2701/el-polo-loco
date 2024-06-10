@@ -36,7 +36,10 @@ class World {
             this.checkBoss();
             this.checkCoin();
             this.checkBottle();
-            this.checkThrow()
+            this.checkThrow();
+            this.checkDead();
+            this.checkEndboss();
+            this.isEndbossDead()
         }, 200);
     }
 
@@ -183,8 +186,24 @@ class World {
     isDead() {
         if (this.character.energy > 0) {
             return false;
-        } else if (this.character.energy == 0) {
+        } else if (this.character.energy <= 0) {
             this.character.pepeDead();
+            GameDead('pepe');
+        }
+    }
+
+    endscreen() {
+        if (checkpepeDead() == true) {
+            return this.addToMap(this.gameOver);
+        }
+        if (checkendDead() == true) {
+            return this.addToMap(this.gameWON);
+        }
+    }
+
+    isEndbossDead() {
+        if (this.endboss.power <= 0) {
+            GameDead('endboss');
         }
     }
 
@@ -207,34 +226,42 @@ class World {
         this.addObjectsToMap(this.throw);
         this.addObjectsToMap(this.splashBottle);
         this.ctx.translate(-this.camera_x, 0);
-        if (this.checkDead()) {
-            this.addToMap(this.gameOver);
-        }
-        if (this.checkEndboss()) {
-            this.addToMap(this.gameWON);
-        }
+        this.endscreen();
         requestAnimationFrame(function () {
             self.draw();
         });
         let self = this;
-        this.init();
+        this.initWindow();
+    }
+
+    setReset() {
+        this.character.energy = 100;
+        this.healthBar.percentage = 100;
+        this.character.x = 0;
+        this.character.y = 135;
+        this.endboss.power = 100;
+        this.endbossBar.percentage = 100;
+        this.endboss.x = 2350;
+        this.camera_x = 100;
+        startSound.play();
+        document.getElementById('newGame').style.display = 'flex';
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        clearAllIntervals();
     }
 
     checkDead() {
-        if (this.character.energy == 0) {
+        if (checkpepeDead() == true) {
             setTimeout(() => {
-                init();
+                this.setReset();
             }, 4000);
-            return true;
         }
     }
 
     checkEndboss() {
-        if (this.endboss.power == 0) {
+        if (checkendDead() == true) {
             setTimeout(() => {
-                init();
+                this.setReset();
             }, 4000);
-            return true;
         }
     }
 
@@ -268,7 +295,7 @@ class World {
         this.ctx.restore();
     }
 
-    init() {
+    initWindow() {
         this.windowResize();
     }
 

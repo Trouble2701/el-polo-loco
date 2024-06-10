@@ -157,6 +157,41 @@ button img{
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.500);
 }
 
+#startscreen{
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 99999;
+    transition: all 0.3s ease-in-out;
+}
+
+#startscreen img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.letsPlay{
+    position: absolute;
+    top: 100px;
+    display: flex;
+    justify-content: center;
+    color: #FFDF00;
+    font-size: 44px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.500);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.letsPlay:hover{
+    color: #FFA300;
+    font-size: 42px;
+}
+
 @media (max-width: 1000px){
     canvas {
         border-radius: 0;
