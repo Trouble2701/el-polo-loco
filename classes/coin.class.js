@@ -8,6 +8,7 @@ class Coin extends MoveableObject{
     offsety = 30;
     offsetw = 60;
     offseth = 60;
+    save_sound = new Audio('./audio/coin.mp3');
     IMAGES_WALK =[
         'img/8_coin/coin_1.png',
         'img/8_coin/coin_2.png'

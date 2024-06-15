@@ -72,6 +72,8 @@ class Character extends MoveableObject {
     walking_sound = new Audio('./audio/pepe_walking.mp3');
     jump_sound = new Audio('./audio/pepe_jump.mp3');
     sleep_sound = new Audio('./audio/pepe_sleep.mp3');
+    shoot_sound = new Audio('./audio/pepshoot.mp3');
+    ouch_sound = new Audio('./audio/hurtpepe.mp3');
     constructor() {
         super().loadImage('./img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.IMAGES_WALK);

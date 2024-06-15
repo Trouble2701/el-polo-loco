@@ -95,6 +95,7 @@ class World {
         this.level.coin.forEach((coins) => {
             if (this.character.isColliding(coins)) {
                 this.character.pepeCoins += Math.round(100 / this.level.coin.length);
+                coins.save_sound.play();
                 this.itemAnimation(coins);
                 this.coinBar.setCoins(this.character.pepeCoins);
             }
@@ -104,6 +105,7 @@ class World {
     checkBottle() {
         this.level.bottle.forEach((bottles) => {
             if (this.character.isColliding(bottles) && this.character.pepeBottle < 5) {
+                bottles.save_sound.play();
                 this.character.pepeBottle += 1;
                 let calcBottle = 100 / 5 * this.character.pepeBottle;
                 this.itemAnimation(bottles);
@@ -118,6 +120,7 @@ class World {
             if (this.character.otherDirection) {
                 direction = 'yes';
             }
+            this.character.shoot_sound.play();
             this.throw.push(new ThrowAbleObject(this.character.x+this.character.offsetw, this.character.y+this.character.offseth, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
@@ -133,6 +136,7 @@ class World {
             if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle) {
                 this.endboss.hit = throwAttack.bottle;
                 this.endboss.power -= 20;
+                throwAttack.broke_sound.play();
                 this.endbossBar.setPercentage(this.endboss.power);
                 this.endboss.walktime = 0;
                 this.endboss.endBossCollision();
@@ -185,6 +189,7 @@ class World {
                 this.character.setDownCalc(4, 0);
             }
             this.healthBar.setPercentage(this.character.energy);
+            this.character.ouch_sound.play();
         }
     }
 
@@ -192,6 +197,7 @@ class World {
         if (!this.isDead()) {
             this.character.setDownCalc(25, 0);
             this.healthBar.setPercentage(this.character.energy);
+            this.character.ouch_sound.play();
         }
     }
 

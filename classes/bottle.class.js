@@ -6,6 +6,7 @@ class Bottle extends MoveableObject{
     offsety = 10;
     offsetw = 15;
     offseth = 15;
+    save_sound = new Audio('./audio/bottleclick.mp3');
 
     constructor(){
         super().loadImage(`img/6_salsa_bottle/${this.calcPosition(1, 2)}_salsa_bottle_on_ground.png`);
