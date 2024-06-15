@@ -26,18 +26,19 @@ class MoveableObject extends DrawableObject {
         }
     }
 
-    isColliding(obj) {
+    /*isColliding(obj) {
         return this.x + this.width > obj.x &&
             this.y + this.height > obj.y &&
             this.x < obj.x &&
             this.y < obj.y + obj.height
-    }
-
-    /*isColliding (obj) {
-        return  (this.X + this.width) >= obj.X && this.X <= (obj.X + obj.width) && 
-                (this.Y + this.offsetY + this.height) >= obj.Y &&
-                (this.Y + this.offsetY) <= (obj.Y + obj.height)
     }*/
+
+    isColliding (obj) {
+        return     (this.x+this.offsetx + this.width-this.offsetw) >= obj.x+obj.offsetx
+                && this.x+this.offsetx <= (obj.x+obj.offsetx + obj.width-obj.offsetw) 
+                && (this.y+this.offsety + this.height-this.offseth) >= obj.y+obj.offsety
+                && (this.y+this.offsety) <= (obj.y+obj.offsety + obj.height-obj.offseth)
+    }
 
     setDownCalc(down, boss) {
         this.energy -= down;

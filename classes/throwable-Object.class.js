@@ -1,5 +1,9 @@
 class ThrowAbleObject extends MoveableObject {
     bottle;
+    offsetx = 10;
+    offsety = 10;
+    offsetw = 15;
+    offseth = 15;
     IMAGES = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',

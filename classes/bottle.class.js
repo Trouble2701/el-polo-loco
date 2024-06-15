@@ -2,6 +2,10 @@ class Bottle extends MoveableObject{
     x;
     y;
     name = 'bottle';
+    offsetx = 10;
+    offsety = 10;
+    offsetw = 15;
+    offseth = 15;
 
     constructor(){
         super().loadImage(`img/6_salsa_bottle/${this.calcPosition(1, 2)}_salsa_bottle_on_ground.png`);

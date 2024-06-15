@@ -2,6 +2,10 @@ class Endboss extends MoveableObject {
     hit;
     power = 100;
     i = 1;
+    offsetx = 15;
+    offsety = 90;
+    offsetw = 30;
+    offseth = 120;
     IMAGES_WALK = [
         `img/4_enemie_boss_chicken/1_walk/G1.png`,
         `img/4_enemie_boss_chicken/1_walk/G2.png`,

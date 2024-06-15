@@ -62,12 +62,24 @@ class World {
     }
 
     chickenKill(enemy) {
-        let characterX = this.character.x + this.character.width - 10;
-        let characterY = this.character.y + this.character.height;
-        let enemyY = enemy.y + enemy.height;
-        return enemy.x < characterX &&
-            enemy.x > this, this.character.x &&
-            enemyY > characterY;
+        let characterXP = this.character.x+this.character.offsetx;
+        let characterYP = this.character.y+this.character.offsety;
+        let characterWP = this.character.width - this.character.offsetw
+        let characterHP = this.character.height - this.character.offsety;
+        
+        let characterX = characterXP + characterWP;
+        let characterY = characterYP + characterHP;
+
+        let enemyXP = enemy.x+enemy.offsetx;
+        let enemyYP = enemy.y+enemy.offsety;
+        let enemyWP = enemy.width - enemy.offsetw;
+        let enemyHP = enemy.height-enemy.offseth;
+
+        let enemyY =  enemyYP + enemyHP;
+        let enemyX = enemyXP + enemyWP;
+
+        
+        return enemyXP < characterX && enemyX > characterXP && enemyY > characterY;
     }
 
     checkBoss() {
@@ -106,7 +118,7 @@ class World {
             if (this.character.otherDirection) {
                 direction = 'yes';
             }
-            this.throw.push(new ThrowAbleObject(this.character.x + 100, this.character.y + 100, direction, this.character.pepeBottle));
+            this.throw.push(new ThrowAbleObject(this.character.x+this.character.offsetw, this.character.y+this.character.offseth, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
             this.bottleBar.setbottles(calcBottle);

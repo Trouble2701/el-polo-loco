@@ -4,6 +4,10 @@ class Coin extends MoveableObject{
     height = 100;
     width = 100;
     coins = 0;
+    offsetx = 30;
+    offsety = 30;
+    offsetw = 60;
+    offseth = 60;
     IMAGES_WALK =[
         'img/8_coin/coin_1.png',
         'img/8_coin/coin_2.png'
