@@ -66,7 +66,8 @@ class World {
         let characterXS = this.character.x + this.character.offsetx;
         let enemyX = enemy.x;
         let enemyXS = enemy.x + enemy.width;
-        return enemyX <= characterX && enemyXS >= characterXS && this.character.isAboveGround();
+        
+        return characterX > enemyX || characterX < enemyXS && characterXS < enemyXS || characterXS > enemyX && this.character.isAboveGround();
     }
 
     checkBoss() {
