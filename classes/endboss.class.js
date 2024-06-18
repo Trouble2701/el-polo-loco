@@ -171,6 +171,7 @@ class Endboss extends MoveableObject {
     }
 
     endBossHurt() {
+        endbossAlertStop();
         endbossWalkingStop();
         endbossHurtStart();
         this.playAnimation(this.IMAGES_HURT);
