@@ -69,11 +69,6 @@ class Character extends MoveableObject {
         './img/2_character_pepe/5_dead/D-57.png'
     ];
     world;
-    walking_sound = new Audio('./audio/pepe_walking.mp3');
-    jump_sound = new Audio('./audio/pepe_jump.mp3');
-    sleep_sound = new Audio('./audio/pepe_sleep.mp3');
-    shoot_sound = new Audio('./audio/pepshoot.mp3');
-    ouch_sound = new Audio('./audio/hurtpepe.mp3');
     constructor() {
         super().loadImage('./img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.IMAGES_WALK);
@@ -112,13 +107,13 @@ class Character extends MoveableObject {
     }
 
     imagePepeDead() {
-        this.sleep_sound.pause();
+        pepeSleepStop();
         this.playAnimation(this.IMAGES_DEAD);
         setTimeout(() => setInterval(() => this.y += 50, 50), 1000);
     }
 
     imagePepeHurt() {
-        this.sleep_sound.pause();
+        pepeSleepStop();
         this.setLongIdle();
         this.playAnimation(this.IMAGES_HURT);
     }
@@ -144,10 +139,10 @@ class Character extends MoveableObject {
     }
 
     isLongIdle() {
-        this.sleep_sound.pause();
+        pepeSleepStop();
         if (this.checkIdle()) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
-            this.sleep_sound.play();
+            pepeSleepStart();
         }
     }
 
@@ -161,7 +156,7 @@ class Character extends MoveableObject {
     }
 
     walking() {
-        this.walking_sound.pause();
+        pepeWalkStop();
         if (this.canWalkRight()) this.walkRight();
         if (this.canWalkLeft()) this.walkLeft();
         if (this.canJump()) this.jumping();
@@ -174,8 +169,8 @@ class Character extends MoveableObject {
 
     jumping() {
         this.setLongIdle();
-        this.walking_sound.pause();
-        this.jump_sound.play();
+        pepeWalkStop();
+        pepeJumpStart();
         super.jump('23');
     }
 
@@ -187,7 +182,7 @@ class Character extends MoveableObject {
         this.setLongIdle();
         this.otherDirection = false;
         this.moveRight();
-        if (this.dontJump()) this.walking_sound.play();
+        if (this.dontJump()) pepeWalkStart();
     }
 
     canWalkLeft() {
@@ -198,7 +193,7 @@ class Character extends MoveableObject {
         this.setLongIdle();
         this.otherDirection = true;
         this.moveLeft();
-        if (this.dontJump()) this.walking_sound.play();
+        if (this.dontJump()) pepeWalkStart();
     }
 
     dontJump() {

@@ -107,7 +107,8 @@ class World {
             if (this.character.otherDirection) {
                 direction = 'yes';
             }
-            this.character.shoot_sound.play();
+            pepeShootStop();
+            pepeShootStart();
             this.throw.push(new ThrowAbleObject(this.character.x + this.character.offsetw, this.character.y + this.character.offseth, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
@@ -176,7 +177,7 @@ class World {
                 this.character.setDownCalc(4, 0);
             }
             this.healthBar.setPercentage(this.character.energy);
-            this.character.ouch_sound.play();
+            pepeOuchStart();
         }
     }
 
@@ -184,7 +185,7 @@ class World {
         if (!this.isDead()) {
             this.character.setDownCalc(25, 0);
             this.healthBar.setPercentage(this.character.energy);
-            this.character.ouch_sound.play();
+            pepeOuchStart();
         }
     }
 
@@ -248,7 +249,8 @@ class World {
         this.endbossBar.percentage = 100;
         this.endboss.x = 2350;
         this.camera_x = 100;
-        startSound.play();
+        allSoundsStop();
+        startSoundPlay();
         document.getElementById('newGame').style.display = 'flex';
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         clearAllIntervals();

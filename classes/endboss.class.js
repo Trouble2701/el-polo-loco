@@ -53,9 +53,6 @@ class Endboss extends MoveableObject {
         `img/4_enemie_boss_chicken/5_dead/G26.png`
     ];
     world;
-    walking_sound = new Audio('./audio/bossrunning.mp3');
-    alert_sound = new Audio('./audio/chicken_boss.mp3');
-    hurt_sound = new Audio('./audio/hurtBoss.mp3');
     constructor() {
         super().loadImage(`img/4_enemie_boss_chicken/2_alert/G5.png`);
         this.loadImages(this.IMAGES_WALK);
@@ -75,9 +72,7 @@ class Endboss extends MoveableObject {
     timeAttack = 150;
 
     animation() {
-        this.walking_sound.pause();
-        this.alert_sound.pause();
-        this.hurt_sound.pause();
+        endbossStop();
         setInterval(() => this.bossAnimation(), 100);
     }
 
@@ -116,9 +111,7 @@ class Endboss extends MoveableObject {
     startAttack() {
         this.timeAttack -= 5;
         if (this.world.character.x > 1900 && this.power > 0) {
-            this.walking_sound.pause();
-            this.alert_sound.pause();
-            this.hurt_sound.pause();
+            endbossStop();
             this.playAnimation(this.IMAGES_ATTACK);
         }
     }
@@ -146,9 +139,7 @@ class Endboss extends MoveableObject {
     }
 
     endBossDead() {
-        this.alert_sound.pause();
-        this.walking_sound.pause();
-        this.hurt_sound.pause();
+        endbossStop();
         if (this.i < this.IMAGES_DEAD.length) {
             this.playAnimation(this.IMAGES_DEAD);
             this.i++;
@@ -162,9 +153,7 @@ class Endboss extends MoveableObject {
     }
 
     characterDontInPositionSound() {
-        this.alert_sound.pause();
-        this.walking_sound.pause();
-        this.hurt_sound.pause();
+        endbossStop();
     }
 
     checkCharacterInPosition() {
@@ -172,9 +161,9 @@ class Endboss extends MoveableObject {
     }
 
     characterInPositionSound() {
-        this.alert_sound.play();
-        this.walking_sound.pause();
-        this.hurt_sound.pause();
+        endbossAlertStart();
+        endbossHurtStop();
+        endbossWalkingStop();
     }
 
     endBossHurtCheck() {
@@ -182,8 +171,8 @@ class Endboss extends MoveableObject {
     }
 
     endBossHurt() {
-        this.walking_sound.pause();
-        this.hurt_sound.play();
+        endbossWalkingStop();
+        endbossHurtStart();
         this.playAnimation(this.IMAGES_HURT);
     }
 
@@ -194,9 +183,9 @@ class Endboss extends MoveableObject {
     endBossRun() {
         setInterval(() => {
             if (this.walktime > 0) {
-                this.walking_sound.play();
-                this.alert_sound.pause();
-                this.hurt_sound.pause();
+                endbossWalkingStart();
+                endbossAlertStop();
+                endbossHurtStop();
                 this.walktime -= 1;
                 this.playAnimation(this.IMAGES_WALK);
                 this.moveLeft(3);

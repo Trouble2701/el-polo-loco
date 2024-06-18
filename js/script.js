@@ -1,16 +1,16 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let startSound = new Audio('audio/startsound.mp3');
 let pepeDead = 1;
 let endbossDead = 1;
+time = 0;
 
 function startPage(){
     document.getElementById('startscreen').style.transform = 'translateY(-2000px)';
     canvas = document.getElementById('canvas');
-    startSound.play();
     document.getElementById('newGame').style.display = 'flex';
     clearAllIntervals();
+    startSoundPlay();
 }
 
 function clearAllIntervals() {

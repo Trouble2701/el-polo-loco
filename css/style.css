@@ -177,7 +177,7 @@ button img{
 
 .letsPlay{
     position: absolute;
-    top: 100px;
+    top: 10%;
     display: flex;
     justify-content: center;
     color: #FFDF00;
