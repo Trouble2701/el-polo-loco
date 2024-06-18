@@ -62,28 +62,15 @@ class World {
     }
 
     chickenKill(enemy) {
-        let characterXP = this.character.x+this.character.offsetx;
-        let characterYP = this.character.y+this.character.offsety;
-        let characterWP = this.character.width - this.character.offsetw
-        let characterHP = this.character.height - this.character.offsety;
-        
-        let characterX = characterXP + characterWP;
-        let characterY = characterYP + characterHP;
-
-        let enemyXP = enemy.x+enemy.offsetx;
-        let enemyYP = enemy.y+enemy.offsety;
-        let enemyWP = enemy.width - enemy.offsetw;
-        let enemyHP = enemy.height-enemy.offseth;
-
-        let enemyY =  enemyYP + enemyHP;
-        let enemyX = enemyXP + enemyWP;
-
-        
-        return enemyXP < characterX && enemyX > characterXP && enemyY > characterY;
+        let characterX = this.character.x + this.character.offsetx + this.character.width - this.character.offsetw;
+        let characterXS = this.character.x + this.character.offsetx;
+        let enemyX = enemy.x;
+        let enemyXS = enemy.x + enemy.width;
+        return enemyX <= characterX && enemyXS >= characterXS && this.character.isAboveGround();
     }
 
     checkBoss() {
-        if (this.character.isColliding(this.endboss)) {
+        if (this.character.isColliding(this.endboss) && this.endboss.power > 0) {
             this.character.pepeCollision(1);
             this.endbossCollision();
         } else {
@@ -121,7 +108,7 @@ class World {
                 direction = 'yes';
             }
             this.character.shoot_sound.play();
-            this.throw.push(new ThrowAbleObject(this.character.x+this.character.offsetw, this.character.y+this.character.offseth, direction, this.character.pepeBottle));
+            this.throw.push(new ThrowAbleObject(this.character.x + this.character.offsetw, this.character.y + this.character.offseth, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
             this.bottleBar.setbottles(calcBottle);
