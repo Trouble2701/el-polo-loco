@@ -22,11 +22,18 @@ class World {
         this.draw();
         this.setWorld();
         this.checkColliding();
+        this.checkShoot();
     }
 
     setWorld() {
         this.character.world = this;
         this.endboss.world = this;
+    }
+
+    checkShoot(){
+        setInterval(() => {
+            this.checkThrow();
+        }, 200);
     }
 
     checkColliding() {
@@ -35,11 +42,10 @@ class World {
             this.checkBoss();
             this.checkCoin();
             this.checkBottle();
-            this.checkThrow();
             this.checkDead();
             this.checkEndboss();
             this.isEndbossDead()
-        }, 200);
+        }, 50);
     }
 
     checkEnemy() {
@@ -61,12 +67,6 @@ class World {
     }
 
     chickenKill(enemy) {
-        /*let characterX = this.character.x + this.character.offsetx + this.character.width - this.character.offsetw;
-        let characterXS = this.character.x + this.character.offsetx;
-        let enemyX = enemy.x;
-        let enemyXS = enemy.x + enemy.width;
-        return this.checkCharackterStartPos(characterX, enemyXS, enemyX) || this.checkCharackterEndPos(characterXS, enemyXS, enemyX);*/
-
         return this.character.isColliding(enemy) && this.character.isAboveGround();
     }
 
@@ -110,8 +110,11 @@ class World {
         });
     }
 
+    checkKey(){
+            return this.keyboard.shoot && this.character.pepeBottle > 0;
+    }
     checkThrow() {
-        if (this.keyboard.shoot && this.character.pepeBottle > 0) {
+        if (this.checkKey()) {
             let direction = 'no';
             if (this.character.otherDirection) {
                 direction = 'yes';
@@ -197,9 +200,9 @@ class World {
     chickenCollision(enemy) {
         if (!this.isDead()) {
             if (enemy.name == 'chicken') {
-                this.character.setDownCalc(8, 0);
+                this.character.setDownCalc(2, 0);
             } else if (enemy.name == 'smallchicken') {
-                this.character.setDownCalc(4, 0);
+                this.character.setDownCalc(1, 0);
             }
             this.healthBar.setPercentage(this.character.energy);
             pepeOuchStart();
@@ -208,7 +211,7 @@ class World {
 
     endbossCollision() {
         if (!this.isDead()) {
-            this.character.setDownCalc(25, 0);
+            this.character.setDownCalc(6, 0);
             this.healthBar.setPercentage(this.character.energy);
             pepeOuchStart();
         }

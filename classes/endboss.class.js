@@ -135,7 +135,9 @@ class Endboss extends MoveableObject {
     }
 
     checkDead() {
-        return this.power == 0;
+        setInterval(() => {
+            return this.power == 0;    
+        }, 20);
     }
 
     endBossDead() {
