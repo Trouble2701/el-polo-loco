@@ -312,7 +312,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        //mo.drawFrame(this.ctx);
         if (mo.otherDirection) {
             this.flipImageBack(mo);
         }
@@ -331,10 +331,10 @@ class World {
     }
 
     initWindow() {
-        this.windowResize();
+        windowResize();
     }
 
-    windowResize() {
+   /* windowResize() {
         let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
         let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
         if (width <= 1001) {
@@ -354,5 +354,5 @@ class World {
         document.getElementById('canvas').style.width = '100vw';
         document.getElementById('canvas').style.height = 'calc(100vh - 49px)';
         document.getElementById('button').style.width = '100vw';
-    }
+    }*/
 }
