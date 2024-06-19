@@ -19,46 +19,46 @@ class MoveableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        if(this instanceof ThrowAbleObject){
+        if (this instanceof ThrowAbleObject) {
             return true;
-        }else{
+        } else {
             return this.y < 135;
         }
     }
 
-    isColliding (obj) {
-        return     (this.x+this.offsetx + this.width-this.offsetw) >= obj.x+obj.offsetx
-                && this.x+this.offsetx <= (obj.x+obj.offsetx + obj.width-obj.offsetw) 
-                && (this.y+this.offsety + this.height-this.offseth) >= obj.y+obj.offsety
-                && (this.y+this.offsety) <= (obj.y+obj.offsety + obj.height-obj.offseth)
+    isColliding(obj) {
+        return (this.x + this.offsetx + this.width - this.offsetw) >= (obj.x + obj.offsetx)
+            && (this.x + this.offsetx) <= (obj.x + obj.offsetx + obj.width - obj.offsetw)
+            && (this.y + this.offsety + this.height - this.offseth) >= obj.y + obj.offsety
+            && (this.y + this.offsety) <= (obj.y + obj.offsety + obj.height - obj.offseth)
     }
 
     setDownCalc(down, boss) {
         this.energy -= down;
         if (this.energy < 0) {
-            this.energy = 0;   
-        }else{
-            if(boss == 0){
+            this.energy = 0;
+        } else {
+            if (boss == 0) {
                 this.pepeColl = new Date().getTime();
-            }else if(boss == 1){
+            } else if (boss == 1) {
                 this.endBossColl = new Date().getTime();
             }
         }
     }
 
     pepeDead() {
-        if(this.energy == 0){
+        if (this.energy == 0) {
             return true;
         }
     }
 
-    pepeCollision(){
+    pepeCollision() {
         let timepassed = new Date().getTime() - this.pepeColl;
         timepassed = timepassed / 1000;
         return timepassed < 0.5;
     }
 
-    endBossCollision(){
+    endBossCollision() {
         let timepassed = new Date().getTime() - this.endBossColl;
         timepassed = timepassed / 1000;
         return timepassed < 0.5;
@@ -69,10 +69,10 @@ class MoveableObject extends DrawableObject {
         if (max && max != 'none') {
             setmax = this.speed * max;
         }
-        if(max != 'none'){
+        if (max != 'none') {
             this.x -= setmax;
         }
-        if(max == 'stop'){
+        if (max == 'stop') {
             setmax = 0;
         }
     }

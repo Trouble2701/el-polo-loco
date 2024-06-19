@@ -64,9 +64,6 @@ function initFirstLevel() {
             new Bottle(),
             new Bottle(),
             new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
             new Bottle()
         ]
     );

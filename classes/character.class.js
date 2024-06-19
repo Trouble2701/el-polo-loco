@@ -2,9 +2,9 @@ class Character extends MoveableObject {
     speed = 10.5;
     longIdle = false;
     offsetx = 15;
-    offsety = 100;
-    offsetw = 30;
-    offseth = 110;
+    offsety = 120;
+    offsetw = 40;
+    offseth = 130;
 
     IMAGES_IDLE = [
         './img/2_character_pepe/1_idle/idle/I-1.png',
@@ -161,6 +161,13 @@ class Character extends MoveableObject {
         if (this.canWalkLeft()) this.walkLeft();
         if (this.canJump()) this.jumping();
         this.world.camera_x = -this.x + 100;
+        this.checkYPos();
+    }
+
+    checkYPos(){
+        if(!this.isAboveGround() && !this.pepeDead()){
+            this.y = 135;
+        }
     }
 
     canJump() {

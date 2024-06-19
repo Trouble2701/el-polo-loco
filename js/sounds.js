@@ -13,7 +13,7 @@ let endboss_hurt_sound = new Audio('./audio/hurtBoss.mp3');
 function startSoundPlay() {
     startSound.play();
     setInterval(() => {
-        if (time > 61) {
+        if (time > 61 && pepeDead == 1) {
             startSound.pause();
             startSound.play();
             time = 0;

@@ -22,7 +22,6 @@ class World {
         this.draw();
         this.setWorld();
         this.checkColliding();
-        this.bottleReplace();
     }
 
     setWorld() {
@@ -62,12 +61,21 @@ class World {
     }
 
     chickenKill(enemy) {
-        let characterX = this.character.x + this.character.offsetx + this.character.width - this.character.offsetw;
+        /*let characterX = this.character.x + this.character.offsetx + this.character.width - this.character.offsetw;
         let characterXS = this.character.x + this.character.offsetx;
         let enemyX = enemy.x;
         let enemyXS = enemy.x + enemy.width;
-        
-        return characterX > enemyX || characterX < enemyXS && characterXS < enemyXS || characterXS > enemyX && this.character.isAboveGround();
+        return this.checkCharackterStartPos(characterX, enemyXS, enemyX) || this.checkCharackterEndPos(characterXS, enemyXS, enemyX);*/
+
+        return this.character.isColliding(enemy) && this.character.isAboveGround();
+    }
+
+    checkCharackterStartPos(characterX, enemyXS, enemyX) {
+        return characterX > enemyX && characterX < enemyXS && this.character.isAboveGround();
+    }
+
+    checkCharackterEndPos(characterXS, enemyXS, enemyX) {
+        return characterXS > enemyX && characterXS < enemyXS && this.character.isAboveGround();
     }
 
     checkBoss() {
@@ -92,7 +100,7 @@ class World {
 
     checkBottle() {
         this.level.bottle.forEach((bottles) => {
-            if (this.character.isColliding(bottles) && this.character.pepeBottle < 5) {
+            if (this.character.isColliding(bottles) && this.character.pepeBottle < 5 && bottles.y == 380) {
                 bottles.save_sound.play();
                 this.character.pepeBottle += 1;
                 let calcBottle = 100 / 5 * this.character.pepeBottle;
@@ -108,8 +116,12 @@ class World {
             if (this.character.otherDirection) {
                 direction = 'yes';
             }
+            if (this.character.pepeBottle == 1) {
+                this.bottleReplace();
+            }
             pepeShootStop();
             pepeShootStart();
+            this.character.longIdle = false;
             this.throw.push(new ThrowAbleObject(this.character.x + this.character.offsetw, this.character.y + this.character.offseth, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
@@ -117,12 +129,15 @@ class World {
             setInterval(() => {
                 this.checkAttackBoss(direction);
             }, 20);
+            setInterval(() => {
+                this.checkBottleOnGround(direction);
+            }, 20);
         }
     }
 
     checkAttackBoss(direction) {
         this.throw.forEach((throwAttack) => {
-            if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle) {
+            if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle && this.endboss.power > 0) {
                 this.endboss.hit = throwAttack.bottle;
                 this.endboss.power -= 20;
                 throwAttack.broke_sound.play();
@@ -132,29 +147,38 @@ class World {
                 this.endboss.setDownCalc(0, 1);
                 this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
                 throwAttack.y = 1000;
-                this.bottlesplash();
+                this.bottlesplash(1000);
                 return true;
             }
         });
     }
 
-    bottlesplash() {
+    checkBottleOnGround(direction) {
+        this.throw.forEach((throwAttack) => {
+            if (throwAttack.y > 380 && throwAttack.y < 410) {
+                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
+                throwAttack.broke_sound.play();
+                this.bottlesplash(100);
+            }
+        });
+    }
+
+    bottlesplash(time) {
         this.splashBottle.forEach((splash) => {
             setInterval(() => {
                 splash.y = 1000;
-            }, 1000);
+            }, time);
         });
     }
 
     bottleReplace() {
-        setTimeout(() => {
-            this.level.bottle.forEach((bottles) => {
-                if (bottles.x > -1000 && bottles.y > -1000) {
-                    bottles.x = this.calcPosition(150, this.level.level_end_x - 266);
-                    bottles.y = 380;
-                }
-            });
-        }, 3000);
+        this.level.bottle = [
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle()
+        ]
     }
 
     calcPosition(min, max) {
