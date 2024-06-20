@@ -45,12 +45,18 @@ class Endboss extends MoveableObject {
         `img/4_enemie_boss_chicken/4_hurt/G21.png`,
         `img/4_enemie_boss_chicken/4_hurt/G22.png`,
         `img/4_enemie_boss_chicken/4_hurt/G23.png`,
-        `img/4_enemie_boss_chicken/4_hurt/G21.png`,
-        `img/4_enemie_boss_chicken/4_hurt/G22.png`,
-        `img/4_enemie_boss_chicken/4_hurt/G23.png`,
         `img/4_enemie_boss_chicken/5_dead/G24.png`,
         `img/4_enemie_boss_chicken/5_dead/G25.png`,
-        `img/4_enemie_boss_chicken/5_dead/G26.png`
+        `img/4_enemie_boss_chicken/5_dead/G24.png`,
+        `img/4_enemie_boss_chicken/5_dead/G25.png`,
+        `img/4_enemie_boss_chicken/5_dead/G24.png`,
+        `img/4_enemie_boss_chicken/5_dead/G25.png`,
+        `img/4_enemie_boss_chicken/5_dead/G24.png`,
+        `img/4_enemie_boss_chicken/5_dead/G25.png`,
+        `img/4_enemie_boss_chicken/5_dead/G24.png`,
+        `img/4_enemie_boss_chicken/5_dead/G25.png`,
+        `img/4_enemie_boss_chicken/5_dead/G24.png`,
+        `img/4_enemie_boss_chicken/5_dead/G25.png`
     ];
     world;
     constructor() {
@@ -136,7 +142,7 @@ class Endboss extends MoveableObject {
 
     checkDead() {
         setInterval(() => {
-            return this.power == 0;    
+            return this.power <= 0;    
         }, 20);
     }
 
@@ -163,7 +169,7 @@ class Endboss extends MoveableObject {
     }
 
     characterInPositionSound() {
-        endbossAlertStart();
+        if(sound == 0) endbossAlertStart();
         endbossHurtStop();
         endbossWalkingStop();
     }
@@ -175,7 +181,7 @@ class Endboss extends MoveableObject {
     endBossHurt() {
         endbossAlertStop();
         endbossWalkingStop();
-        endbossHurtStart();
+        if(sound == 0) endbossHurtStart();
         this.playAnimation(this.IMAGES_HURT);
     }
 
@@ -186,7 +192,7 @@ class Endboss extends MoveableObject {
     endBossRun() {
         setInterval(() => {
             if (this.walktime > 0) {
-                endbossWalkingStart();
+                if(sound == 0) endbossWalkingStart();
                 endbossAlertStop();
                 endbossHurtStop();
                 this.walktime -= 1;
@@ -194,5 +200,10 @@ class Endboss extends MoveableObject {
                 this.moveLeft(3);
             }
         }, 1000);
+    }
+
+    endbossReset(){
+        this.power = 100;
+        this.x = 2350;
     }
 }

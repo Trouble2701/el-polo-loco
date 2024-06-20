@@ -44,7 +44,7 @@ class SmallChicken extends MoveableObject {
             this.loadImage('img/3_enemies_chicken/chicken_small/2_dead/dead.png');
         } else {
             this.playAnimation(this.IMAGES_WALK);
-            smallChickenStart();
+            if(sound == 0) smallChickenStart();
         }
     }
 }

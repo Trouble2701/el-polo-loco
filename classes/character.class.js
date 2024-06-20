@@ -142,7 +142,7 @@ class Character extends MoveableObject {
         pepeSleepStop();
         if (this.checkIdle()) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
-            pepeSleepStart();
+            if(sound == 0) pepeSleepStart();
         }
     }
 
@@ -177,7 +177,7 @@ class Character extends MoveableObject {
     jumping() {
         this.setLongIdle();
         pepeWalkStop();
-        pepeJumpStart();
+        if(sound == 0) pepeJumpStart();
         super.jump('23');
     }
 
@@ -189,7 +189,7 @@ class Character extends MoveableObject {
         this.setLongIdle();
         this.otherDirection = false;
         this.moveRight();
-        if (this.dontJump()) pepeWalkStart();
+        if (this.dontJump()) if(sound == 0) pepeWalkStart();
     }
 
     canWalkLeft() {
@@ -200,10 +200,17 @@ class Character extends MoveableObject {
         this.setLongIdle();
         this.otherDirection = true;
         this.moveLeft();
-        if (this.dontJump()) pepeWalkStart();
+        if (this.dontJump()) if(sound == 0) pepeWalkStart();
     }
 
     dontJump() {
         return !this.world.keyboard.space && !this.isAboveGround();
+    }
+
+    characterReset(){
+        this.energy = 100;
+        this.x = 0;
+        this.y = 135;
+        
     }
 }

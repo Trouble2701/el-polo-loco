@@ -3,14 +3,20 @@ let world;
 let keyboard = new Keyboard();
 let pepeDead = 1;
 let endbossDead = 1;
-time = 0;
+let time = 0;
+let sound = 0;
 
-function startPage(){
-    document.getElementById('startscreen').style.transform = 'translateY(-2000px)';
-    canvas = document.getElementById('canvas');
-    document.getElementById('newGame').style.display = 'flex';
+function sdoc(id){
+    return document.getElementById(id);
+}
+
+function startPage() {
+    if(sdoc('startscreen').style.transform == '') sdoc('startscreen').style.transform = 'translateY(-2000px)';
+    canvas = sdoc('canvas');
+    sdoc('configGame').style.display = 'none';
+    sdoc('newGame').style.display = 'flex';
     clearAllIntervals();
-    startSoundPlay();
+    if(sound == 0) startSoundPlay();
 }
 
 function clearAllIntervals() {
@@ -22,7 +28,8 @@ function initLevel() {
     pepeDead = 0;
     endbossDead = 0;
     startSound.pause();
-    document.getElementById('newGame').style.display = 'none';
+    sdoc('newGame').style.display = 'none';
+    sdoc('configGame').style.display = 'flex';
     initFirstLevel();
     world = new World(canvas, keyboard);
 }
@@ -48,47 +55,18 @@ function checkendDead() {
 }
 
 function soundOff() {
+    sound = 1;
     startSound.pause();
-    document.getElementById('sound').setAttribute('onclick', 'soundOn()');
+    allSoundsStop();
+    sdoc('sound').setAttribute('onclick', 'soundOn()');
+    sdoc('soundGame').setAttribute('onclick', 'soundOn()');
 }
 
 function soundOn() {
-    startSound.play();
-    document.getElementById('sound').setAttribute('onclick', 'soundOff()');
-}
-
-function fullOn() {
-    var elem = document.getElementById('mobile');
-
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    }
-    else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-    }
-    else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-    }
-    else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-    }
-    document.getElementById('screen').setAttribute('onclick', 'fullOff()');
-}
-
-function fullOff() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    }
-    else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-    }
-    else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    }
-    else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-    }
-    document.getElementById('screen').setAttribute('onclick', 'fullOn()');
+    sound = 0;
+    if(sdoc('newGame').style.display == 'flex') startSound.play();
+    sdoc('sound').setAttribute('onclick', 'soundOff()');
+    sdoc('soundGame').setAttribute('onclick', 'soundOff()');
 }
 
 window.addEventListener('keydown', (event) => {
@@ -161,21 +139,3 @@ function mouseUp(key) {
         keyboard.shoot = false;
     }
 }
-
-function windowResize() {
-    let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    if (width <= 1001) {
-        if (height > width) {
-            document.getElementById('landscape').style.display = 'flex';
-        } else {
-            document.getElementById('landscape').style.display = 'none';
-        }
-    } else {
-        document.getElementById('landscape').style.display = 'none';
-    }
-}
-
-setInterval(() => {
-    windowResize();
-}, 100);

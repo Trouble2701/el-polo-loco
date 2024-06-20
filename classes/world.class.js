@@ -22,7 +22,8 @@ class World {
         this.draw();
         this.setWorld();
         this.checkColliding();
-        this.checkShoot();
+        this.checkActions();
+        this.checkAllDeads();
     }
 
     setWorld() {
@@ -30,10 +31,17 @@ class World {
         this.endboss.world = this;
     }
 
-    checkShoot(){
+    checkActions(){
         setInterval(() => {
             this.checkThrow();
         }, 200);
+    }
+
+    checkAllDeads(){
+        setInterval(() => {
+            this.isEndbossDead();
+            this.checkDead();
+        }, 100);
     }
 
     checkColliding() {
@@ -42,9 +50,7 @@ class World {
             this.checkBoss();
             this.checkCoin();
             this.checkBottle();
-            this.checkDead();
             this.checkEndboss();
-            this.isEndbossDead()
         }, 50);
     }
 
@@ -91,7 +97,7 @@ class World {
         this.level.coin.forEach((coins) => {
             if (this.character.isColliding(coins)) {
                 this.character.pepeCoins += Math.round(100 / this.level.coin.length);
-                coins.save_sound.play();
+                if(sound == 0) coins.save_sound.play();
                 this.itemAnimation(coins);
                 this.coinBar.setCoins(this.character.pepeCoins);
             }
@@ -101,7 +107,7 @@ class World {
     checkBottle() {
         this.level.bottle.forEach((bottles) => {
             if (this.character.isColliding(bottles) && this.character.pepeBottle < 5 && bottles.y == 380) {
-                bottles.save_sound.play();
+                if(sound == 0) bottles.save_sound.play();
                 this.character.pepeBottle += 1;
                 let calcBottle = 100 / 5 * this.character.pepeBottle;
                 this.itemAnimation(bottles);
@@ -113,28 +119,21 @@ class World {
     checkKey(){
             return this.keyboard.shoot && this.character.pepeBottle > 0;
     }
+
     checkThrow() {
         if (this.checkKey()) {
             let direction = 'no';
-            if (this.character.otherDirection) {
-                direction = 'yes';
-            }
-            if (this.character.pepeBottle == 1) {
-                this.bottleReplace();
-            }
+            if (this.character.otherDirection) direction = 'yes';
+            if (this.character.pepeBottle == 1) this.bottleReplace();
             pepeShootStop();
-            pepeShootStart();
+            if(sound == 0) pepeShootStart();
             this.character.longIdle = false;
             this.throw.push(new ThrowAbleObject(this.character.x + this.character.offsetw, this.character.y + this.character.offseth, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
             this.bottleBar.setbottles(calcBottle);
-            setInterval(() => {
-                this.checkAttackBoss(direction);
-            }, 20);
-            setInterval(() => {
-                this.checkBottleOnGround(direction);
-            }, 20);
+            setInterval(() => this.checkAttackBoss(direction), 20);
+            setInterval(() => this.checkBottleOnGround(direction), 20);
         }
     }
 
@@ -143,7 +142,7 @@ class World {
             if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle && this.endboss.power > 0) {
                 this.endboss.hit = throwAttack.bottle;
                 this.endboss.power -= 20;
-                throwAttack.broke_sound.play();
+                if(sound == 0) throwAttack.broke_sound.play();
                 this.endbossBar.setPercentage(this.endboss.power);
                 this.endboss.walktime = 0;
                 this.endboss.endBossCollision();
@@ -160,7 +159,7 @@ class World {
         this.throw.forEach((throwAttack) => {
             if (throwAttack.y > 380 && throwAttack.y < 410) {
                 this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
-                throwAttack.broke_sound.play();
+                if(sound == 0) throwAttack.broke_sound.play();
                 this.bottlesplash(100);
             }
         });
@@ -168,9 +167,7 @@ class World {
 
     bottlesplash(time) {
         this.splashBottle.forEach((splash) => {
-            setInterval(() => {
-                splash.y = 1000;
-            }, time);
+            setInterval(() => splash.y = 1000, time);
         });
     }
 
@@ -205,7 +202,7 @@ class World {
                 this.character.setDownCalc(1, 0);
             }
             this.healthBar.setPercentage(this.character.energy);
-            pepeOuchStart();
+            if(sound == 0) pepeOuchStart();
         }
     }
 
@@ -213,7 +210,7 @@ class World {
         if (!this.isDead()) {
             this.character.setDownCalc(6, 0);
             this.healthBar.setPercentage(this.character.energy);
-            pepeOuchStart();
+            if(sound == 0) pepeOuchStart();
         }
     }
 
@@ -227,16 +224,13 @@ class World {
     }
 
     endscreen() {
-        if (checkpepeDead() == true) {
-            return this.addToMap(this.gameOver);
-        }
-        if (checkendDead() == true) {
-            return this.addToMap(this.gameWON);
-        }
+        if (checkpepeDead() == true) return this.addToMap(this.gameOver);
+        if (checkendDead() == true) return this.addToMap(this.gameWON);
     }
 
     isEndbossDead() {
         if (this.endboss.power <= 0) {
+            this.endboss.endBossDead();
             GameDead('endboss');
         }
     }
@@ -261,61 +255,40 @@ class World {
         this.addObjectsToMap(this.splashBottle);
         this.ctx.translate(-this.camera_x, 0);
         this.endscreen();
-        requestAnimationFrame(function () {
-            self.draw();
-        });
+        requestAnimationFrame(() => self.draw());
         let self = this;
         this.initWindow();
     }
 
     setReset() {
-        this.character.energy = 100;
+        this.character.characterReset();
+        this.endboss.endbossReset();
         this.healthBar.percentage = 100;
-        this.character.x = 0;
-        this.character.y = 135;
-        this.endboss.power = 100;
         this.endbossBar.percentage = 100;
-        this.endboss.x = 2350;
         this.camera_x = 100;
         allSoundsStop();
-        startSoundPlay();
-        document.getElementById('newGame').style.display = 'flex';
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        clearAllIntervals();
+        startPage();
     }
 
     checkDead() {
-        if (checkpepeDead() == true) {
-            setTimeout(() => {
-                this.setReset();
-            }, 4000);
-        }
+        if (checkpepeDead() == true) setTimeout(() => this.setReset(), 4000);
     }
 
     checkEndboss() {
-        if (checkendDead() == true) {
-            setTimeout(() => {
-                this.setReset();
-            }, 4000);
-        }
+        if (checkendDead() == true) setTimeout(() => this.setReset(), 4000);
     }
 
     addObjectsToMap(object) {
-        object.forEach(o => {
-            this.addToMap(o);
-        });
+        object.forEach(o => this.addToMap(o));
     }
 
     addToMap(mo) {
-        if (mo.otherDirection) {
-            this.flipImage(mo);
-        }
+        if (mo.otherDirection) this.flipImage(mo);
 
         mo.draw(this.ctx);
         //mo.drawFrame(this.ctx);
-        if (mo.otherDirection) {
-            this.flipImageBack(mo);
-        }
+        if (mo.otherDirection) this.flipImageBack(mo);
     }
 
     flipImage(mo) {
@@ -333,26 +306,4 @@ class World {
     initWindow() {
         windowResize();
     }
-
-   /* windowResize() {
-        let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-        if (width <= 1001) {
-            if (height > width) {
-                document.getElementById('landscape').style.display = 'flex';
-            } else {
-                this.resizeAction();
-            }
-        } else {
-            document.getElementById('landscape').style.display = 'none';
-        }
-    }
-
-    resizeAction() {
-        window.scrollTo(0, 0);
-        document.getElementById('landscape').style.display = 'none';
-        document.getElementById('canvas').style.width = '100vw';
-        document.getElementById('canvas').style.height = 'calc(100vh - 49px)';
-        document.getElementById('button').style.width = '100vw';
-    }*/
 }

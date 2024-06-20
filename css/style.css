@@ -100,6 +100,21 @@ button img{
     cursor: pointer;
 }
 
+#configGame{
+    display: none;
+    justify-content: center;
+    gap: 20px;
+    position: absolute;
+    top: calc(50vh - 190px);
+    width: 100%;
+}
+
+#configGame img{
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+
 #landscape {
     display: none;
     justify-content: center;
@@ -197,6 +212,42 @@ button img{
         border-radius: 0;
         height: calc(100vh - 50px);
         width: 100vw;
+    }
+    
+    .newGame{
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .button {
+        display: flex;
+    }
+
+    h1 {
+        display: none;
+    }
+
+    .newGame .control{
+        display: none;
+    }
+}
+
+@media (max-height: 725px){
+    h1 {
+        display: none;
+    }
+}
+
+@media (max-height: 500px){
+    h1 {
+        display: none;
+    }
+
+    canvas {
+        border-radius: 0;
+        height: calc(100vh - 50px);
+        width: 100vw;
+        max-width: 950px;
     }
     
     .newGame{

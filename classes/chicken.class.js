@@ -44,7 +44,7 @@ class Chicken extends MoveableObject {
             this.loadImage('img/3_enemies_chicken/chicken_normal/2_dead/dead.png');
         } else {
             this.playAnimation(this.IMAGES_WALK);
-            chickenStart();
+            if(sound == 0) chickenStart();
         }
     }
 }
