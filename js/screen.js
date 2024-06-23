@@ -37,30 +37,31 @@ function fullOff() {
 function windowResize() {
     let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    if (width <= 1001) {
-        if (height > width) {
-            landscapeScreen('flex');
-        } else {
-            resizeAction();
-        }
+    if (width <= 1301 && height > width) {
+        landscapeScreen('flex');
     } else {
-        landscapeScreen('none');
+        resizeAction();
     }
-}
 
-function landscapeScreen(show){
-    sdoc('landscape').style.display = show;
+    if(width > 1300){
+        sdoc('canvas').style.width = '720px';
+        sdoc('canvas').style.height = '480px';    
+    }
 }
 
 function resizeAction() {
     window.scrollTo(0, 0);
-    sdoc('landscape').style.display = 'none';
+    landscapeScreen('none');
     sdoc('canvas').style.width = '100vw';
     sdoc('canvas').style.height = 'calc(100vh - 69px)';
     sdoc('button').style.width = '100vw';
 }
 
-function setWindowResize(){
+function landscapeScreen(show) {
+    sdoc('landscape').style.display = show;
+}
+
+function setWindowResize() {
     setInterval(() => {
         windowResize();
     }, 100);
