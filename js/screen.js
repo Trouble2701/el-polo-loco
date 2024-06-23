@@ -56,7 +56,7 @@ function resizeAction() {
     window.scrollTo(0, 0);
     sdoc('landscape').style.display = 'none';
     sdoc('canvas').style.width = '100vw';
-    sdoc('canvas').style.height = 'calc(100vh - 79px)';
+    sdoc('canvas').style.height = 'calc(100vh - 69px)';
     sdoc('button').style.width = '100vw';
 }
 
