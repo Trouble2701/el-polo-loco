@@ -29,6 +29,7 @@ class World {
     setWorld() {
         this.character.world = this;
         this.endboss.world = this;
+        this.bottleBar.world = this;
     }
 
     checkActions(){
@@ -57,31 +58,11 @@ class World {
     checkEnemy() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy) && enemy.dead == 0) {
-                if (this.chickenKill(enemy)) {
-                    enemy.dead = 1;
-                    setTimeout(() => {
-                        enemy.y = 1000;
-                    }, 2000);
-                } else {
-                    this.character.pepeCollision(1);
-                    this.chickenCollision(enemy);
-                }
+                this.collisionOrDead(enemy);
             } else {
                 this.character.pepeCollision(0);
             }
         });
-    }
-
-    chickenKill(enemy) {
-        return this.character.isColliding(enemy) && this.character.isAboveGround();
-    }
-
-    checkCharackterStartPos(characterX, enemyXS, enemyX) {
-        return characterX > enemyX && characterX < enemyXS && this.character.isAboveGround();
-    }
-
-    checkCharackterEndPos(characterXS, enemyXS, enemyX) {
-        return characterXS > enemyX && characterXS < enemyXS && this.character.isAboveGround();
     }
 
     checkBoss() {
@@ -124,7 +105,7 @@ class World {
         if (this.checkKey()) {
             let direction = 'no';
             if (this.character.otherDirection) direction = 'yes';
-            if (this.character.pepeBottle == 1) this.bottleReplace();
+            if (this.character.pepeBottle == 1) this.bottleBar.bottleReplace();
             pepeShootStop();
             if(sound == 0) pepeShootStart();
             this.character.longIdle = false;
@@ -137,24 +118,6 @@ class World {
         }
     }
 
-    checkAttackBoss(direction) {
-        this.throw.forEach((throwAttack) => {
-            if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle && this.endboss.power > 0) {
-                this.endboss.hit = throwAttack.bottle;
-                this.endboss.power -= 20;
-                if(sound == 0) throwAttack.broke_sound.play();
-                this.endbossBar.setPercentage(this.endboss.power);
-                this.endboss.walktime = 0;
-                this.endboss.endBossCollision();
-                this.endboss.setDownCalc(0, 1);
-                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
-                throwAttack.y = 1000;
-                this.bottlesplash(1000);
-                return true;
-            }
-        });
-    }
-
     checkBottleOnGround(direction) {
         this.throw.forEach((throwAttack) => {
             if (throwAttack.y > 380 && throwAttack.y < 410) {
@@ -165,33 +128,54 @@ class World {
         });
     }
 
+    checkAttackBoss(direction) {
+        this.throw.forEach((throwAttack) => {
+            if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle && this.endboss.power > 0) {
+                if(sound == 0) throwAttack.broke_sound.play();
+                this.attackTheEndboss(throwAttack);
+                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
+                throwAttack.y = 1000;
+                this.bottlesplash(1000);
+                return true;
+            }
+        });
+    }
+
+    checkDead() {
+        if (checkpepeDead() == true) setTimeout(() => this.setReset(), 2500);
+    }
+
+    checkEndboss() {
+        if (checkendDead() == true) setTimeout(() => this.setReset(), 2500);
+    }
+
+    collisionOrDead(enemy){
+        if (this.chickenKill(enemy)) {
+            enemy.dead = 1;
+            setTimeout(() => enemy.y = 1000, 2000);
+        } else {
+            this.character.pepeCollision(1);
+            this.chickenCollision(enemy);
+        }
+    }
+
+    chickenKill(enemy) {
+        return this.character.isColliding(enemy) && this.character.isAboveGround();
+    }
+
+    attackTheEndboss(throwAttack){
+        this.endboss.hit = throwAttack.bottle;
+        this.endboss.power -= 20;
+        this.endbossBar.setPercentage(this.endboss.power);
+        this.endboss.walktime = 0;
+        this.endboss.endBossCollision();
+        this.endboss.setDownCalc(0, 1);
+    }
+
     bottlesplash(time) {
         this.splashBottle.forEach((splash) => {
             setInterval(() => splash.y = 1000, time);
         });
-    }
-
-    bottleReplace() {
-        this.level.bottle = [
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle()
-        ]
-    }
-
-    calcPosition(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    itemAnimation(item) {
-        setInterval(() => {
-            if (item.x > -2000 && item.y > -2000) {
-                item.x -= +5;
-                item.y -= +5;
-            }
-        }, 1000 / 60);
     }
 
     chickenCollision(enemy) {
@@ -235,6 +219,19 @@ class World {
         }
     }
 
+    calcPosition(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    itemAnimation(item) {
+        setInterval(() => {
+            if (item.x > -2000 && item.y > -2000) {
+                item.x -= +5;
+                item.y -= +5;
+            }
+        }, 1000 / 60);
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
@@ -269,14 +266,6 @@ class World {
         allSoundsStop();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         startPage();
-    }
-
-    checkDead() {
-        if (checkpepeDead() == true) setTimeout(() => this.setReset(), 4000);
-    }
-
-    checkEndboss() {
-        if (checkendDead() == true) setTimeout(() => this.setReset(), 4000);
     }
 
     addObjectsToMap(object) {

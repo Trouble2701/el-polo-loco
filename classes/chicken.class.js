@@ -28,7 +28,7 @@ class Chicken extends MoveableObject {
     }
 
     checkMoving(){
-        return document.getElementById('landscape').style.display == 'none' && this.dead == 0;
+        return document.getElementById('landscape').style.display == 'none' && this.dead == 0 && keyShow == 0;
     }
 
     moving(){

@@ -9,7 +9,7 @@ class BottleBar extends DrawableObject {
     ];
 
     bottles = 0
-
+    world;
     constructor(){
         super();
         this.loadImages(this.bottleIMAGES);
@@ -24,5 +24,15 @@ class BottleBar extends DrawableObject {
         this.bottles = bottles;
         let path = this.bottleIMAGES[this.resolveImageIndex(this.bottles)]
         this.img = this.ImageCache[path];
+    }
+
+    bottleReplace() {
+        this.world.level.bottle = [
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle()
+        ]
     }
 }

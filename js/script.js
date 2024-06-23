@@ -5,6 +5,7 @@ let pepeDead = 1;
 let endbossDead = 1;
 let time = 0;
 let sound = 0;
+let keyShow = 0;
 
 function sdoc(id){
     return document.getElementById(id);
@@ -25,6 +26,7 @@ function clearAllIntervals() {
 }
 
 function initLevel() {
+    keyShow = 0;
     pepeDead = 0;
     endbossDead = 0;
     startSound.pause();
@@ -67,6 +69,16 @@ function soundOn() {
     if(sdoc('newGame').style.display == 'flex') startSound.play();
     sdoc('sound').setAttribute('onclick', 'soundOff()');
     sdoc('soundGame').setAttribute('onclick', 'soundOff()');
+}
+
+function keys(){
+    keyShow = 1;
+    sdoc('keyGame').setAttribute('onclick', 'keysStop()');
+}
+
+function keysStop(){
+    keyShow = 0;
+    sdoc('keyGame').setAttribute('onclick', 'keys()');
 }
 
 window.addEventListener('keydown', (event) => {

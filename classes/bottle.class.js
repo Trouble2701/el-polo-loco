@@ -15,4 +15,15 @@ class Bottle extends MoveableObject{
         this.height = 50;
         this.width = 50;
     }
+
+
+    bottleReplace() {
+        this.world.level.bottle = [
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle()
+        ]
+    }
 }

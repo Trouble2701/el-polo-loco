@@ -94,8 +94,12 @@ class Endboss extends MoveableObject {
         }
     }
 
+    checkMoving(){
+        return document.getElementById('landscape').style.display == 'none' && this.power > 0 && keyShow == 0;
+    }
+
     checkAttack() {
-        return this.timeAttack == 150 && this.time <= 150 && this.walktime <= 0;
+        return this.timeAttack == 150 && this.time <= 150 && this.walktime <= 0 && this.power > 0;
     }
 
     attack() {
@@ -186,7 +190,7 @@ class Endboss extends MoveableObject {
     }
 
     checkRunEndBoss() {
-        return this.world.character.x > this.world.endboss.x - 500 && this.walktime > 0;
+        return this.world.character.x > this.world.endboss.x - 500 && this.walktime > 0 && this.power > 0;
     }
 
     endBossRun() {
@@ -197,7 +201,7 @@ class Endboss extends MoveableObject {
                 endbossHurtStop();
                 this.walktime -= 1;
                 this.playAnimation(this.IMAGES_WALK);
-                this.moveLeft(3);
+                if (this.checkMoving()) this.moveLeft(3); else this.moveLeft('none');
             }
         }, 1000);
     }

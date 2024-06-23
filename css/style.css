@@ -120,7 +120,7 @@ button img{
     justify-content: center;
     align-items: center;
     z-index: 99999;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.274);
     color: black;
     position: absolute;
     width: 100vw;

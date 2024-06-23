@@ -212,5 +212,5 @@ class Character extends MoveableObject {
         this.x = 0;
         this.y = 135;
         
-    }
+    }    
 }
