@@ -73,11 +73,13 @@ function soundOn() {
 
 function keys(){
     keyShow = 1;
+    sdoc('controlsInGame').style.display = 'flex';
     sdoc('keyGame').setAttribute('onclick', 'keysStop()');
 }
 
 function keysStop(){
     keyShow = 0;
+    sdoc('controlsInGame').style.display = 'none';
     sdoc('keyGame').setAttribute('onclick', 'keys()');
 }
 

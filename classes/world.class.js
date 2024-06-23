@@ -179,7 +179,7 @@ class World {
     }
 
     chickenCollision(enemy) {
-        if (!this.isDead()) {
+        if (!this.isDead() && this.endboss.power > 0) {
             if (enemy.name == 'chicken') {
                 this.character.setDownCalc(2, 0);
             } else if (enemy.name == 'smallchicken') {
