@@ -7,10 +7,20 @@ let time = 0;
 let sound = 0;
 let keyShow = 0;
 
+/**
+ * This funtion returned the document id
+ * @param {*} id - this is the variable of document
+ * @returns 
+ */
 function sdoc(id){
     return document.getElementById(id);
 }
 
+/**
+ * This function closed startscreen and Open the startPage of Game and Starts the Startsound
+ * @param canvas - this variable is for canvas document
+ * @param sound - this variable is the for the Soundoption
+ */
 function startPage() {
     if(sdoc('startscreen').style.transform == '') sdoc('startscreen').style.transform = 'translateY(-2000px)';
     canvas = sdoc('canvas');
@@ -20,6 +30,10 @@ function startPage() {
     if(sound == 0) startSoundPlay();
 }
 
+/**
+ * this funtion stop all Intervals and set world to undefined
+ * @param i - this variable is for id of intervals 
+ */
 function clearAllIntervals() {
     world = undefined;
     for (let i = 1; i < 9999; i++) window.clearInterval(i);

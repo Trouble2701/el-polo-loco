@@ -10,6 +10,9 @@ let endboss_walking_sound = new Audio('./audio/bossrunning.mp3');
 let endboss_alert_sound = new Audio('./audio/chicken_boss.mp3');
 let endboss_hurt_sound = new Audio('./audio/hurtBoss.mp3');
 
+/**
+ * This function start the Startsound and replayed this sound after end
+ */
 function startSoundPlay() {
     startSound.play();
     setInterval(() => {
@@ -22,6 +25,9 @@ function startSoundPlay() {
     }, 1000);
 }
 
+/**
+ * The function with Start on the End start the Sound
+ */
 function pepeWalkStart(){
     pepe_walking_sound.play();
 }
@@ -42,6 +48,30 @@ function pepeOuchStart(){
     pepe_ouch_sound.play();
 }
 
+function chickenStart(){
+    chick_walking_sound.play();
+}
+
+function smallChickenStart(){
+    smallChicken_walking_sound.play();
+}
+
+function endbossAlertStart(){
+    endboss_alert_sound.play();
+}
+
+function endbossHurtStart(){
+    endboss_hurt_sound.play();
+}
+
+function endbossWalkingStart(){
+    endboss_walking_sound.play();
+}
+
+
+/**
+ * The function with Stop on the End stop the Sound
+ */
 function pepeWalkStop(){
     pepe_walking_sound.pause();
 }
@@ -70,32 +100,12 @@ function pepeSoundStop(){
     pepe_ouch_sound.pause();
 }
 
-function chickenStart(){
-    chick_walking_sound.play();
-}
-
 function chickenStop(){
     chick_walking_sound.pause();
 }
 
-function smallChickenStart(){
-    smallChicken_walking_sound.play();
-}
-
 function smallChickenStop(){
     smallChicken_walking_sound.pause();
-}
-
-function endbossAlertStart(){
-    endboss_alert_sound.play();
-}
-
-function endbossHurtStart(){
-    endboss_hurt_sound.play();
-}
-
-function endbossWalkingStart(){
-    endboss_walking_sound.play();
 }
 
 function endbossAlertStop(){

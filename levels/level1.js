@@ -1,4 +1,9 @@
 let level1;
+
+/**
+ * this function added elements in the world.class.js
+ * @param level1 is a variable in the world.class.js and added this elements in this js
+ */
 function initFirstLevel() {
 
     level1 = new Level(

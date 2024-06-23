@@ -1,3 +1,7 @@
+/**
+ * This function go in Browser Fullscreen
+ * @param elem - is the DIV 
+ */
 function fullOn() {
     var elem = sdoc('mobile');
 
@@ -17,6 +21,10 @@ function fullOn() {
     sdoc('screenGame').setAttribute('onclick', 'fullOff()');
 }
 
+/**
+ * This function go out of Browser Fullscreen
+ * @param document - is all of body
+ */
 function fullOff() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -34,6 +42,11 @@ function fullOff() {
     sdoc('screenGame').setAttribute('onclick', 'fullOn()');
 }
 
+/**
+ * This function checked window size
+ * @param width - is the the width of browserscreen
+ * @param hidth - is the the hidth of browserscreen
+ */
 function windowResize() {
     let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -49,6 +62,9 @@ function windowResize() {
     }
 }
 
+/**
+ * This function changed settings of divs and Scolled on top
+ */
 function resizeAction() {
     window.scrollTo(0, 0);
     landscapeScreen('none');
@@ -57,10 +73,16 @@ function resizeAction() {
     sdoc('button').style.width = '100vw';
 }
 
+/**
+ * This function checked the landscape setting
+ */
 function landscapeScreen(show) {
     sdoc('landscape').style.display = show;
 }
 
+/**
+ * This function start interval for the windowResize function
+ */
 function setWindowResize() {
     setInterval(() => {
         windowResize();
