@@ -1,3 +1,6 @@
+/**
+ * This class creates the bar from the coins
+ */
 class CoinBar extends DrawableObject {
     coinsIMAGES = [
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
@@ -8,6 +11,9 @@ class CoinBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png'
     ];
 
+    /**
+     * @param coins - number of coins
+     */
     coins = 0;
 
     constructor(){
@@ -20,6 +26,10 @@ class CoinBar extends DrawableObject {
         this.setCoins(0);
     }
 
+    /**
+    * This function sets the fill level of the bar depending on the number of coin collected
+    * @param {*} coin - The number of coins is passed here to determine the value of the quantity
+    */
     setCoins(coin){
         this.coins = coin;
         let path = this.coinsIMAGES[this.resolveImageIndex(this.coins)];

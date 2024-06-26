@@ -1,3 +1,6 @@
+/**
+ * This class sets the GameWon Image on the map
+ */
 class GameWON extends DrawableObject {
    
     constructor(){

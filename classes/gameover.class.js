@@ -1,3 +1,6 @@
+/**
+ * This class sets the GameOver Image on the map
+ */
 class GameOver extends DrawableObject {
    
     constructor(){

@@ -1,3 +1,6 @@
+/**
+ * This class creates the bar from the bottles
+ */
 class BottleBar extends DrawableObject {
     bottleIMAGES = [
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/0.png',
@@ -8,6 +11,10 @@ class BottleBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png'
     ];
 
+    /**
+     * @param bottle - number of bottles
+     * @param world - give this class in the world.class.js back
+     */
     bottles = 0
     world;
     constructor(){
@@ -20,12 +27,19 @@ class BottleBar extends DrawableObject {
         this.setbottles(0);
     }
 
+/**
+ * This function sets the fill level of the bar depending on the number of bottles collected
+ * @param {*} bottles - The number of bottles is passed here to determine the value of the quantity
+ */
     setbottles(bottles){
         this.bottles = bottles;
         let path = this.bottleIMAGES[this.resolveImageIndex(this.bottles)]
         this.img = this.ImageCache[path];
     }
 
+/**
+ * this function resets the incorrect ones if the character has missed all of them
+ */
     bottleReplace() {
         this.world.level.bottle = [
             new Bottle(),

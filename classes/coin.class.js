@@ -1,3 +1,6 @@
+/**
+ * This class distributes the Coins on the map
+ */
 class Coin extends MoveableObject{
     x;
     y;
@@ -22,6 +25,9 @@ class Coin extends MoveableObject{
         this.animation();
     }
 
+    /**
+     * This function starts the animations of the Coins
+     */
     animation(){
         setInterval(() => {
             this.playAnimation(this.IMAGES_WALK);

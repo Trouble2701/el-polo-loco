@@ -39,6 +39,13 @@ function clearAllIntervals() {
     for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }
 
+
+/**
+ * This function start the game and initials the first level
+ * @param world - initalis the world.class.js
+ * @param canvas - initials the canvas document
+ * @param keyboard - keys for game
+ */
 function initLevel() {
     keyShow = 0;
     pepeDead = 0;
@@ -50,6 +57,10 @@ function initLevel() {
     world = new World(canvas, keyboard);
 }
 
+/**
+ * this function set dead parameter
+ * @param {*} dead - This variable passes the value Pepe or Endboss
+ */
 function GameDead(dead) {
     if (dead == 'pepe') {
         pepeDead = 1;
@@ -58,18 +69,29 @@ function GameDead(dead) {
     }
 }
 
+/**
+ * this function checked dead of pepe
+ * @returns - give true return
+ */
 function checkpepeDead() {
     if (pepeDead == 1) {
         return true;
     }
 }
 
+/**
+ * this function checked dead of endboss
+ * @returns - give true return
+ */
 function checkendDead() {
     if (endbossDead == 1) {
         return true;
     }
 }
 
+/**
+ * this function turn sound off
+ */
 function soundOff() {
     sound = 1;
     startSound.pause();
@@ -78,6 +100,9 @@ function soundOff() {
     sdoc('soundGame').setAttribute('onclick', 'soundOn()');
 }
 
+/**
+ * this function turn sound on
+ */
 function soundOn() {
     sound = 0;
     if(sdoc('newGame').style.display == 'flex') startSound.play();
@@ -85,18 +110,27 @@ function soundOn() {
     sdoc('soundGame').setAttribute('onclick', 'soundOff()');
 }
 
+/**
+ * this function stop game for show Keys of game
+ */
 function keys(){
     keyShow = 1;
     sdoc('controlsInGame').style.display = 'flex';
     sdoc('keyGame').setAttribute('onclick', 'keysStop()');
 }
 
+/**
+ * this function start game and Closed show Keys of game
+ */
 function keysStop(){
     keyShow = 0;
     sdoc('controlsInGame').style.display = 'none';
     sdoc('keyGame').setAttribute('onclick', 'keys()');
 }
 
+/**
+ * this function checked of press keys and changed key to true
+ */
 window.addEventListener('keydown', (event) => {
     if (event.keyCode == 37) {
         keyboard.left = true;
@@ -115,6 +149,9 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
+/**
+ * this function checked of keyup keys and changed key to false
+ */
 window.addEventListener('keyup', (event) => {
     if (event.keyCode == 37) {
         keyboard.left = false;
@@ -133,6 +170,9 @@ window.addEventListener('keyup', (event) => {
     }
 });
 
+/**
+ * this function checked of touchstart keys and changed key to true
+ */
 function mouseDown(key) {
     if (key == 'left') {
         keyboard.left = true;
@@ -151,6 +191,9 @@ function mouseDown(key) {
     }
 }
 
+/**
+ * this function checked of touchend keys and changed key to false
+ */
 function mouseUp(key) {
     if (key == 'left') {
         keyboard.left = false;

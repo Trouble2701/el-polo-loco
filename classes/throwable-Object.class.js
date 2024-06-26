@@ -1,3 +1,6 @@
+/**
+ * This class creates the flying bottles
+ */
 class ThrowAbleObject extends MoveableObject {
     bottle;
     offsetx = 10;
@@ -23,6 +26,11 @@ class ThrowAbleObject extends MoveableObject {
         this.bottle = bottle;
     }
 
+    /**
+     * This function creates the flight animation of the bottles
+     * @param speedY - is the speed of the y curve
+     * @param direction - is the direction in which the bottles move
+     */
     throw(direction) {
         this.speedY = 20;
         this.applyGravity();
@@ -32,6 +40,11 @@ class ThrowAbleObject extends MoveableObject {
         }, 25);
     }
 
+    /**
+     * this function checks the direction
+     * @param {*} x - this is the position 
+     * @param {*} direction - this is the direction 
+     */
     checkDirection(x, direction){
         if(direction == 'yes'){
             this.x = x - 100;
@@ -40,6 +53,11 @@ class ThrowAbleObject extends MoveableObject {
         }
     }
 
+    /**
+     * This function returns the direction of the shot
+     * @param {*} direction - this is the direction 
+     * @returns - return x + or -
+     */
     shootSide(direction) {
         if (direction == 'yes') {
             return this.x -= 5;

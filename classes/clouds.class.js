@@ -1,3 +1,6 @@
+/**
+ * This class distributes the Clouds on the map
+ */
 class Clouds extends MoveableObject{
     height = 300;
     width = 300;
@@ -8,6 +11,9 @@ class Clouds extends MoveableObject{
         this.animation();
     }
 
+    /**
+     * This function starts the animations of the Clouds
+     */
     animation(){
         this.moveLeft(0.2);
     }

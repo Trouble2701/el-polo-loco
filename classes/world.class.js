@@ -1,3 +1,6 @@
+/**
+ * This class creates the world
+ */
 class World {
     character = new Character();
     endboss = new Endboss();
@@ -26,25 +29,37 @@ class World {
         this.checkAllDeads();
     }
 
+    /**
+     * This function connects the world.class.js with others
+     */
     setWorld() {
         this.character.world = this;
         this.endboss.world = this;
         this.bottleBar.world = this;
     }
 
-    checkActions(){
+    /**
+     * This function checks whether a bottle is thrown
+     */
+    checkActions() {
         setInterval(() => {
             this.checkThrow();
         }, 200);
     }
 
-    checkAllDeads(){
+    /**
+     * This function checks dead of character oder endboss
+     */
+    checkAllDeads() {
         setInterval(() => {
             this.isEndbossDead();
             this.checkDead();
         }, 100);
     }
 
+    /**
+     * This function checks colliding of objects
+     */
     checkColliding() {
         setInterval(() => {
             this.checkEnemy();
@@ -55,6 +70,9 @@ class World {
         }, 50);
     }
 
+    /**
+     * This function checks colliding with character and enemy
+     */
     checkEnemy() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy) && enemy.dead == 0) {
@@ -65,6 +83,9 @@ class World {
         });
     }
 
+    /**
+     * This function checks colliding with character and endboss
+     */
     checkBoss() {
         if (this.character.isColliding(this.endboss) && this.endboss.power > 0) {
             this.character.pepeCollision(1);
@@ -74,40 +95,52 @@ class World {
         }
     }
 
+    /**
+     * This function checks colliding with character and coin
+     */
     checkCoin() {
         this.level.coin.forEach((coins) => {
             if (this.character.isColliding(coins)) {
                 this.character.pepeCoins += Math.round(100 / this.level.coin.length);
-                if(sound == 0) coins.save_sound.play();
-                this.itemAnimation(coins);
+                if (sound == 0) coins.save_sound.play();
+                this.character.itemAnimation(coins);
                 this.coinBar.setCoins(this.character.pepeCoins);
             }
         });
     }
 
+    /**
+     * This function checks colliding with character and bottle
+     */
     checkBottle() {
         this.level.bottle.forEach((bottles) => {
             if (this.character.isColliding(bottles) && this.character.pepeBottle < 5 && bottles.y == 380) {
-                if(sound == 0) bottles.save_sound.play();
+                if (sound == 0) bottles.save_sound.play();
                 this.character.pepeBottle += 1;
                 let calcBottle = 100 / 5 * this.character.pepeBottle;
-                this.itemAnimation(bottles);
+                this.character.itemAnimation(bottles);
                 this.bottleBar.setbottles(calcBottle);
             }
         });
     }
 
-    checkKey(){
-            return this.keyboard.shoot && this.character.pepeBottle > 0;
+    /**
+     * This function checks press shoot key
+     */
+    checkKey() {
+        return this.keyboard.shoot && this.character.pepeBottle > 0;
     }
 
+    /**
+     * This function checks whether it was thrown and triggers if true
+     */
     checkThrow() {
         if (this.checkKey()) {
             let direction = 'no';
             if (this.character.otherDirection) direction = 'yes';
             if (this.character.pepeBottle == 1) this.bottleBar.bottleReplace();
             pepeShootStop();
-            if(sound == 0) pepeShootStart();
+            if (sound == 0) pepeShootStart();
             this.character.longIdle = false;
             this.throw.push(new ThrowAbleObject(this.character.x + this.character.offsetw, this.character.y + this.character.offseth, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
@@ -118,20 +151,28 @@ class World {
         }
     }
 
+    /**
+     * This function checks whether the bottle touches the ground and triggers if true
+     * @param {*} direction - direction of bottle
+     */
     checkBottleOnGround(direction) {
         this.throw.forEach((throwAttack) => {
             if (throwAttack.y > 380 && throwAttack.y < 410) {
                 this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
-                if(sound == 0) throwAttack.broke_sound.play();
+                if (sound == 0) throwAttack.broke_sound.play();
                 this.bottlesplash(100);
             }
         });
     }
 
+    /**
+     * This function checks whether the bottle touches the final boss and triggers if true
+     * @param {*} direction - direction of bottle
+     */
     checkAttackBoss(direction) {
         this.throw.forEach((throwAttack) => {
             if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle && this.endboss.power > 0) {
-                if(sound == 0) throwAttack.broke_sound.play();
+                if (sound == 0) throwAttack.broke_sound.play();
                 this.attackTheEndboss(throwAttack);
                 this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
                 throwAttack.y = 1000;
@@ -141,15 +182,24 @@ class World {
         });
     }
 
+    /**
+     * This function checks the death of the character and triggers if true
+     */
     checkDead() {
         if (checkpepeDead() == true) setTimeout(() => this.setReset(), 2500);
     }
 
+    /**
+     * This function checks the death of the endboss and triggers if true
+     */
     checkEndboss() {
         if (checkendDead() == true) setTimeout(() => this.setReset(), 2500);
     }
 
-    collisionOrDead(enemy){
+    /**
+     * This function checks whether the opponent is dead or whether a collision with the character needs to be triggered
+     */
+    collisionOrDead(enemy) {
         if (this.chickenKill(enemy)) {
             enemy.dead = 1;
             setTimeout(() => enemy.y = 1000, 2000);
@@ -159,11 +209,20 @@ class World {
         }
     }
 
+    /**
+     * This function checks whether the chicken is killed and returns true if correct
+     * @param {*} enemy - This variable indicates whether it is a chicken or a chick
+     * @returns - true
+     */
     chickenKill(enemy) {
         return this.character.isColliding(enemy) && this.character.isAboveGround();
     }
 
-    attackTheEndboss(throwAttack){
+    /**
+     * This function is responsible for attacking the boss and gives new values ​​when hit
+     * @param {*} throwAttack - bottle attack
+     */
+    attackTheEndboss(throwAttack) {
         this.endboss.hit = throwAttack.bottle;
         this.endboss.power -= 20;
         this.endbossBar.setPercentage(this.endboss.power);
@@ -172,12 +231,20 @@ class World {
         this.endboss.setDownCalc(0, 1);
     }
 
+    /**
+     * This function starts the animation of the splash from the bottle
+     * @param {*} time - time of splash
+     */
     bottlesplash(time) {
         this.splashBottle.forEach((splash) => {
             setInterval(() => splash.y = 1000, time);
         });
     }
 
+    /**
+     * This function transfers the new values ​​in the event of a collision between the character and the chicken or chick
+     * @param {*} enemy - Chicken or Chick
+     */
     chickenCollision(enemy) {
         if (!this.isDead() && this.endboss.power > 0) {
             if (enemy.name == 'chicken') {
@@ -186,18 +253,25 @@ class World {
                 this.character.setDownCalc(1, 0);
             }
             this.healthBar.setPercentage(this.character.energy);
-            if(sound == 0) pepeOuchStart();
+            if (sound == 0) pepeOuchStart();
         }
     }
 
+    /**
+     * This function transfers the new values ​​in the event of a collision between the character and the endboss
+     */
     endbossCollision() {
         if (!this.isDead()) {
             this.character.setDownCalc(6, 0);
             this.healthBar.setPercentage(this.character.energy);
-            if(sound == 0) pepeOuchStart();
+            if (sound == 0) pepeOuchStart();
         }
     }
 
+    /**
+     * This function checks whether the game is over when the character is dead, if correct, true is returned
+     * @returns - true
+     */
     isDead() {
         if (this.character.energy > 0) {
             return false;
@@ -207,11 +281,10 @@ class World {
         }
     }
 
-    endscreen() {
-        if (checkpepeDead() == true) return this.addToMap(this.gameOver);
-        if (checkendDead() == true) return this.addToMap(this.gameWON);
-    }
-
+    /**
+     * This function checks whether the game is over when the Endboss is dead, if correct, true is returned
+     * @returns - true
+     */
     isEndbossDead() {
         if (this.endboss.power <= 0) {
             this.endboss.endBossDead();
@@ -219,19 +292,28 @@ class World {
         }
     }
 
+    /**
+     * This function creates the final screen depending on whether you won or lost
+     * @returns - return endscreen
+     */
+    endscreen() {
+        if (checkpepeDead() == true) return this.addToMap(this.gameOver);
+        if (checkendDead() == true) return this.addToMap(this.gameWON);
+    }
+
+    /**
+     * This function calculates the random position where the opponents will be placed
+     * @param {*} min - this variable passes the minimum value
+     * @param {*} max - this variable passes the maximim value
+     * @returns - return number
+     */
     calcPosition(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    itemAnimation(item) {
-        setInterval(() => {
-            if (item.x > -2000 && item.y > -2000) {
-                item.x -= +5;
-                item.y -= +5;
-            }
-        }, 1000 / 60);
-    }
-
+    /**
+     * this function draws the world
+     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
@@ -257,6 +339,9 @@ class World {
         this.initWindow();
     }
 
+    /**
+     * This function resets everything at the end of the game
+     */
     setReset() {
         this.character.characterReset();
         this.endboss.endbossReset();
@@ -268,18 +353,28 @@ class World {
         startPage();
     }
 
+    /**
+     * This function adds all objects that need to be drawn
+     * @param {*} object - the object to draw
+     */
     addObjectsToMap(object) {
         object.forEach(o => this.addToMap(o));
     }
 
+    /**
+     * This function allows the images to be mirrored
+     * @param {*} mo - object to flip
+     */
     addToMap(mo) {
         if (mo.otherDirection) this.flipImage(mo);
-
         mo.draw(this.ctx);
-        //mo.drawFrame(this.ctx);
         if (mo.otherDirection) this.flipImageBack(mo);
     }
 
+    /**
+     * This function reflects the images
+     * @param {*} mo - image to flip
+     */
     flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -287,11 +382,18 @@ class World {
         mo.x = mo.x * -1;
     }
 
+    /**
+     * This function reflects back the images
+     * @param {*} mo - image to flip
+     */
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
 
+    /**
+     * This function triggers the window resize function
+     */
     initWindow() {
         windowResize();
     }

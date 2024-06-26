@@ -1,4 +1,13 @@
+/**
+ * This class distributes the bottles on the map
+ */
 class Bottle extends MoveableObject{
+    /**
+     * @param x - position of bottle
+     * @param y - position of bottle
+     * @param name - name of bottle
+     * @param offset - offset reduces the dimensions of the images for the touches
+     */
     x;
     y;
     name = 'bottle';
@@ -14,16 +23,5 @@ class Bottle extends MoveableObject{
         this.y = 380;
         this.height = 50;
         this.width = 50;
-    }
-
-
-    bottleReplace() {
-        this.world.level.bottle = [
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle()
-        ]
     }
 }

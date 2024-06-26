@@ -1,4 +1,12 @@
+/**
+ * This class positions the character on the map and controls various movements
+ */
 class Character extends MoveableObject {
+    /**
+     * @param speed - parameter for jump
+     * @param long_idle - parameter for sleeping, false no sleeping
+     * @param offset - offset reduces the dimensions of the images for the touches
+     */
     speed = 10.5;
     longIdle = false;
     offsetx = 15;
@@ -68,6 +76,9 @@ class Character extends MoveableObject {
         './img/2_character_pepe/5_dead/D-56.png',
         './img/2_character_pepe/5_dead/D-57.png'
     ];
+     /**
+     * @param world - give this class in the world.class.js back
+     */
     world;
     constructor() {
         super().loadImage('./img/2_character_pepe/1_idle/idle/I-1.png');
@@ -81,19 +92,26 @@ class Character extends MoveableObject {
         this.animation();
     }
 
+    /**
+     * This function starts the animations of the character
+     */
     animation() {
-        //Junus hat dies eingebaut um nach dem Ende alles stoppen zu können, funktioniert bei mir nicht, denn da kommt der nächste fehler. zufinden js/stopGame.js
-        //setStopAbleInterval(this.walking, 1000 / 60);
         setInterval(() => this.walking(), 1000 / 60);
         setInterval(() => this.setIdle(), 200);
         setInterval(() => this.isLongIdle(), 400);
         setInterval(() => this.checkAll(), 70);
     }
 
+    /**
+     * This function checks whether the character is in the rest phase
+     */
     checkIdle() {
         return !this.world.keyboard.right && !this.world.keyboard.left && this.longIdle && !this.pepeDead();
     }
 
+    /**
+     * This function checks all possible animations
+     */
     checkAll() {
         if (this.pepeDead()) {
             this.imagePepeDead();
@@ -106,38 +124,62 @@ class Character extends MoveableObject {
         }
     }
 
+    /**
+     * This function starts the animation for death
+     */
     imagePepeDead() {
         pepeSleepStop();
         this.playAnimation(this.IMAGES_DEAD);
         setTimeout(() => setInterval(() => this.y += 50, 50), 1000);
     }
 
+    /**
+     * This function starts the animation for hurt
+     */
     imagePepeHurt() {
         pepeSleepStop();
         this.setLongIdle();
         this.playAnimation(this.IMAGES_HURT);
     }
 
+    /**
+     * This function starts the animation for Jumping
+     */
     imagePepeJump() {
         this.playAnimation(this.IMAGES_JUMP);
     }
 
+    /**
+     * This function starts the animation for walking
+     */
     imagePepeWalk() {
         this.playAnimation(this.IMAGES_WALK);
     }
 
+    /**
+     * This function checks whether a key is pressed and the character is still alive
+     */
     checkImageWalk() {
         return this.world.keyboard.right || this.world.keyboard.left && !this.pepeDead();
     }
 
+    /**
+     * this function sets the character to idle
+     */
     setIdle() {
         if (this.checkWalking()) this.dontWalk();
     }
 
+    /**
+     * this function sets the character Long idle of false 
+     */
     setLongIdle() {
         this.longIdle = false;
     }
 
+    /**
+     * This function starts the animation for sleeping
+     */
     isLongIdle() {
         pepeSleepStop();
         if (this.checkIdle()) {
@@ -146,15 +188,24 @@ class Character extends MoveableObject {
         }
     }
 
+    /**
+     * This function checks whether a key is pressed or the character is in long_idle or still alive
+     */
     checkWalking() {
         return !this.world.keyboard.right && !this.world.keyboard.left && !this.longIdle && !this.pepeDead();
     }
 
+    /**
+     * This function starts the animation for Idle
+     */
     dontWalk() {
         this.playAnimation(this.IMAGES_IDLE);
         setTimeout(() => this.longIdle = true, 6000);
     }
 
+    /**
+     * this function starts the movements
+     */
     walking() {
         pepeWalkStop();
         if (this.canWalkRight()) this.walkRight();
@@ -164,16 +215,25 @@ class Character extends MoveableObject {
         this.checkYPos();
     }
 
+    /**
+     * This function checks the height position and sets the character to 135px when it comes into contact with the ground, but only if it is still alive
+     */
     checkYPos(){
         if(!this.isAboveGround() && !this.pepeDead()){
             this.y = 135;
         }
     }
 
+    /**
+     * This function checks whether the jump button has been pressed and the character is on the ground, if so it returns true, but only if the character is still alive
+     */
     canJump() {
         return this.world.keyboard.space && !this.isAboveGround() && !this.pepeDead();
     }
 
+    /**
+     * This function starts the jump
+     */
     jumping() {
         this.setLongIdle();
         pepeWalkStop();
@@ -181,10 +241,16 @@ class Character extends MoveableObject {
         super.jump('23');
     }
 
+    /**
+     * This function checks the right walking
+     */
     canWalkRight() {
         return this.world.keyboard.right && this.x < this.world.level.level_end_x && !this.pepeDead();
     }
 
+    /**
+     * This function start the right walking
+     */
     walkRight() {
         this.setLongIdle();
         this.otherDirection = false;
@@ -192,10 +258,16 @@ class Character extends MoveableObject {
         if (this.dontJump()) if(sound == 0) pepeWalkStart();
     }
 
+    /**
+     * This function checks the left walking
+     */
     canWalkLeft() {
         return this.world.keyboard.left && this.x > 0 && !this.pepeDead();
     }
 
+    /**
+     * This function start the left walking
+     */
     walkLeft() {
         this.setLongIdle();
         this.otherDirection = true;
@@ -203,14 +275,33 @@ class Character extends MoveableObject {
         if (this.dontJump()) if(sound == 0) pepeWalkStart();
     }
 
+    /**
+     * This function checks the jumping
+     */
     dontJump() {
         return !this.world.keyboard.space && !this.isAboveGround();
     }
 
+    /**
+     * This function resets the character's parameters when you restart the game
+     */
     characterReset(){
         this.energy = 100;
         this.x = 0;
         this.y = 135;
         
-    }    
+    }
+    
+    /**
+     * This function animates the coins and bottles when they are collected
+     * @param {*} item - coin oder bottle
+     */
+    itemAnimation(item) {
+        setInterval(() => {
+            if (item.x > -2000 && item.y > -2000) {
+                item.x -= +5;
+                item.y -= +5;
+            }
+        }, 1000 / 60);
+    }
 }

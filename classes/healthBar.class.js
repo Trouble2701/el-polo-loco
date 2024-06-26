@@ -1,3 +1,6 @@
+/**
+ * This class creates the bar from the character health
+ */
 class Healthbar extends DrawableObject {
 
     IMAGES = [
@@ -9,6 +12,9 @@ class Healthbar extends DrawableObject {
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ];
 
+    /**
+     * @param percentage - number of percent
+     */
     percentage = 100;
 
     constructor(){
@@ -20,6 +26,10 @@ class Healthbar extends DrawableObject {
         this.setPercentage(100);
     }
 
+    /**
+     * This function sets the fill level of the bar depending on the number of health collected
+    * @param {*} percentage - The number of health is passed here to determine the value of the quantity
+    */
     setPercentage(percentage){
         this.percentage = percentage;
         let path = this.IMAGES[this.resolveImageIndex(this.percentage)];

@@ -1,3 +1,8 @@
+/**
+ * This class distributes the background images in the canvas
+ * @param imagePath - path of images
+ * @param x - position of images
+ */
 class Background extends MoveableObject{
     width = 720;
     height = 480;
