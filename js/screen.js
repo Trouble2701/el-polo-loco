@@ -88,3 +88,28 @@ function setWindowResize() {
         windowResize();
     }, 100);
 }
+
+/**
+ * This function displays the privacy policy screen
+ */
+function privatePolicy(){
+    sdoc('showScreen').style.display = 'flex';
+    privatePolicyScreen();
+}
+
+/**
+ * This function displays the impressum screen
+ */
+function impressum(){
+    sdoc('showScreen').style.display = 'flex';
+    impressumScreen();
+}
+
+
+/**
+ * This function closed the privacy policy/impressum screen
+ */
+function closedShowScreen(){
+    sdoc('showScreen').style.display = 'none';
+    sdoc('showScreenText').innerHTML = '';
+}

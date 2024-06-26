@@ -8,7 +8,7 @@
     <title>El Pollo Loco</title>
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/mobile.css">
+    <link rel="stylesheet" href="./css/privateImpressum.css">
     <script src="js/sounds.js"></script>
     <script src="classes/world.class.js"></script>
     <script src="classes/drawableObject.class.js"></script>
@@ -33,34 +33,63 @@
     <script src="classes/splashBottle.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/screen.js"></script>
+    <script src="js/privatePolicy.js"></script>
+    <script src="js/impressum.js"></script>
     <script src="js/script.js"></script>
 </head>
 
 <body onload="setWindowResize()">
     <div id="mobile" class="mobile">
-        <div id="startscreen"><div class="letsPlay" onclick="startPage(), setWindowResize()">Let's Play</div><img src="./img/9_intro_outro_screens/start/startscreen_2.png"></div>
+        <div id="startscreen">
+            <div class="letsPlay" onclick="startPage(), setWindowResize()">Let's Play</div><img
+                src="./img/9_intro_outro_screens/start/startscreen_2.png">
+        </div>
+        <div id="showScreen" class="privateImpressum">
+            <div class="keyCloseButton" onclick="closedShowScreen()">X</div>
+            <div id="showScreenText"></div>
+        </div>
         <div id="landscape">Please turn your phone into landscape format</div>
-        <div id="controlsInGame"><div class="keyCloseButton" onclick="keysStop()">X</div><p>Arrows Left/Right = Walk</p><p>Space = Jump</p><p>Shoot = S</p></div>
+        <div id="controlsInGame">
+            <div class="keyCloseButton" onclick="keysStop()">X</div>
+            <p>Arrows Left/Right = Walk</p>
+            <p>Space = Jump</p>
+            <p>Shoot = S</p>
+        </div>
         <h1>El Pollo Loco</h1>
         <div id="newGame" class="newGame">
-            <button onclick="initLevel()" id="newGame">Start New Game</button>
-            <div class="control"><p>Arrows Left/Right = Walk</p><p>Space = Jump</p><p>Shoot = S</p></div>
-            <div class="config"><img id="sound" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screen" src="./img/icons/fullscreen.png" onclick="fullOn()"></div>
+            <div id="showScreens">
+                <button onclick="initLevel()">Start New Game</button>
+                <button onclick="privatePolicy()">Private Policy</button>
+                <button onclick="impressum()">Impressum</button>
+            </div>
+            <div class="control">
+                <p>Arrows Left/Right = Walk</p>
+                <p>Space = Jump</p>
+                <p>Shoot = S</p>
+            </div>
+            <div class="config"><img id="sound" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screen"
+                    src="./img/icons/fullscreen.png" onclick="fullOn()"></div>
         </div>
-        <div id="configGame"><img id="soundGame" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screenGame" src="./img/icons/fullscreen.png" onclick="fullOn()"><img id="keyGame" src="./img/icons/keyboard.png" onclick="keys()"></div>
+        <div id="configGame"><img id="soundGame" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screenGame"
+                src="./img/icons/fullscreen.png" onclick="fullOn()"><img id="keyGame" src="./img/icons/keyboard.png"
+                onclick="keys()"></div>
         <canvas id="canvas" width="720px" height="480px"></canvas>
         <div class="button" id="button">
             <div class="steering">
                 <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')"
-                    onmousedown="mouseDown('left')" onmouseup="mouseUp('left')"><img src="./img/icons/left.png"></button>
+                    onmousedown="mouseDown('left')" onmouseup="mouseUp('left')"><img
+                        src="./img/icons/left.png"></button>
                 <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')"
-                    onmousedown="mouseDown('right')" onmouseup="mouseUp('right')"><img src="./img/icons/right.png"></button>
+                    onmousedown="mouseDown('right')" onmouseup="mouseUp('right')"><img
+                        src="./img/icons/right.png"></button>
             </div>
             <div class="action">
                 <button id="Jump" ontouchstart="mouseDown('Jump')" ontouchend="mouseUp('Jump')"
-                    onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')"><img src="./img/icons/jump.png"></button>
+                    onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')"><img
+                        src="./img/icons/jump.png"></button>
                 <button id="shoot" ontouchstart="mouseDown('shoot')" ontouchend="mouseUp('shoot')"
-                    onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')"><img src="./img/icons/shoot.png"></button>
+                    onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')"><img
+                        src="./img/icons/shoot.png"></button>
             </div>
         </div>
     </div>
