@@ -15,6 +15,26 @@ body {
     font-family: 'Creepster';
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #8f312f;
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #F9C05F;
+}
+
 .mobile {
     display: flex;
     justify-content: center;
@@ -132,18 +152,28 @@ button img {
     justify-content: center;
     align-items: center;
     z-index: 99000;
-    background-color: rgb(185, 173, 0);
+    background-color: rgb(255 247 0);
     color: black;
     position: absolute;
     width: 100vw;
     height: 100vh;
     font-size: 24px;
     transition: all 0.5s ease-in-out;
-    overflow-y: auto;
+    max-width: 1440px;
+    max-height: 728px;
+    border-radius: 20px;
+}
+
+.privateImpressum h1 {
+    color: #000000;
+    font-size: 60px;
+    padding: unset;
+    margin: unset;
+    position: unset;
 }
 
 .privateImpressum .keyCloseButton {
-    position: fixed;
+    position: absolute;
     right: 30px;
     top: 30px;
     cursor: pointer;
@@ -151,9 +181,10 @@ button img {
 }
 
 #showScreenText{
-    width: 90vw;
-    height: 85vh;
+    width: 90%;
+    height: 85%;
     font-family: Arial, Helvetica, sans-serif;
+    overflow-y: auto;
 }
 
 #controlsInGame {
@@ -205,6 +236,9 @@ button img {
     z-index: 3;
 }
 
+#headline{
+    display: none;
+}
 .newGame button {
     top: 20px;
     border: none;
@@ -235,7 +269,7 @@ button img {
 }
 
 #startscreen {
-    background-color: black;
+    background-color: transparent;
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -244,6 +278,8 @@ button img {
     position: absolute;
     z-index: 99999;
     transition: all 0.3s ease-in-out;
+    max-width: 1440px;
+    max-height: 728px;
 }
 
 #startscreen img {
@@ -269,12 +305,13 @@ button img {
     font-size: 42px;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1400px) {
     canvas {
         border-radius: 0;
         height: calc(100vh - 70px);
-        width: 100vw;
+        width: 100vw !important;
         max-width: 950px;
+        max-height: 580px !important;
     }
 
     .newGame {
@@ -298,7 +335,23 @@ button img {
     }
 
     #configGame {
-        top: calc(50vh - 40%);
+        top: calc(50vh - 35%);
+    }
+
+    .privateImpressum{
+        border-radius: unset;
+    }
+}
+
+@media (max-height: 1030px){
+    #configGame {
+        top: calc(50vh - 23%);
+    }
+}
+
+@media (max-height: 860px){
+    #configGame {
+        top: calc(50vh - 30%);
     }
 }
 
@@ -308,13 +361,16 @@ button img {
     }
 
     #configGame {
-        top: calc(50vh - 190px);
+        top: calc(50vh - 40%);
     }
 }
 
 @media (max-height: 500px) {
     h1 {
         display: none;
+    }
+    #showScreens{
+        width: 100vw;
     }
 
     canvas {

@@ -28,6 +28,7 @@ function startPage() {
     sdoc('newGame').style.display = 'flex';
     clearAllIntervals();
     if(sound == 0) startSoundPlay();
+    setTimeout(() => sdoc('headline').style.display = 'unset', 100);
 }
 
 /**

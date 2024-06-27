@@ -1,7 +1,6 @@
 p {
     margin-block-start: 0;
     margin-block-end: 0;
-    word-break: break-all;
 }
 
 h1 {
@@ -23,11 +22,19 @@ h3 {
     margin: 0;
 }
 
-span, a {
+span,
+a {
     color: #00608a;
     text-decoration: none;
 }
 
-span, a:hover{
+span,
+a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 1400px) {
+    p {
+        word-wrap: break-word;
+    }
 }
