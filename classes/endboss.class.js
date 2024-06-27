@@ -11,10 +11,10 @@ class Endboss extends MoveableObject {
     hit;
     power = 100;
     i = 1;
-    offsetx = 15;
-    offsety = 90;
-    offsetw = 30;
-    offseth = 120;
+    offsetx = 115;
+    offsety = 140;
+    offsetw = 200;
+    offseth = 170;
     IMAGES_WALK = [
         `img/4_enemie_boss_chicken/1_walk/G1.png`,
         `img/4_enemie_boss_chicken/1_walk/G2.png`,
@@ -291,6 +291,17 @@ class Endboss extends MoveableObject {
                 if (this.checkMoving()) this.moveLeft(3); else this.moveLeft('none');
             }
         }, 1000);
+    }
+
+    /**
+     * This function checks whether the game is over when the Endboss is dead, if correct, true is returned
+     * @returns - true
+     */
+    isEndbossDead() {
+        if (this.power <= 0) {
+            this.endBossDead();
+            GameDead('endboss');
+        }
     }
 
     /**

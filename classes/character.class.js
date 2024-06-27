@@ -242,6 +242,13 @@ class Character extends MoveableObject {
     }
 
     /**
+     * This function starts the jump when kill a chicken
+     */
+    smalJump(){
+        super.jump('15');
+    }
+
+    /**
      * This function checks the right walking
      */
     canWalkRight() {
@@ -280,6 +287,27 @@ class Character extends MoveableObject {
      */
     dontJump() {
         return !this.world.keyboard.space && !this.isAboveGround();
+    }
+
+    energyCalc(enemyName){
+        if (enemyName == 'chicken') {
+            this.setDownCalc(2, 0);
+        } else if (enemyName == 'smallchicken') {
+            this.setDownCalc(1, 0);
+        }
+    }
+
+    /**
+     * This function checks whether the game is over when the character is dead, if correct, true is returned
+     * @returns - true
+     */
+    isDead() {
+        if (this.energy > 0) {
+            return false;
+        } else if (this.energy <= 0) {
+            this.pepeDead();
+            GameDead('pepe');
+        }
     }
 
     /**

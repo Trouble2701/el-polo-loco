@@ -40,7 +40,7 @@ class DrawableObject {
             console.log('Could not load image', this.img.src);
         }
     }
-
+    
     /**
      * This function loads the array of images into the imageCache
      * @param {*} arr - this variable passes an array of images

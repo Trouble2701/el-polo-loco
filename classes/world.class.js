@@ -52,7 +52,7 @@ class World {
      */
     checkAllDeads() {
         setInterval(() => {
-            this.isEndbossDead();
+            this.endboss.isEndbossDead();
             this.checkDead();
         }, 100);
     }
@@ -201,6 +201,7 @@ class World {
      */
     collisionOrDead(enemy) {
         if (this.chickenKill(enemy)) {
+            this.character.smalJump();
             enemy.dead = 1;
             setTimeout(() => enemy.y = 1000, 2000);
         } else {
@@ -246,12 +247,8 @@ class World {
      * @param {*} enemy - Chicken or Chick
      */
     chickenCollision(enemy) {
-        if (!this.isDead() && this.endboss.power > 0) {
-            if (enemy.name == 'chicken') {
-                this.character.setDownCalc(2, 0);
-            } else if (enemy.name == 'smallchicken') {
-                this.character.setDownCalc(1, 0);
-            }
+        if (!this.character.isDead() && this.endboss.power > 0) {
+            this.character.energyCalc(enemy.name)
             this.healthBar.setPercentage(this.character.energy);
             if (sound == 0) pepeOuchStart();
         }
@@ -261,34 +258,10 @@ class World {
      * This function transfers the new values ​​in the event of a collision between the character and the endboss
      */
     endbossCollision() {
-        if (!this.isDead()) {
+        if (!this.character.isDead()) {
             this.character.setDownCalc(6, 0);
             this.healthBar.setPercentage(this.character.energy);
             if (sound == 0) pepeOuchStart();
-        }
-    }
-
-    /**
-     * This function checks whether the game is over when the character is dead, if correct, true is returned
-     * @returns - true
-     */
-    isDead() {
-        if (this.character.energy > 0) {
-            return false;
-        } else if (this.character.energy <= 0) {
-            this.character.pepeDead();
-            GameDead('pepe');
-        }
-    }
-
-    /**
-     * This function checks whether the game is over when the Endboss is dead, if correct, true is returned
-     * @returns - true
-     */
-    isEndbossDead() {
-        if (this.endboss.power <= 0) {
-            this.endboss.endBossDead();
-            GameDead('endboss');
         }
     }
 
@@ -322,17 +295,27 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
         this.barsAdded(); 
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.endboss);
-        this.addObjectsToMap(this.throw);
-        this.addObjectsToMap(this.splashBottle);
+        this.opponentAndBottle();
         this.ctx.translate(-this.camera_x, 0);
         this.endscreen();
         requestAnimationFrame(() => self.draw());
         let self = this;
-        this.initWindow();
+        windowResize();
     }
 
+    /**
+     * this function added opponets and bottle animimations in the draw function
+     */
+    opponentAndBottle(){
+        this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.endboss);
+        this.addObjectsToMap(this.throw);
+        this.addObjectsToMap(this.splashBottle);
+    }
+
+    /**
+     * this function added objects in the draw function
+     */
     levelObjectAdded(){
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
@@ -340,6 +323,9 @@ class World {
         this.addObjectsToMap(this.level.bottle);
     }
 
+    /**
+     * this function added bars in the draw function
+     */
     barsAdded(){
         this.addToMap(this.healthBar);
         this.addToMap(this.endbossBar);
@@ -397,12 +383,5 @@ class World {
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
-    }
-
-    /**
-     * This function triggers the window resize function
-     */
-    initWindow() {
-        windowResize();
     }
 }
