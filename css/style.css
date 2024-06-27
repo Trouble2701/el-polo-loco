@@ -193,13 +193,16 @@ button img {
     align-items: center;
     gap: 30px;
     z-index: 99000;
-    background-color: rgb(185, 173, 0);
+    background-color: rgb(255 247 0);
     color: black;
     position: absolute;
     width: 100vw;
     height: 100vh;
+    max-width: 1440px;
+    max-height: 728px;
     font-size: 24px;
     transition: all 0.5s ease-in-out;
+    border-radius: 20px;
 }
 
 #showScreens{
@@ -276,7 +279,7 @@ button img {
     justify-content: center;
     align-items: center;
     position: absolute;
-    z-index: 99999;
+    z-index: 99000;
     transition: all 0.3s ease-in-out;
     max-width: 1440px;
     max-height: 728px;
@@ -314,10 +317,21 @@ button img {
         max-height: 580px !important;
     }
 
+    #showScreens{
+        width: 100%;
+    }
     .newGame {
         height: 100vh;
         width: 100vw;
         border-radius: 0;
+    }
+
+    #controlsInGame{
+        border-radius: unset;
+    }
+
+    #keyGame{
+        display: none;
     }
 
     .button {
@@ -326,8 +340,8 @@ button img {
         max-width: 950px;
     }
 
-    h1 {
-        display: none;
+    #headline {
+        display: none !important;
     }
 
     .newGame .control {

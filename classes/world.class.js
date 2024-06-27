@@ -317,16 +317,10 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.background);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.coin);
-        this.addObjectsToMap(this.level.bottle);
+        this.levelObjectAdded();
         this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.healthBar);
-        this.addToMap(this.endbossBar);
-        this.addToMap(this.coinBar);
-        this.addToMap(this.bottleBar);
+        this.barsAdded(); 
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.endboss);
@@ -337,6 +331,20 @@ class World {
         requestAnimationFrame(() => self.draw());
         let self = this;
         this.initWindow();
+    }
+
+    levelObjectAdded(){
+        this.addObjectsToMap(this.level.background);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.coin);
+        this.addObjectsToMap(this.level.bottle);
+    }
+
+    barsAdded(){
+        this.addToMap(this.healthBar);
+        this.addToMap(this.endbossBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
     }
 
     /**

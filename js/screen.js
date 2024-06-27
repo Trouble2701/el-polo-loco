@@ -51,7 +51,7 @@ function windowResize() {
     let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     if (width <= 1301 && height > width) {
-        landscapeScreen( 'none', 'flex');
+        landscapeScreen('flex');
     } else {
         resizeAction();
     }
@@ -67,7 +67,7 @@ function windowResize() {
  */
 function resizeAction() {
     window.scrollTo(0, 0);
-    landscapeScreen('flex', 'none');
+    landscapeScreen('none');
     sdoc('canvas').style.width = '100vw';
     sdoc('canvas').style.height = 'calc(100vh - 69px)';
     sdoc('button').style.width = '100vw';
@@ -76,9 +76,8 @@ function resizeAction() {
 /**
  * This function checked the landscape setting
  */
-function landscapeScreen(newGame, show) {
+function landscapeScreen(show) {
     sdoc('landscape').style.display = show;
-    sdoc('newGame').style.display = newGame;
 }
 
 /**
