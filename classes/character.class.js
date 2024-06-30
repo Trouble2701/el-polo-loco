@@ -13,6 +13,7 @@ class Character extends MoveableObject {
     offsety = 120;
     offsetw = 40;
     offseth = 130;
+    jumpIUp = 31;
 
     IMAGES_IDLE = [
         './img/2_character_pepe/1_idle/idle/I-1.png',
@@ -104,6 +105,9 @@ class Character extends MoveableObject {
         setInterval(() => this.isLongIdle(), 400);
         setInterval(() => this.checkAll(), 70);
         setInterval(() => this.longIdleTime(), 1000);
+        setInterval(() => {
+            this.lastJumpImage();
+        }, 70);
     }
 
     /**
@@ -154,7 +158,29 @@ class Character extends MoveableObject {
      * This function starts the animation for Jumping
      */
     imagePepeJump() {
-        this.playAnimation(this.IMAGES_JUMP);
+        if(this.isAboveGround() && this.jumpIUp < 35 && this.lastY > this.y){
+            this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
+            this.jumpIUp++;
+        }else if(this.isAboveGround() && this.jumpIUp == 35 && this.lastY > this.y){
+            this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
+        }else if(this.isAboveGround() && this.jumpIUp > 34 && this.jumpIUp < 37 && this.lastY < this.y){
+            this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
+            this.jumpIUp++;
+        } else if(this.isAboveGround() && this.jumpIUp == 37 && this.lastY > this.y){
+            this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
+        }
+    }
+
+    /**
+     * This function played last jumping animation
+     */
+    lastJumpImage(){
+        if(!this.isAboveGround() && this.jumpIUp > 36 && this.jumpIUp < 39){
+            this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
+            this.jumpIUp++;   
+        }else if(this.jumpIUp == 39){
+            this.jumpIUp = 31;
+        }
     }
 
     /**
@@ -251,7 +277,7 @@ class Character extends MoveableObject {
      * This function sets the new position and always adds 2 pixels to setNewX until 400 is reached
      * @param {*} pos - passes new or old 
      */
-    setNewXPos(pos){
+    setNewXPos(pos) {
         if (this.newXPos(pos)) this.setNewX += 2; else this.setNewX = 400;
     }
 
@@ -259,7 +285,7 @@ class Character extends MoveableObject {
      * This function sets the new position and always calculates 2 pixels from setNewX until 100 is reached
      * @param {*} pos - passes new or old 
      */
-    newOldXPos(pos){
+    newOldXPos(pos) {
         if (this.oldXPos(pos)) this.setNewX -= 2; else this.setNewX = 100;
     }
 
@@ -309,6 +335,7 @@ class Character extends MoveableObject {
      * This function starts the jump when kill a chicken
      */
     smalJump() {
+        this.jumpIUp = 31;
         super.jump('15');
     }
 
@@ -354,38 +381,12 @@ class Character extends MoveableObject {
     }
 
     /**
-     * This function checks the chicken and send this to setDownClac function
-     * @param {*} enemyName - This variable passes the name of the chicken
-     */
-    energyCalc(enemyName) {
-        if (enemyName == 'chicken') {
-            this.setDownCalc(2, 0);
-        } else if (enemyName == 'smallchicken') {
-            this.setDownCalc(1, 0);
-        }
-    }
-
-    /**
-     * This function checks whether the game is over when the character is dead, if correct, true is returned
-     * @returns - true
-     */
-    isDead() {
-        if (this.energy > 0) {
-            return false;
-        } else if (this.energy <= 0) {
-            this.pepeDead();
-            GameDead('pepe');
-        }
-    }
-
-    /**
      * This function resets the character's parameters when you restart the game
      */
     characterReset() {
         this.energy = 100;
         this.x = 0;
         this.y = 135;
-
     }
 
     /**

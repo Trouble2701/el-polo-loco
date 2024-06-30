@@ -10,7 +10,7 @@ let keyShow = 0;
 /**
  * This funtion returned the document id
  * @param {*} id - this is the variable of document
- * @returns 
+ * @returns - document
  */
 function sdoc(id){
     return document.getElementById(id);

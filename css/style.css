@@ -191,6 +191,7 @@ button img {
     display: none;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     gap: 30px;
     z-index: 99000;
     background-color: rgb(255 247 0);
@@ -198,11 +199,18 @@ button img {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    max-width: 1440px;
-    max-height: 728px;
+    max-width: 720px;
+    max-height: 480px;
     font-size: 24px;
     transition: all 0.5s ease-in-out;
     border-radius: 20px;
+}
+
+#controlsInGame h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000000 !important;
 }
 
 #showScreens{
@@ -376,6 +384,8 @@ button img {
     }
 
     #controlsInGame{
+        max-width: unset;
+        max-height: unset;
         border-radius: unset;
     }
 

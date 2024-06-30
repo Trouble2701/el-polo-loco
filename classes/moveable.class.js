@@ -29,8 +29,11 @@ class MoveableObject extends DrawableObject {
     applyGravity(jumpSpeed) {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
+                this.lastY = this.y;
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
+            }else{
+                this.lastY = 0;
             }
         }, jumpSpeed);
     }
@@ -169,5 +172,30 @@ class MoveableObject extends DrawableObject {
      */
     jump(jumpHeight) {
         this.speedY = jumpHeight;
+    }
+
+    /**
+     * This function checks the chicken and send this to setDownClac function
+     * @param {*} enemyName - This variable passes the name of the chicken
+     */
+    energyCalc(enemyName) {
+        if (enemyName == 'chicken') {
+            this.setDownCalc(2, 0);
+        } else if (enemyName == 'smallchicken') {
+            this.setDownCalc(1, 0);
+        }
+    }
+
+    /**
+     * This function checks whether the game is over when the character is dead, if correct, true is returned
+     * @returns - true
+     */
+    isDead() {
+        if (this.energy > 0) {
+            return false;
+        } else if (this.energy <= 0) {
+            this.pepeDead();
+            GameDead('pepe');
+        }
     }
 }

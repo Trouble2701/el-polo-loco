@@ -185,8 +185,8 @@ class Endboss extends MoveableObject {
             endbossAlertStop();
             endbossHurtStop();
             this.walktime -= 1;
-            if (this.checkMoving() && !this.otherDirection) this.moveLeft(40); else this.moveLeft('none');
-            if (this.checkMoving() && this.otherDirection) this.moveRight(40); else this.moveRight('none');
+            if (this.checkMoving() && !this.otherDirection) this.moveLeft(70); else this.moveLeft('none');
+            if (this.checkMoving() && this.otherDirection) this.moveRight(70); else this.moveRight('none');
         }
     }
 

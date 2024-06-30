@@ -113,3 +113,22 @@ function closedShowScreen(){
     sdoc('showScreen').style.display = 'none';
     sdoc('showScreenText').innerHTML = '';
 }
+
+/**
+ * This function creates the won screen
+ * @param {*} gameTime - this is the playtime in seconds
+ * @param {*} pepeCoins - this is the collected Coins
+ * @param {*} collectedBottles - this is the collected Bottles 
+ * @param {*} killedChicken - this is the killed Chicken
+ * @param {*} killedSmallChicken - this is the killed Chicks
+ */
+function showEndScore(gameTime, pepeCoins, collectedBottles, killedChicken, killedSmallChicken){
+    sdoc('wonScreen').style.display = 'flex';
+        document.getElementById('score').innerHTML = `
+        <p>Your Time: ${gameTime} seconds</p>
+        <p>Your Coins: ${pepeCoins} Coins</p>
+        <p>Collected Bottles: ${collectedBottles} Bottles</p>
+        <p>Killed Chicken: ${killedChicken} Chicken</p>
+        <p>Killed Chicks: ${killedSmallChicken} Chicks</p>
+        `;
+}

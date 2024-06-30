@@ -16,7 +16,6 @@ class World {
     throw = [];
     splashBottle = [];
     gameOver = new GameOver();
-    gameWON = new GameWON();
     gameTime = 0;
     collectedBottles = 0;
     killedChicken = 0;
@@ -48,7 +47,6 @@ class World {
         this.character.world = this;
         this.endboss.world = this;
         this.bottleBar.world = this;
-        this.gameWON.world = this;
     }
 
     /**
@@ -74,7 +72,7 @@ class World {
     checkColliding() {
         setInterval(() => {
             this.checkEnemy();
-            //this.checkBoss();
+            this.checkBoss();
             this.checkCoin();
             this.checkBottle();
             this.checkEndboss();
@@ -86,11 +84,7 @@ class World {
      */
     checkEnemy() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy) && enemy.dead == 0) {
-                this.collisionOrDead(enemy);
-            } else {
-                this.character.pepeCollision(0);
-            }
+            if (this.character.isColliding(enemy) && enemy.dead == 0) this.collisionOrDead(enemy); else this.character.pepeCollision(0);
         });
     }
 
@@ -209,11 +203,9 @@ class World {
     checkEndboss() {
         if (checkendDead() == true){
             setTimeout(() => {
-                this.gameWON.youWon();
-                document.getElementById('score').innerHTML = 
-                '<p>Your Time: '+this.gameTime+'sec</p><p>Your Coins: '+this.character.pepeCoins+' Coins</p><p>Collected Bottles: '+this.collectedBottles+' Bottles</p><p>Killed Chicken: '+this.killedChicken+' Chicken</p><p>Killed Chicks: '+this.killedSmallChicken+' Chicks</p>';
+                showEndScore(this.gameTime, this.character.pepeCoins, this.collectedBottles, this.killedChicken, this.killedSmallChicken);
                 this.setReset()
-            }, 2500);
+            }, 2000);
         }
     }
 
@@ -260,9 +252,7 @@ class World {
      * @param {*} time - time of splash
      */
     bottlesplash(time) {
-        this.splashBottle.forEach((splash) => {
-            setInterval(() => splash.y = 1000, time);
-        });
+        this.splashBottle.forEach((splash) => setInterval(() => splash.y = 1000, time));
     }
 
     /**
