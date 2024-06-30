@@ -224,6 +224,45 @@ button img {
     font-size: 24px;
 }
 
+#wonScreen{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    position: absolute;
+    border-radius: 20px;
+    height: 480px;
+    width: 720px;
+    background-color: rgb(255 247 0);
+    z-index: 4;
+}
+
+#wonScreen h1 {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    color:#000000 !important;
+}
+
+#wonScreen button {
+    position: absolute;
+    bottom: 20px;
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+}
+
+#score{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: calc(480px - 150px);
+    gap: 15px;
+    font-size: 24px;
+}
+
 .newGame {
     display: flex;
     justify-content: center;
@@ -326,6 +365,16 @@ button img {
         border-radius: 0;
     }
 
+    #wonScreen{
+        border-radius: 0;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    #wonScreen h1{
+        font-size: 35px;
+    }
+
     #controlsInGame{
         border-radius: unset;
     }
@@ -400,6 +449,16 @@ button img {
         border-radius: 0;
     }
 
+    #wonScreen{
+        border-radius: 0;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    #wonScreen h1{
+        font-size: 35px;
+    }
+    
     .button {
         display: flex;
         width: 100vw;

@@ -17,9 +17,11 @@ class SplahObject extends MoveableObject {
         this.y = y;
         this.height = 60;
         this.width = 40;
-        this.checkDirection(x, direction);
+        this.checkDirectioSplash(x, direction);
         this.throw(direction);
     }
+
+    setYFall = 0;
 
     /**
      * This function creates the flight animation of the drops
@@ -40,9 +42,9 @@ class SplahObject extends MoveableObject {
      * @param {*} x - this is the position 
      * @param {*} direction - this is the direction 
      */
-    checkDirection(x, direction) {
+    checkDirectioSplash(x, direction) {
         if (direction == 'yes') {
-            this.x = x - 100;
+            this.x = x-100;
         } else {
             this.x = x;
         }
@@ -54,10 +56,11 @@ class SplahObject extends MoveableObject {
      * @returns - return x + or -
      */
     shootSide(direction) {
+        setInterval(() => this.setYFall += 1, 100);
         if (direction == 'yes') {
-            return this.x -= 5;
+            return this.x -= 5, this.y += 5+this.setYFall;
         } else {
-            return this.x += 5;
+            return this.x += 5, this.y += 5+this.setYFall;
         }
     }
 }

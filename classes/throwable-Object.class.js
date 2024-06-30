@@ -33,7 +33,7 @@ class ThrowAbleObject extends MoveableObject {
      */
     throw(direction) {
         this.speedY = 20;
-        this.applyGravity();
+        this.applyGravity(1000/25);
         setInterval(() => {
             this.shootSide(direction);
             this.playAnimation(this.IMAGES);

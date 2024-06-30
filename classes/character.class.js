@@ -4,11 +4,11 @@
 class Character extends MoveableObject {
     /**
      * @param speed - parameter for jump
-     * @param long_idle - parameter for sleeping, false no sleeping
+     * @param long_idle - parameter for sleeping, 6 is sleeping
      * @param offset - offset reduces the dimensions of the images for the touches
      */
     speed = 10.5;
-    longIdle = false;
+    longIdle = 0;
     offsetx = 15;
     offsety = 120;
     offsetw = 40;
@@ -76,10 +76,12 @@ class Character extends MoveableObject {
         './img/2_character_pepe/5_dead/D-56.png',
         './img/2_character_pepe/5_dead/D-57.png'
     ];
-     /**
-     * @param world - give this class in the world.class.js back
-     */
+    /**
+    * @param world - give this class in the world.class.js back
+    * @param setNewX - This value is calculated on the x position of the character
+    */
     world;
+    setNewX = 100;
     constructor() {
         super().loadImage('./img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.IMAGES_WALK);
@@ -88,7 +90,7 @@ class Character extends MoveableObject {
         this.loadImages(this.IMAGES_JUMP);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.applyGravity();
+        this.applyGravity(1000 / 25);
         this.animation();
     }
 
@@ -96,17 +98,19 @@ class Character extends MoveableObject {
      * This function starts the animations of the character
      */
     animation() {
+        setInterval(() => this.checkNewPos(), 10);
         setInterval(() => this.walking(), 1000 / 60);
         setInterval(() => this.setIdle(), 200);
         setInterval(() => this.isLongIdle(), 400);
         setInterval(() => this.checkAll(), 70);
+        setInterval(() => this.longIdleTime(), 1000);
     }
 
     /**
      * This function checks whether the character is in the rest phase
      */
     checkIdle() {
-        return !this.world.keyboard.right && !this.world.keyboard.left && this.longIdle && !this.pepeDead();
+        return this.longIdle >= 6;
     }
 
     /**
@@ -131,6 +135,10 @@ class Character extends MoveableObject {
         pepeSleepStop();
         this.playAnimation(this.IMAGES_DEAD);
         setTimeout(() => setInterval(() => this.y += 50, 50), 1000);
+    }
+
+    longIdleTime() {
+        if (this.longIdle < 6) this.longIdle += 1;
     }
 
     /**
@@ -171,10 +179,10 @@ class Character extends MoveableObject {
     }
 
     /**
-     * this function sets the character Long idle of false 
+     * this function sets the character Long idle of 0 
      */
     setLongIdle() {
-        this.longIdle = false;
+        this.longIdle = 0;
     }
 
     /**
@@ -184,7 +192,7 @@ class Character extends MoveableObject {
         pepeSleepStop();
         if (this.checkIdle()) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
-            if(sound == 0) pepeSleepStart();
+            if (sound == 0) pepeSleepStart();
         }
     }
 
@@ -192,7 +200,7 @@ class Character extends MoveableObject {
      * This function checks whether a key is pressed or the character is in long_idle or still alive
      */
     checkWalking() {
-        return !this.world.keyboard.right && !this.world.keyboard.left && !this.longIdle && !this.pepeDead();
+        return !this.world.keyboard.right && !this.world.keyboard.left && !this.checkIdle() && !this.pepeDead();
     }
 
     /**
@@ -200,7 +208,6 @@ class Character extends MoveableObject {
      */
     dontWalk() {
         this.playAnimation(this.IMAGES_IDLE);
-        setTimeout(() => this.longIdle = true, 6000);
     }
 
     /**
@@ -211,17 +218,74 @@ class Character extends MoveableObject {
         if (this.canWalkRight()) this.walkRight();
         if (this.canWalkLeft()) this.walkLeft();
         if (this.canJump()) this.jumping();
-        this.world.camera_x = -this.x + 100;
+        this.world.camera_x = -this.x + this.setNewX;
         this.checkYPos();
+    }
+
+    /**
+     * This function checks the new x position of the character
+     */
+    checkNewPos() {
+        if (this.checkEndBossPos()) this.setNewPosition('new');
+        if (!this.checkEndBossPos()) this.setNewPosition('old');
+    }
+
+    /**
+     * This function checks the current x position of the endboss
+     * @returns - true
+     */
+    checkEndBossPos() {
+        return this.world.endboss.x < this.x;
+    }
+
+    /**
+     * This function sets the new position of the character
+     * @param {*} pos - passes new or old
+     */
+    setNewPosition(pos) {
+        if (this.newXPos(pos)) this.setNewXPos(pos);
+        if (this.oldXPos(pos)) this.newOldXPos(pos);
+    }
+
+    /**
+     * This function sets the new position and always adds 2 pixels to setNewX until 400 is reached
+     * @param {*} pos - passes new or old 
+     */
+    setNewXPos(pos){
+        if (this.newXPos(pos)) this.setNewX += 2; else this.setNewX = 400;
+    }
+
+    /**
+     * This function sets the new position and always calculates 2 pixels from setNewX until 100 is reached
+     * @param {*} pos - passes new or old 
+     */
+    newOldXPos(pos){
+        if (this.oldXPos(pos)) this.setNewX -= 2; else this.setNewX = 100;
+    }
+
+    /**
+     * This function checks the value of setNewX whether it is at 400 and whether pos is new
+     * @param {*} pos - passes new or old 
+     * @returns - true
+     */
+    newXPos(pos) {
+        return this.setNewX <= 400 && pos == 'new';
+    }
+
+    /**
+     * This function checks the value of setNewX whether it is 100 and whether pos is old
+     * @param {*} pos - passes new or old 
+     * @returns - true
+     */
+    oldXPos(pos) {
+        return this.setNewX >= 100 && pos == 'old'
     }
 
     /**
      * This function checks the height position and sets the character to 135px when it comes into contact with the ground, but only if it is still alive
      */
-    checkYPos(){
-        if(!this.isAboveGround() && !this.pepeDead()){
-            this.y = 135;
-        }
+    checkYPos() {
+        if (!this.isAboveGround() && !this.pepeDead()) this.y = 135;
     }
 
     /**
@@ -237,14 +301,14 @@ class Character extends MoveableObject {
     jumping() {
         this.setLongIdle();
         pepeWalkStop();
-        if(sound == 0) pepeJumpStart();
+        if (sound == 0) pepeJumpStart();
         super.jump('23');
     }
 
     /**
      * This function starts the jump when kill a chicken
      */
-    smalJump(){
+    smalJump() {
         super.jump('15');
     }
 
@@ -262,7 +326,7 @@ class Character extends MoveableObject {
         this.setLongIdle();
         this.otherDirection = false;
         this.moveRight();
-        if (this.dontJump()) if(sound == 0) pepeWalkStart();
+        if (this.dontJump()) if (sound == 0) pepeWalkStart();
     }
 
     /**
@@ -279,7 +343,7 @@ class Character extends MoveableObject {
         this.setLongIdle();
         this.otherDirection = true;
         this.moveLeft();
-        if (this.dontJump()) if(sound == 0) pepeWalkStart();
+        if (this.dontJump()) if (sound == 0) pepeWalkStart();
     }
 
     /**
@@ -289,7 +353,11 @@ class Character extends MoveableObject {
         return !this.world.keyboard.space && !this.isAboveGround();
     }
 
-    energyCalc(enemyName){
+    /**
+     * This function checks the chicken and send this to setDownClac function
+     * @param {*} enemyName - This variable passes the name of the chicken
+     */
+    energyCalc(enemyName) {
         if (enemyName == 'chicken') {
             this.setDownCalc(2, 0);
         } else if (enemyName == 'smallchicken') {
@@ -313,23 +381,20 @@ class Character extends MoveableObject {
     /**
      * This function resets the character's parameters when you restart the game
      */
-    characterReset(){
+    characterReset() {
         this.energy = 100;
         this.x = 0;
         this.y = 135;
-        
+
     }
-    
+
     /**
      * This function animates the coins and bottles when they are collected
      * @param {*} item - coin oder bottle
      */
     itemAnimation(item) {
         setInterval(() => {
-            if (item.x > -2000 && item.y > -2000) {
-                item.x -= +5;
-                item.y -= +5;
-            }
+            if (item.x > -2000 && item.y > -2000) item.x -= +5; item.y -= +5;
         }, 1000 / 60);
     }
 }

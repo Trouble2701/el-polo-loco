@@ -17,6 +17,10 @@ class World {
     splashBottle = [];
     gameOver = new GameOver();
     gameWON = new GameWON();
+    gameTime = 0;
+    collectedBottles = 0;
+    killedChicken = 0;
+    killedSmallChicken = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -27,6 +31,14 @@ class World {
         this.checkColliding();
         this.checkActions();
         this.checkAllDeads();
+        this.startGame();
+    }
+
+    /**
+     * this function ist the gameTime
+     */
+    startGame(){
+        setInterval(() => this.gameTime += 1, 1000);
     }
 
     /**
@@ -36,15 +48,14 @@ class World {
         this.character.world = this;
         this.endboss.world = this;
         this.bottleBar.world = this;
+        this.gameWON.world = this;
     }
 
     /**
      * This function checks whether a bottle is thrown
      */
     checkActions() {
-        setInterval(() => {
-            this.checkThrow();
-        }, 200);
+        setInterval(() => this.checkThrow(), 200);
     }
 
     /**
@@ -63,7 +74,7 @@ class World {
     checkColliding() {
         setInterval(() => {
             this.checkEnemy();
-            this.checkBoss();
+            //this.checkBoss();
             this.checkCoin();
             this.checkBottle();
             this.checkEndboss();
@@ -100,11 +111,13 @@ class World {
      */
     checkCoin() {
         this.level.coin.forEach((coins) => {
-            if (this.character.isColliding(coins)) {
-                this.character.pepeCoins += Math.round(100 / this.level.coin.length);
+            if (this.character.isColliding(coins) && this.character.pepeCoins < 8 && coins.hit == 0) {
+                this.character.pepeCoins += 1;
+                let calcCoins = 100 / 8 * this.character.pepeCoins;
                 if (sound == 0) coins.save_sound.play();
                 this.character.itemAnimation(coins);
-                this.coinBar.setCoins(this.character.pepeCoins);
+                this.coinBar.setCoins(calcCoins);
+                coins.hit = 1;
             }
         });
     }
@@ -117,6 +130,7 @@ class World {
             if (this.character.isColliding(bottles) && this.character.pepeBottle < 5 && bottles.y == 380) {
                 if (sound == 0) bottles.save_sound.play();
                 this.character.pepeBottle += 1;
+                this.collectedBottles += 1;
                 let calcBottle = 100 / 5 * this.character.pepeBottle;
                 this.character.itemAnimation(bottles);
                 this.bottleBar.setbottles(calcBottle);
@@ -160,7 +174,7 @@ class World {
             if (throwAttack.y > 380 && throwAttack.y < 410) {
                 this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
                 if (sound == 0) throwAttack.broke_sound.play();
-                this.bottlesplash(100);
+                this.bottlesplash(1000);
             }
         });
     }
@@ -193,7 +207,14 @@ class World {
      * This function checks the death of the endboss and triggers if true
      */
     checkEndboss() {
-        if (checkendDead() == true) setTimeout(() => this.setReset(), 2500);
+        if (checkendDead() == true){
+            setTimeout(() => {
+                this.gameWON.youWon();
+                document.getElementById('score').innerHTML = 
+                '<p>Your Time: '+this.gameTime+'sec</p><p>Your Coins: '+this.character.pepeCoins+' Coins</p><p>Collected Bottles: '+this.collectedBottles+' Bottles</p><p>Killed Chicken: '+this.killedChicken+' Chicken</p><p>Killed Chicks: '+this.killedSmallChicken+' Chicks</p>';
+                this.setReset()
+            }, 2500);
+        }
     }
 
     /**
@@ -201,7 +222,9 @@ class World {
      */
     collisionOrDead(enemy) {
         if (this.chickenKill(enemy)) {
+            //console.log(enemy.name);
             this.character.smalJump();
+            if(enemy.name == 'smallchicken') this.killedSmallChicken += 1; else this.killedChicken += 1;
             enemy.dead = 1;
             setTimeout(() => enemy.y = 1000, 2000);
         } else {
@@ -271,7 +294,6 @@ class World {
      */
     endscreen() {
         if (checkpepeDead() == true) return this.addToMap(this.gameOver);
-        if (checkendDead() == true) return this.addToMap(this.gameWON);
     }
 
     /**
@@ -293,10 +315,10 @@ class World {
         this.levelObjectAdded();
         this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
-        this.barsAdded(); 
         this.ctx.translate(this.camera_x, 0);
         this.opponentAndBottle();
         this.ctx.translate(-this.camera_x, 0);
+        this.barsAdded(); 
         this.endscreen();
         requestAnimationFrame(() => self.draw());
         let self = this;

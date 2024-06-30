@@ -26,13 +26,13 @@ class MoveableObject extends DrawableObject {
     /**
      * this function creates the jump from the character
      */
-    applyGravity() {
+    applyGravity(jumpSpeed) {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             }
-        }, 1000 / 25);
+        }, jumpSpeed);
     }
 
     /**
@@ -42,6 +42,8 @@ class MoveableObject extends DrawableObject {
     isAboveGround() {
         if (this instanceof ThrowAbleObject) {
             return true;
+        } else if (this instanceof SmallChicken) {
+            return this.y < 390;
         } else {
             return this.y < 135;
         }
@@ -127,9 +129,17 @@ class MoveableObject extends DrawableObject {
     /**
      * This function makes the character move to the right
      */
-    moveRight() {
-        this.x += this.speed;
-        this.otherDirection = false;
+    moveRight(max) {
+        let setmax = this.speed;
+        if (max && max != 'none') {
+            setmax = this.speed * max;
+        }
+        if (max != 'none') {
+            this.x += setmax;
+        }
+        if (max == 'stop') {
+            setmax = 0;
+        }
     }
 
     /**

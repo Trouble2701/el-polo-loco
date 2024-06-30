@@ -35,7 +35,9 @@ class SmallChicken extends MoveableObject {
     animation() {
         setInterval(() => this.moving(), 1000 / 60);
         smallChickenStop();
-        setInterval(() => this.imageWalking(), 100 - this.speed * 2);
+        setInterval(() => this.imageWalking(), 100 - this.speed * 3 - (1000 / 60));
+        setInterval(() => this.smalJump(this.calcPosition(10, 20)), this.calcPosition(2000, 5000));
+        setInterval(() => this.checkYPos(), 1000 / 60);
     }
 
     /**
@@ -49,7 +51,7 @@ class SmallChicken extends MoveableObject {
      * This function starts the smallchicken running
      */
     moving(){
-        if (this.checkMoving()) this.moveLeft(0.2); else this.moveLeft('none');
+        if (this.checkMoving()) this.moveLeft(0.4); else this.moveLeft('none');
     }
 
     /**
@@ -69,5 +71,31 @@ class SmallChicken extends MoveableObject {
             this.playAnimation(this.IMAGES_WALK);
             if(sound == 0) smallChickenStart();
         }
+    }
+
+    /**
+     * This function makes the small chickens jump (random distances and heights)
+     */
+    smalJump(height){
+        if(this.checkJumping()){
+            let speed = 1000/15;
+            this.speedY = height;
+            this.applyGravity(speed);  
+        }
+    }
+
+    /**
+     * This function checks whether the smallchick is on the ground and puts it back in the standard Y position
+     */
+    checkYPos(){
+        if(this.checkJumping()) this.y = 390;
+    }
+
+    /**
+     * This function checks whether the smallchick is in the air and whether it is still alive
+     * @returns - true
+     */
+    checkJumping(){
+        return !this.isAboveGround() && this.dead == 0;
     }
 }

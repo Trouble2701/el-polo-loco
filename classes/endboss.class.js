@@ -89,56 +89,144 @@ class Endboss extends MoveableObject {
      * @param time - time of stand
      * @param walktime - Time of walking
      * @param timeAttack - time of attack
+     * @param thisTun - Start the Run of endboss, standard 0
+     * @param direction - direction of endboss, standard false
      */
-    time = 0;
-    walktime = 100;
-    timeAttack = 150;
-
+    time = 3;
+    walktime = 60;
+    timeAttack = 80;
+    thisRun = 0;
+    direction = false;
     /**
      * This function start the animations of endboss
      */
     animation() {
         endbossStop();
-        setInterval(() => this.bossAnimation(), 100);
+        setInterval(() => this.checkDirection(), 1000/60);
+        setInterval(() => this.endBossHurt(), 100);
+        setInterval(() => this.endBossHurtAnimation(), 250);
+        setInterval(() => this.endBossRun(), 80);
+        setInterval(() => this.walkAnimation(), 150);
+        setInterval(() => this.walkSide(), 100);
+        setInterval(() => this.dontAttack(), 100);
+        setInterval(() => this.attack(), 100);
+        setInterval(() => this.endBossStart(), 100);
     }
 
     /**
-     * this function animated all animations of endboss
+     * this function check the endboss direction
      */
-    bossAnimation() {
-        if (this.endBossHurtCheck()) {
-            this.endBossHurt();
-        } else if (this.checkRunEndBoss()) {
-            this.endBossRun();
-        } else if (this.checkAttack()) {
-            this.dontAttack();
-        } else {
-            this.attack();
+    checkDirection(){
+        if(this.direction && !this.otherDirection){
+            this.otherDirection = true;
+        }else if(!this.direction && this.otherDirection){
+            this.otherDirection = false;
         }
     }
 
     /**
+     * this function start Endboss Intro
+     */
+    endBossStart(){
+        if (this.checkCharacterInPosition() && this.thisRun == 0){
+            this.playAnimation(this.IMAGES_ALERT);
+            this.characterInPositionSound();
+            setTimeout(() =>  this.thisRun = 1, 2000);
+        }
+    }
+    /**
      * This function checks the parameters of the endboss running
      */
-    checkMoving(){
+    checkMoving() {
         return document.getElementById('landscape').style.display == 'none' && this.power > 0 && keyShow == 0;
     }
 
     /**
-     * This function checks the parameters of the endboss attack
+     * this function check hurt
+     * @returns - return true when hit by bottle and power more than 0
      */
-    checkAttack() {
-        return this.timeAttack == 150 && this.time <= 150 && this.walktime <= 0 && this.power > 0;
+    endBossHurtCheck() {
+        return this.endBossCollision();
     }
 
     /**
-     * This function animated the attack or stop the attack
+     * this function play hurt animation 
      */
-    attack() {
-        if (this.canAttack()) {
-            this.startAttack();
-        } else {
-            if (this.canDontAttack()) this.stopAttack();
+    endBossHurt() {
+        if (this.endBossHurtCheck() && this.checkEndBossPower()) {
+            endbossAlertStop();
+            endbossWalkingStop();
+            if (sound == 0) endbossHurtStart();
+            setTimeout(() => this.stopAttack(), 500);
+        }
+    }
+
+    /**
+     * this function played the walking animation 
+     */
+    endBossHurtAnimation(){
+        if(this.endBossHurtCheck() && this.checkEndBossPower()) this.playAnimation(this.IMAGES_HURT);
+    }
+
+    /**
+     * this function check run of endboss
+     * @returns - return true 
+     */
+    checkRunEndBoss() {
+        return this.thisRun == 1 && this.walktime > 0 && this.time == 3 && this.timeAttack > 0;
+    }
+
+    /**
+     * this function play walking animation 
+     */
+    endBossRun() {
+        if (this.checkRunEndBoss() && this.checkEndBossPower() && !this.endBossHurtCheck()) {
+            if (sound == 0) endbossWalkingStart();
+            endbossAlertStop();
+            endbossHurtStop();
+            this.walktime -= 1;
+            if (this.checkMoving() && !this.otherDirection) this.moveLeft(40); else this.moveLeft('none');
+            if (this.checkMoving() && this.otherDirection) this.moveRight(40); else this.moveRight('none');
+        }
+    }
+
+    /**
+     * this function set the endboss direction
+     */
+    walkSide(){
+        if(this.x < -100 && !this.direction){
+            this.direction = true;
+        }else if(this.x > 2400 && this.direction){
+            this.direction = false;
+        }
+    }
+
+    /**
+     * this function animated the walking
+     */
+    walkAnimation() {
+        if(this.checkRunEndBoss()) this.playAnimation(this.IMAGES_WALK);
+    }
+
+    /**
+     * This function checks whether an attack cannot be made
+     * @returns - return true
+     */
+    canDontAttack() {
+        return this.timeAttack == 0 && this.walktime == 0 && this.time > 0;
+    }
+
+    /**
+     * This function plays the alarm animation when the character is in the right position
+     */
+    dontAttack() {
+        if (this.canDontAttack() && !this.endBossHurtCheck() && !this.canAttack() && this.checkEndBossPower()) {
+            this.time -= 1;
+            this.playAnimation(this.IMAGES_ALERT);
+            if (this.checkCharacterInPosition() && !this.direction) this.characterInPositionSound();
+            if (this.checkCharacterInPositionOther() && this.direction) this.characterInPositionSound();
+            if (this.checkCharacterPosition() && !this.direction) this.characterDontInPositionSound();
+            if (this.checkCharacterPositionOther() && this.direction) this.characterDontInPositionSound();
         }
     }
 
@@ -147,15 +235,18 @@ class Endboss extends MoveableObject {
      * @returns - return true
      */
     canAttack() {
-        return this.timeAttack != 0;
+        return this.timeAttack > 0;
     }
 
     /**
-     * This function checks whether an attack cannot be made
-     * @returns - return true
+     * This function animated the attack or stop the attack
      */
-    canDontAttack() {
-        return this.timeAttack <= 0;
+    attack() {
+        if (this.canAttack() && !this.canDontAttack() && !this.endBossHurtCheck() && this.walktime == 0 && this.time > 0) {
+            this.startAttack();
+        } else {
+            if (this.canDontAttack()) this.stopAttack();
+        }
     }
 
     /**
@@ -163,7 +254,7 @@ class Endboss extends MoveableObject {
      */
     startAttack() {
         this.timeAttack -= 5;
-        if (this.world.character.x > 1900 && this.power > 0) {
+        if (this.power > 0) {
             endbossStop();
             this.playAnimation(this.IMAGES_ATTACK);
         }
@@ -173,20 +264,9 @@ class Endboss extends MoveableObject {
      * This function stops the attack and sets standards parameters
      */
     stopAttack() {
-        this.timeAttack = 150;
-        this.time = 0;
+        this.timeAttack = 80;
+        this.time = 3;
         this.walktime = 100;
-    }
-
-    /**
-     * This function plays the alarm animation when the character is in the right position
-     */
-    dontAttack() {
-        this.time += 1;
-        if (this.checkEndBossPower()) this.playAnimation(this.IMAGES_ALERT);
-        if (this.checkCharacterInPosition()) this.characterInPositionSound();
-        if (this.checkCharacterPosition()) this.characterDontInPositionSound();
-        if (this.checkDead()) this.endBossDead();
     }
 
     /**
@@ -203,7 +283,7 @@ class Endboss extends MoveableObject {
      */
     checkDead() {
         setInterval(() => {
-            return this.power <= 0;    
+            return this.power <= 0;
         }, 20);
     }
 
@@ -215,7 +295,7 @@ class Endboss extends MoveableObject {
         if (this.i < this.IMAGES_DEAD.length) {
             this.playAnimation(this.IMAGES_DEAD);
             this.i++;
-        }else{
+        } else {
             this.loadImage(`img/4_enemie_boss_chicken/5_dead/G26.png`)
         }
     }
@@ -225,7 +305,15 @@ class Endboss extends MoveableObject {
      * @returns - return true 
      */
     checkCharacterPosition() {
-        return this.world.character.x < 1900;
+        return this.world.character.x < this.x - 1000;
+    }
+
+    /**
+     * this function checks the position of character than less 1900px
+     * @returns - return true 
+     */
+    checkCharacterPositionOther() {
+        return this.world.character.x > this.x + 1000;
     }
 
     /**
@@ -239,58 +327,20 @@ class Endboss extends MoveableObject {
      * this function check the position of character than more 1900px
      */
     checkCharacterInPosition() {
-        return this.world.character.x > 1900 && this.power > 0;
+        return this.world.character.x >= this.x - 500 && this.power > 0;
+    }
+
+    checkCharacterInPositionOther(){
+        return this.world.character.x <= this.x + 500 && this.power > 0;
     }
 
     /**
      * this function start sound when character in position
      */
     characterInPositionSound() {
-        if(sound == 0) endbossAlertStart();
+        if (sound == 0) endbossAlertStart();
         endbossHurtStop();
         endbossWalkingStop();
-    }
-
-    /**
-     * this function check hurt
-     * @returns - return true when hit by bottle and power more than 0
-     */
-    endBossHurtCheck() {
-        return this.endBossCollision() && this.power > 0;
-    }
-
-    /**
-     * this function play hurt animation 
-     */
-    endBossHurt() {
-        endbossAlertStop();
-        endbossWalkingStop();
-        if(sound == 0) endbossHurtStart();
-        this.playAnimation(this.IMAGES_HURT);
-    }
-
-    /**
-     * this function check run of endboss
-     * @returns - return true 
-     */
-    checkRunEndBoss() {
-        return this.world.character.x > this.world.endboss.x - 500 && this.walktime > 0 && this.power > 0;
-    }
-
-    /**
-     * this function play walking animation 
-     */
-    endBossRun() {
-        setInterval(() => {
-            if (this.walktime > 0) {
-                if(sound == 0) endbossWalkingStart();
-                endbossAlertStop();
-                endbossHurtStop();
-                this.walktime -= 1;
-                this.playAnimation(this.IMAGES_WALK);
-                if (this.checkMoving()) this.moveLeft(3); else this.moveLeft('none');
-            }
-        }, 1000);
     }
 
     /**
@@ -307,8 +357,9 @@ class Endboss extends MoveableObject {
     /**
      * This function resets the endboss parameters when you restart the game
      */
-    endbossReset(){
+    endbossReset() {
         this.power = 100;
         this.x = 2350;
+        this.thisRun = 0;
     }
 }

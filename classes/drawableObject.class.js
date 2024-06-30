@@ -59,15 +59,15 @@ class DrawableObject {
      * @returns - an array position is returned
      */
     resolveImageIndex(setImages){
-        if(setImages >= 100){
+        if(setImages > 98){
             return 5;
-        }else if(setImages > 80){
+        }else if(setImages > 79){
             return 4;
-        }else if(setImages > 60){
+        }else if(setImages > 59){
             return 3;
-        }else if(setImages > 40){
+        }else if(setImages > 39){
             return 2;
-        }else if(setImages > 20){
+        }else if(setImages > 19){
             return 1;
         }else{
             return 0;

@@ -40,6 +40,9 @@ function clearAllIntervals() {
     for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }
 
+function closedWonScreen(){
+    sdoc('wonScreen').style.display = 'none';
+}
 
 /**
  * This function start the game and initials the first level
