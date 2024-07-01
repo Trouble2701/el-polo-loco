@@ -2,6 +2,7 @@
  * This class creates the splash animation when a bottle breaks
  */
 class SplahObject extends MoveableObject {
+    bottle;
     IMAGES_SPLASH = [
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
@@ -11,21 +12,21 @@ class SplahObject extends MoveableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
-    constructor(x, y, direction) {
+    constructor(x, y, direction, bottle) {
         super().loadImage(`img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png`);
         this.loadImages(this.IMAGES_SPLASH);
         this.y = y;
         this.height = 60;
         this.width = 40;
+        this.bottle = bottle;
         this.checkDirectioSplash(x, direction);
         this.throw(direction);
     }
-
+    
     setYFall = 0;
 
     /**
      * This function creates the flight animation of the drops
-     * @param speedY - is the speed of the y curve
      * @param direction - is the direction in which the tropics move
      */
     throw(direction) {

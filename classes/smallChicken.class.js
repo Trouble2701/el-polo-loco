@@ -2,11 +2,6 @@
  * This class positions the smallchickens on the map and controls various movements
  */
 class SmallChicken extends MoveableObject {
-    /**
-     * @param name - parameter for name
-     * @param dead - parameter for smallchicken dead
-     * @param offset - offset reduces the dimensions of the images for the touches
-     */
     name = 'smallchicken';
     dead = 0;
     offsetx = 5;

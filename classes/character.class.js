@@ -2,11 +2,6 @@
  * This class positions the character on the map and controls various movements
  */
 class Character extends MoveableObject {
-    /**
-     * @param speed - parameter for jump
-     * @param long_idle - parameter for sleeping, 6 is sleeping
-     * @param offset - offset reduces the dimensions of the images for the touches
-     */
     speed = 10.5;
     longIdle = 0;
     offsetx = 15;
@@ -77,10 +72,7 @@ class Character extends MoveableObject {
         './img/2_character_pepe/5_dead/D-56.png',
         './img/2_character_pepe/5_dead/D-57.png'
     ];
-    /**
-    * @param world - give this class in the world.class.js back
-    * @param setNewX - This value is calculated on the x position of the character
-    */
+
     world;
     setNewX = 100;
     constructor() {
@@ -158,15 +150,15 @@ class Character extends MoveableObject {
      * This function starts the animation for Jumping
      */
     imagePepeJump() {
-        if(this.isAboveGround() && this.jumpIUp < 35 && this.lastY > this.y){
+        if (this.isAboveGround() && this.jumpIUp < 35 && this.lastY > this.y) {
             this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
             this.jumpIUp++;
-        }else if(this.isAboveGround() && this.jumpIUp == 35 && this.lastY > this.y){
+        } else if (this.isAboveGround() && this.jumpIUp == 35 && this.lastY > this.y) {
             this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
-        }else if(this.isAboveGround() && this.jumpIUp > 34 && this.jumpIUp < 37 && this.lastY < this.y){
+        } else if (this.isAboveGround() && this.jumpIUp > 34 && this.jumpIUp < 37 && this.lastY < this.y) {
             this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
             this.jumpIUp++;
-        } else if(this.isAboveGround() && this.jumpIUp == 37 && this.lastY > this.y){
+        } else if (this.isAboveGround() && this.jumpIUp == 37 && this.lastY > this.y) {
             this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
         }
     }
@@ -174,11 +166,11 @@ class Character extends MoveableObject {
     /**
      * This function played last jumping animation
      */
-    lastJumpImage(){
-        if(!this.isAboveGround() && this.jumpIUp > 36 && this.jumpIUp < 39){
+    lastJumpImage() {
+        if (!this.isAboveGround() && this.jumpIUp > 36 && this.jumpIUp < 39) {
             this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
-            this.jumpIUp++;   
-        }else if(this.jumpIUp == 39){
+            this.jumpIUp++;
+        } else if (this.jumpIUp == 39) {
             this.jumpIUp = 31;
         }
     }
@@ -258,7 +250,6 @@ class Character extends MoveableObject {
 
     /**
      * This function checks the current x position of the endboss
-     * @returns - true
      */
     checkEndBossPos() {
         return this.world.endboss.x < this.x;
@@ -292,7 +283,6 @@ class Character extends MoveableObject {
     /**
      * This function checks the value of setNewX whether it is at 400 and whether pos is new
      * @param {*} pos - passes new or old 
-     * @returns - true
      */
     newXPos(pos) {
         return this.setNewX <= 400 && pos == 'new';
@@ -301,7 +291,6 @@ class Character extends MoveableObject {
     /**
      * This function checks the value of setNewX whether it is 100 and whether pos is old
      * @param {*} pos - passes new or old 
-     * @returns - true
      */
     oldXPos(pos) {
         return this.setNewX >= 100 && pos == 'old'
@@ -397,5 +386,13 @@ class Character extends MoveableObject {
         setInterval(() => {
             if (item.x > -2000 && item.y > -2000) item.x -= +5; item.y -= +5;
         }, 1000 / 60);
+    }
+
+    /**
+     * This function puts new bottles into the world again and stops the longIdle
+     */
+    throwAction() {
+        if (this.pepeBottle == 1) this.world.bottleBar.bottleReplace();
+        this.longIdle = 0;
     }
 }

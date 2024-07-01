@@ -2,15 +2,6 @@
  * This class draws the requested objects
  */
 class DrawableObject {
-    /**
-     * @param img - requested image
-     * @param ImageCache - cache all images
-     * @param currentImage - current image
-     * @param x - standard x position
-     * @param y - standard y position
-     * @param height - standard height
-     * @param width - standard width
-     */
     img;
     ImageCache = {};
     currentImage = 0;

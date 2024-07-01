@@ -20,6 +20,7 @@ class World {
     collectedBottles = 0;
     killedChicken = 0;
     killedSmallChicken = 0;
+    keyShootFree = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -136,7 +137,7 @@ class World {
      * This function checks press shoot key
      */
     checkKey() {
-        return this.keyboard.shoot && this.character.pepeBottle > 0;
+        return this.keyboard.shoot && this.character.pepeBottle > 0 && this.keyShootFree == 0;
     }
 
     /**
@@ -146,10 +147,10 @@ class World {
         if (this.checkKey()) {
             let direction = 'no';
             if (this.character.otherDirection) direction = 'yes';
-            if (this.character.pepeBottle == 1) this.bottleBar.bottleReplace();
+            this.keyShootFree = 1;
+            this.character.throwAction();
             pepeShootStop();
             if (sound == 0) pepeShootStart();
-            this.character.longIdle = false;
             this.throw.push(new ThrowAbleObject(this.character.x + this.character.offsetw, this.character.y + this.character.offseth, direction, this.character.pepeBottle));
             this.character.pepeBottle -= 1;
             let calcBottle = 100 / 5 * this.character.pepeBottle;
@@ -166,7 +167,7 @@ class World {
     checkBottleOnGround(direction) {
         this.throw.forEach((throwAttack) => {
             if (throwAttack.y > 380 && throwAttack.y < 410) {
-                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
+                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction, throwAttack.bottle));
                 if (sound == 0) throwAttack.broke_sound.play();
                 this.bottlesplash(1000);
             }
@@ -182,7 +183,7 @@ class World {
             if (this.endboss.isColliding(throwAttack) && this.endboss.hit != throwAttack.bottle && this.endboss.power > 0) {
                 if (sound == 0) throwAttack.broke_sound.play();
                 this.attackTheEndboss(throwAttack);
-                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction));
+                this.splashBottle.push(new SplahObject(throwAttack.x, throwAttack.y, direction, throwAttack.bottle));
                 throwAttack.y = 1000;
                 this.bottlesplash(1000);
                 return true;
@@ -211,10 +212,10 @@ class World {
 
     /**
      * This function checks whether the opponent is dead or whether a collision with the character needs to be triggered
+     * @param {*} enemy -  - This variable indicates whether it is a chicken or a chick
      */
     collisionOrDead(enemy) {
         if (this.chickenKill(enemy)) {
-            //console.log(enemy.name);
             this.character.smalJump();
             if(enemy.name == 'smallchicken') this.killedSmallChicken += 1; else this.killedChicken += 1;
             enemy.dead = 1;
@@ -228,10 +229,9 @@ class World {
     /**
      * This function checks whether the chicken is killed and returns true if correct
      * @param {*} enemy - This variable indicates whether it is a chicken or a chick
-     * @returns - true
      */
     chickenKill(enemy) {
-        return this.character.isColliding(enemy) && this.character.isAboveGround();
+        return this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.lastY < this.character.y;
     }
 
     /**
@@ -252,7 +252,13 @@ class World {
      * @param {*} time - time of splash
      */
     bottlesplash(time) {
-        this.splashBottle.forEach((splash) => setInterval(() => splash.y = 1000, time));
+        this.splashBottle.forEach((splash) => {
+            setInterval(() => {
+                splash.y = 1000;
+            }, time);
+            this.keyShootFree = 0;
+        }
+    );
     }
 
     /**
@@ -280,7 +286,6 @@ class World {
 
     /**
      * This function creates the final screen depending on whether you won or lost
-     * @returns - return endscreen
      */
     endscreen() {
         if (checkpepeDead() == true) return this.addToMap(this.gameOver);
@@ -290,7 +295,6 @@ class World {
      * This function calculates the random position where the opponents will be placed
      * @param {*} min - this variable passes the minimum value
      * @param {*} max - this variable passes the maximim value
-     * @returns - return number
      */
     calcPosition(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;

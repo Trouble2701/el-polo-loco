@@ -2,11 +2,6 @@
  * This class positions the chickens on the map and controls various movements
  */
 class Chicken extends MoveableObject {
-    /**
-     * @param name - parameter for name
-     * @param dead - parameter for chicken dead
-     * @param offset - offset reduces the dimensions of the images for the touches
-     */
     name = 'chicken';
     dead = 0;
     offsetx = 5;

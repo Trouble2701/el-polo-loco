@@ -2,15 +2,9 @@
  * This class positions the Endboss on the map and controls various movements
  */
 class Endboss extends MoveableObject {
-    /**
-     * @param hit - hit by bottles
-     * @param power - energy of Endboss
-     * @param i - number of current dead image length
-     * @param offset - offset reduces the dimensions of the images for the touches
-     */
     hit;
     power = 100;
-    i = 1;
+    i = 0;
     offsetx = 115;
     offsety = 140;
     offsetw = 200;
@@ -67,9 +61,7 @@ class Endboss extends MoveableObject {
         `img/4_enemie_boss_chicken/5_dead/G24.png`,
         `img/4_enemie_boss_chicken/5_dead/G25.png`
     ];
-    /**
-    * @param world - give this class in the world.class.js back
-    */
+
     world;
     constructor() {
         super().loadImage(`img/4_enemie_boss_chicken/2_alert/G5.png`);
@@ -85,18 +77,12 @@ class Endboss extends MoveableObject {
         this.animation();
     }
 
-    /**
-     * @param time - time of stand
-     * @param walktime - Time of walking
-     * @param timeAttack - time of attack
-     * @param thisTun - Start the Run of endboss, standard 0
-     * @param direction - direction of endboss, standard false
-     */
     time = 3;
     walktime = 60;
     timeAttack = 80;
     thisRun = 0;
     direction = false;
+    
     /**
      * This function start the animations of endboss
      */
@@ -293,10 +279,10 @@ class Endboss extends MoveableObject {
     endBossDead() {
         endbossStop();
         if (this.i < this.IMAGES_DEAD.length) {
-            this.playAnimation(this.IMAGES_DEAD);
+            this.loadImage(this.IMAGES_DEAD[this.i])
             this.i++;
         } else {
-            this.loadImage(`img/4_enemie_boss_chicken/5_dead/G26.png`)
+            this.loadImage(`img/4_enemie_boss_chicken/5_dead/G26.png`);
         }
     }
 

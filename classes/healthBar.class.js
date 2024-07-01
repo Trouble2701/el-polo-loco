@@ -12,9 +12,6 @@ class Healthbar extends DrawableObject {
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ];
 
-    /**
-     * @param percentage - number of percent
-     */
     percentage = 100;
 
     constructor(){

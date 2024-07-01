@@ -11,9 +11,6 @@ class CoinBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png'
     ];
 
-    /**
-     * @param coins - number of coins
-     */
     coins = 0;
 
     constructor(){

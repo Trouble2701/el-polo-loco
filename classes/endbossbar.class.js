@@ -12,9 +12,6 @@ class EndbossBar extends DrawableObject {
         'img/7_statusbars/2_statusbar_endboss/orange/orange100.png'
     ];
 
-    /**
-     * @param percentage - number of percent
-     */
     percentage = 100;
 
     constructor(){

@@ -2,12 +2,6 @@
  * This class distributes the bottles on the map
  */
 class Bottle extends MoveableObject{
-    /**
-     * @param x - position of bottle
-     * @param y - position of bottle
-     * @param name - name of bottle
-     * @param offset - offset reduces the dimensions of the images for the touches
-     */
     x;
     y;
     name = 'bottle';

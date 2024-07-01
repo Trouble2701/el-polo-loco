@@ -18,8 +18,6 @@ function sdoc(id){
 
 /**
  * This function closed startscreen and Open the startPage of Game and Starts the Startsound
- * @param canvas - this variable is for canvas document
- * @param sound - this variable is the for the Soundoption
  */
 function startPage() {
     if(sdoc('startscreen').style.transform == '') sdoc('startscreen').style.transform = 'translateY(-2000px)';
@@ -33,7 +31,6 @@ function startPage() {
 
 /**
  * this funtion stop all Intervals and set world to undefined
- * @param i - this variable is for id of intervals 
  */
 function clearAllIntervals() {
     world = undefined;
@@ -46,9 +43,6 @@ function closedWonScreen(){
 
 /**
  * This function start the game and initials the first level
- * @param world - initalis the world.class.js
- * @param canvas - initials the canvas document
- * @param keyboard - keys for game
  */
 function initLevel() {
     keyShow = 0;

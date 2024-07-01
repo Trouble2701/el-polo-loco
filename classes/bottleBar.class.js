@@ -11,10 +11,6 @@ class BottleBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png'
     ];
 
-    /**
-     * @param bottle - number of bottles
-     * @param world - give this class in the world.class.js back
-     */
     bottles = 0
     world;
     constructor(){

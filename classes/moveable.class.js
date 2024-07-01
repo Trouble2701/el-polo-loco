@@ -2,17 +2,6 @@
  * This class creates the movements of the objects
  */
 class MoveableObject extends DrawableObject {
-    /**
-     * @param speed - random speed of objects
-     * @param otherDirection - object can move left or right
-     * @param speedY - parameter for jumping
-     * @param acceleration - parameter for end of jumping
-     * @param energy - energy of character
-     * @param pepeColl - colliding time of character
-     * @param pepeCoins -  number of coins
-     * @param pepeBottle - number of bottles
-     * @param endBossColl - colliding time of endboss
-     */
     speed = 0.15 + Math.random() * 0.25;
     otherDirection = false;
     speedY = 0;
@@ -25,6 +14,7 @@ class MoveableObject extends DrawableObject {
 
     /**
      * this function creates the jump from the character
+     * @param {*} jumpSpeed - time of jumping
      */
     applyGravity(jumpSpeed) {
         setInterval(() => {
@@ -131,6 +121,7 @@ class MoveableObject extends DrawableObject {
 
     /**
      * This function makes the character move to the right
+     * @param {*} max - This variable transfers the speed of the movement
      */
     moveRight(max) {
         let setmax = this.speed;

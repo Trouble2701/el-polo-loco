@@ -1,6 +1,5 @@
 /**
- * This function go in Browser Fullscreen
- * @param elem - is the DIV 
+ * This function go in Browser Fullscreen 
  */
 function fullOn() {
     var elem = sdoc('mobile');
@@ -23,7 +22,6 @@ function fullOn() {
 
 /**
  * This function go out of Browser Fullscreen
- * @param document - is all of body
  */
 function fullOff() {
     if (document.exitFullscreen) {
@@ -44,8 +42,6 @@ function fullOff() {
 
 /**
  * This function checked window size
- * @param width - is the the width of browserscreen
- * @param hidth - is the the hidth of browserscreen
  */
 function windowResize() {
     let width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
