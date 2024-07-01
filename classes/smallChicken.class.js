@@ -21,18 +21,34 @@ class SmallChicken extends MoveableObject {
         this.y = 390;
         this.height = 40;
         this.width = 40;
+        this.applyGravity(1000/25);
         this.animation();
     }
+
+    direction = false;
 
     /**
      * This function starts the animations of the smallchicken
      */
     animation() {
+        setInterval(() => this.checkDirection(), 1000/60);
+        setInterval(() => this.walkSide(), 100);
         setInterval(() => this.moving(), 1000 / 60);
         smallChickenStop();
         setInterval(() => this.imageWalking(), 100 - this.speed * 3 - (1000 / 60));
-        setInterval(() => this.smalJump(this.calcPosition(10, 20)), this.calcPosition(2000, 5000));
+        setInterval(() => this.smalJump(this.calcPosition(5, 15)), this.calcPosition(2000, 9000));
         setInterval(() => this.checkYPos(), 1000 / 60);
+    }
+
+    /**
+     * this function check the endboss direction
+     */
+    checkDirection(){
+        if(this.direction && !this.otherDirection){
+            this.otherDirection = true;
+        }else if(!this.direction && this.otherDirection){
+            this.otherDirection = false;
+        }
     }
 
     /**
@@ -46,7 +62,19 @@ class SmallChicken extends MoveableObject {
      * This function starts the smallchicken running
      */
     moving(){
-        if (this.checkMoving()) this.moveLeft(0.4); else this.moveLeft('none');
+        if (this.checkMoving() && !this.otherDirection) this.moveLeft(0.7); else this.moveLeft('none');
+        if (this.checkMoving() && this.otherDirection) this.moveRight(0.7); else this.moveRight('none');
+    }
+
+    /**
+     * this function set the endboss direction
+     */
+    walkSide(){
+        if(this.x < -100 && !this.direction){
+            this.direction = true;
+        }else if(this.x > 2400 && this.direction){
+            this.direction = false;
+        }
     }
 
     /**
@@ -73,9 +101,7 @@ class SmallChicken extends MoveableObject {
      */
     smalJump(height){
         if(this.checkJumping()){
-            let speed = 1000/15;
             this.speedY = height;
-            this.applyGravity(speed);  
         }
     }
 

@@ -24,13 +24,28 @@ class Chicken extends MoveableObject {
         this.animation();
     }
 
+    direction = false;
+
     /**
      * This function starts the animations of the chicken
      */
     animation() {
+        setInterval(() => this.checkDirection(), 1000/60);
+        setInterval(() => this.walkSide(), 100);
         setInterval(() => this.moving(), 1000 / 60);
         chickenStop();
         setInterval(() => this.imageWalking(), 100 - this.speed * 2);
+    }
+
+    /**
+     * this function check the endboss direction
+     */
+    checkDirection(){
+        if(this.direction && !this.otherDirection){
+            this.otherDirection = true;
+        }else if(!this.direction && this.otherDirection){
+            this.otherDirection = false;
+        }
     }
 
     /**
@@ -44,7 +59,19 @@ class Chicken extends MoveableObject {
      * This function starts the chicken running
      */
     moving(){
-        if (this.checkMoving()) this.moveLeft(0.7); else this.moveLeft('none');
+        if (this.checkMoving() && !this.otherDirection) this.moveLeft(1); else this.moveLeft('none');
+        if (this.checkMoving() && this.otherDirection) this.moveRight(1); else this.moveRight('none');
+    }
+
+    /**
+     * this function set the endboss direction
+     */
+    walkSide(){
+        if(this.x < -100 && !this.direction){
+            this.direction = true;
+        }else if(this.x > 2400 && this.direction){
+            this.direction = false;
+        }
     }
 
     /**
