@@ -46,8 +46,8 @@
             <button onclick="closedWonScreen()">Back to Menu</button>
         </div>
         <div id="startscreen">
-            <div class="letsPlay" onclick="startPage(), setWindowResize()">Let's Play</div><img
-                src="./img/9_intro_outro_screens/start/startscreen_2.png">
+            <div class="letsPlay" onclick="startPage(), setWindowResize()">Let's Play</div>
+            <img src="./img/9_intro_outro_screens/start/startscreen_2.png">
         </div>
         <div id="showScreen" class="privateImpressum">
             <div class="keyCloseButton" onclick="closedShowScreen()">X</div>
@@ -72,8 +72,10 @@
                 <p>Space = Jump</p>
                 <p>Shoot = S</p>
             </div>
-            <div class="config"><img id="sound" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screen"
-                    src="./img/icons/fullscreen.png" onclick="fullOn()"></div>
+            <div class="config">
+                <img id="sound" src="./img/icons/sounds.png" onclick="soundOff()">
+                <img id="screen" src="./img/icons/fullscreen.png" onclick="fullOn()">
+            </div>
         </div>
         <div id="configGame"><img id="soundGame" src="./img/icons/sounds.png" onclick="soundOff()"><img id="screenGame"
                 src="./img/icons/fullscreen.png" onclick="fullOn()"><img id="keyGame" src="./img/icons/keyboard.png"
@@ -81,20 +83,20 @@
         <canvas id="canvas" width="720px" height="480px"></canvas>
         <div class="button" id="button">
             <div class="steering">
-                <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')"
-                    onmousedown="mouseDown('left')" onmouseup="mouseUp('left')"><img
-                        src="./img/icons/left.png"></button>
-                <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')"
-                    onmousedown="mouseDown('right')" onmouseup="mouseUp('right')"><img
-                        src="./img/icons/right.png"></button>
+                <button id="left" ontouchstart="mouseDown('left')" ontouchend="mouseUp('left')" onmousedown="mouseDown('left')" onmouseup="mouseUp('left')">
+                    <img src="./img/icons/left.png">
+                </button>
+                <button id="right" ontouchstart="mouseDown('right')" ontouchend="mouseUp('right')" onmousedown="mouseDown('right')" onmouseup="mouseUp('right')">
+                    <img src="./img/icons/right.png">
+                </button>
             </div>
             <div class="action">
-                <button id="Jump" ontouchstart="mouseDown('Jump')" ontouchend="mouseUp('Jump')"
-                    onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')"><img
-                        src="./img/icons/jump.png"></button>
-                <button id="shoot" ontouchstart="mouseDown('shoot')" ontouchend="mouseUp('shoot')"
-                    onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')"><img
-                        src="./img/icons/shoot.png"></button>
+                <button id="Jump" ontouchstart="mouseDown('Jump')" ontouchend="mouseUp('Jump')" onmousedown="mouseDown('Jump')" onmouseup="mouseUp('Jump')">
+                    <img src="./img/icons/jump.png">
+                </button>
+                <button id="shoot" ontouchstart="mouseDown('shoot')" ontouchend="mouseUp('shoot')" onmousedown="mouseDown('shoot')" onmouseup="mouseUp('shoot')">
+                    <img src="./img/icons/shoot.png">
+                </button>
             </div>
         </div>
     </div>
