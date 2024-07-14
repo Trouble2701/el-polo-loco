@@ -232,6 +232,22 @@ button img {
     font-size: 24px;
 }
 
+#gameOverScreen{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 480px;
+    width: 720px;
+    position: absolute;
+    z-index: 4;
+}
+
+#gameOverScreen img{
+    height: 480px;
+    width: 720px;
+    border-radius: 20px;
+}
+
 #wonScreen{
     display: none;
     justify-content: center;
@@ -364,6 +380,13 @@ button img {
         max-height: 580px !important;
     }
 
+    #startscreen{
+        width: 100vw;
+        height: 100vh;
+        max-width: unset;
+        max-height: unset;
+    }
+
     #showScreens{
         width: 100%;
     }
@@ -372,6 +395,18 @@ button img {
         width: 100vw;
         border-radius: 0;
     }
+
+    #gameOverScreen{
+        height: 100vh;
+        width: 100vw;
+    }
+    
+    #gameOverScreen img{
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0;
+    }
+    
 
     #wonScreen{
         border-radius: 0;
@@ -454,6 +489,17 @@ button img {
     }
 
     .newGame {
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0;
+    }
+
+    #gameOverScreen{
+        height: 100vh;
+        width: 100vw;
+    }
+    
+    #gameOverScreen img{
         height: 100vh;
         width: 100vw;
         border-radius: 0;

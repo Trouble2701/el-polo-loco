@@ -47,7 +47,7 @@ class ThrowAbleObject extends MoveableObject {
      */
     checkDirection(x, direction){
         if(direction == 'yes'){
-            this.x = x - 100;
+            this.x = x;
         }else{
             this.x = x;
         }

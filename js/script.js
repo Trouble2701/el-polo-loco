@@ -6,13 +6,16 @@ let endbossDead = 1;
 let time = 0;
 let sound = 0;
 let keyShow = 0;
+let i = 0;
+let intervalIds = [];
+let animationFrame;
 
 /**
  * This funtion returned the document id
  * @param {*} id - this is the variable of document
  * @returns - document
  */
-function sdoc(id){
+function sdoc(id) {
     return document.getElementById(id);
 }
 
@@ -20,24 +23,35 @@ function sdoc(id){
  * This function closed startscreen and Open the startPage of Game and Starts the Startsound
  */
 function startPage() {
-    if(sdoc('startscreen').style.transform == '') sdoc('startscreen').style.transform = 'translateY(-2000px)';
+    if (sdoc('startscreen').style.transform == '') sdoc('startscreen').style.transform = 'translateY(-2000px)';
     canvas = sdoc('canvas');
     sdoc('configGame').style.display = 'none';
     sdoc('newGame').style.display = 'flex';
-    clearAllIntervals();
-    if(sound == 0) startSoundPlay();
+    if (sound == 0) startSoundPlay();
     setTimeout(() => sdoc('headline').style.display = 'unset', 100);
+    stopGame();
+    clearAll();
+    gameOverOut();
+    cancelAnimationFrame(animationFrame);
 }
 
 /**
  * this funtion stop all Intervals and set world to undefined
  */
-function clearAllIntervals() {
-    world = undefined;
-    for (let i = 1; i < 9999; i++) window.clearInterval(i);
+function clearAll() {
+    for (i = 0; i < intervalIds.length; i++) {
+        window.clearInterval(i);
+        setTimeout(() => {
+            if (world != undefined && i == intervalIds.length) {
+                world = undefined;
+                intervalIds = [];
+                startButton();
+            }
+        }, 2000);
+    };
 }
 
-function closedWonScreen(){
+function closedWonScreen() {
     sdoc('wonScreen').style.display = 'none';
 }
 
@@ -45,6 +59,8 @@ function closedWonScreen(){
  * This function start the game and initials the first level
  */
 function initLevel() {
+    closedShowScreen();
+    stopButton()
     keyShow = 0;
     pepeDead = 0;
     endbossDead = 0;
@@ -53,6 +69,25 @@ function initLevel() {
     sdoc('configGame').style.display = 'flex';
     initFirstLevel();
     world = new World(canvas, keyboard);
+    setStopAbleInterval(gameOver, 100);
+}
+
+function stopButton() {
+    sdoc('startButton').setAttribute('onclick', '');
+    sdoc('wonButton').setAttribute('onclick', '');
+    sdoc('startButton').innerHTML = 'Loading';
+    sdoc('wonButton').innerHTML = 'Loading';
+    sdoc('startButton').style.backgroundColor = 'rgba(128, 128, 128)';
+    sdoc('wonButton').style.backgroundColor = 'rgba(128, 128, 128)';
+}
+
+function startButton() {
+    sdoc('startButton').setAttribute('onclick', 'initLevel()');
+    sdoc('wonButton').setAttribute('onclick', 'closedWonScreen()');
+    sdoc('startButton').innerHTML = 'Start New Game';
+    sdoc('wonButton').innerHTML = 'Back to Menu';
+    sdoc('startButton').style.backgroundColor = '#FFA300';
+    sdoc('wonButton').style.backgroundColor = '#FFDF00';
 }
 
 /**
@@ -103,7 +138,7 @@ function soundOff() {
  */
 function soundOn() {
     sound = 0;
-    if(sdoc('newGame').style.display == 'flex') startSound.play();
+    if (sdoc('newGame').style.display == 'flex') startSound.play();
     sdoc('sound').setAttribute('onclick', 'soundOff()');
     sdoc('soundGame').setAttribute('onclick', 'soundOff()');
 }
@@ -111,7 +146,7 @@ function soundOn() {
 /**
  * this function stop game for show Keys of game
  */
-function keys(){
+function keys() {
     keyShow = 1;
     sdoc('controlsInGame').style.display = 'flex';
     sdoc('keyGame').setAttribute('onclick', 'keysStop()');
@@ -120,7 +155,7 @@ function keys(){
 /**
  * this function start game and Closed show Keys of game
  */
-function keysStop(){
+function keysStop() {
     keyShow = 0;
     sdoc('controlsInGame').style.display = 'none';
     sdoc('keyGame').setAttribute('onclick', 'keys()');
@@ -173,6 +208,7 @@ window.addEventListener('keyup', (event) => {
  */
 function mouseDown(key) {
     if (key == 'left') {
+        intervalIds
         keyboard.left = true;
     }
 
@@ -207,4 +243,13 @@ function mouseUp(key) {
     if (key == 'shoot') {
         keyboard.shoot = false;
     }
+}
+
+function setStopAbleInterval(fn, time) {
+    let id = setInterval(fn, time);
+    intervalIds.push(id);
+}
+
+function stopGame() {
+    intervalIds.forEach(clearInterval);
 }

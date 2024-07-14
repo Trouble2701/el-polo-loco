@@ -91,15 +91,13 @@ class Character extends MoveableObject {
      * This function starts the animations of the character
      */
     animation() {
-        setInterval(() => this.checkNewPos(), 10);
-        setInterval(() => this.walking(), 1000 / 60);
-        setInterval(() => this.setIdle(), 200);
-        setInterval(() => this.isLongIdle(), 400);
-        setInterval(() => this.checkAll(), 70);
-        setInterval(() => this.longIdleTime(), 1000);
-        setInterval(() => {
-            this.lastJumpImage();
-        }, 70);
+        setStopAbleInterval(this.checkNewPos, 10);
+        setStopAbleInterval(this.walking, 1000 / 60);
+        setStopAbleInterval(this.setIdle, 200);
+        setStopAbleInterval(this.isLongIdle, 400);
+        setStopAbleInterval(this.checkAll, 70);
+        setStopAbleInterval(this.longIdleTime, 1000);
+        setStopAbleInterval(this.lastJumpImage, 70);
     }
 
     /**
@@ -113,14 +111,14 @@ class Character extends MoveableObject {
      * This function checks all possible animations
      */
     checkAll() {
-        if (this.pepeDead()) {
-            this.imagePepeDead();
-        } else if (this.pepeCollision() && !this.pepeDead()) {
-            this.imagePepeHurt();
-        } else if (this.isAboveGround()) {
-            this.imagePepeJump();
+        if (world.character.pepeDead()) {
+            world.character.imagePepeDead();
+        } else if (world.character.pepeCollision() && !world.character.pepeDead()) {
+            world.character.imagePepeHurt();
+        } else if (world.character.isAboveGround()) {
+            world.character.imagePepeJump();
         } else {
-            if (this.checkImageWalk()) this.imagePepeWalk();
+            if (world.character.checkImageWalk()) world.character.imagePepeWalk();
         }
     }
 
@@ -130,11 +128,22 @@ class Character extends MoveableObject {
     imagePepeDead() {
         pepeSleepStop();
         this.playAnimation(this.IMAGES_DEAD);
-        setTimeout(() => setInterval(() => this.y += 50, 50), 1000);
+        setTimeout(() => setStopAbleInterval(this.deadAnimation, 50), 1000);
     }
 
+    /**
+     * this function is the Pepe Dead Animation
+     * @returns
+     */
+    deadAnimation(){
+        return world.character.y += 50
+    }
+
+    /**
+     * This function counts up the time
+     */
     longIdleTime() {
-        if (this.longIdle < 6) this.longIdle += 1;
+        if (world.character.longIdle < 6) world.character.longIdle += 1;
     }
 
     /**
@@ -167,11 +176,11 @@ class Character extends MoveableObject {
      * This function played last jumping animation
      */
     lastJumpImage() {
-        if (!this.isAboveGround() && this.jumpIUp > 36 && this.jumpIUp < 39) {
-            this.loadImage(`img/2_character_pepe/3_jump/J-${this.jumpIUp}.png`);
-            this.jumpIUp++;
-        } else if (this.jumpIUp == 39) {
-            this.jumpIUp = 31;
+        if (!world.character.isAboveGround() && world.character.jumpIUp > 36 && world.character.jumpIUp < 39) {
+            world.character.loadImage(`img/2_character_pepe/3_jump/J-${world.character.jumpIUp}.png`);
+            world.character.jumpIUp++;
+        } else if (world.character.jumpIUp == 39) {
+            world.character.jumpIUp = 31;
         }
     }
 
@@ -193,7 +202,7 @@ class Character extends MoveableObject {
      * this function sets the character to idle
      */
     setIdle() {
-        if (this.checkWalking()) this.dontWalk();
+        if (world.character.checkWalking()) world.character.dontWalk();
     }
 
     /**
@@ -208,8 +217,8 @@ class Character extends MoveableObject {
      */
     isLongIdle() {
         pepeSleepStop();
-        if (this.checkIdle()) {
-            this.playAnimation(this.IMAGES_LONG_IDLE);
+        if (world.character.checkIdle()) {
+            world.character.playAnimation(world.character.IMAGES_LONG_IDLE);
             if (sound == 0) pepeSleepStart();
         }
     }
@@ -233,19 +242,19 @@ class Character extends MoveableObject {
      */
     walking() {
         pepeWalkStop();
-        if (this.canWalkRight()) this.walkRight();
-        if (this.canWalkLeft()) this.walkLeft();
-        if (this.canJump()) this.jumping();
-        this.world.camera_x = -this.x + this.setNewX;
-        this.checkYPos();
+        if (world.character.canWalkRight()) world.character.walkRight();
+        if (world.character.canWalkLeft()) world.character.walkLeft();
+        if (world.character.canJump()) world.character.jumping();
+        world.character.world.camera_x = -world.character.x + world.character.setNewX;
+        world.character.checkYPos();
     }
 
     /**
      * This function checks the new x position of the character
      */
     checkNewPos() {
-        if (this.checkEndBossPos()) this.setNewPosition('new');
-        if (!this.checkEndBossPos()) this.setNewPosition('old');
+        if (world.character.checkEndBossPos()) world.character.setNewPosition('new');
+        if (!world.character.checkEndBossPos()) world.character.setNewPosition('old');
     }
 
     /**

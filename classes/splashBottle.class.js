@@ -45,7 +45,7 @@ class SplahObject extends MoveableObject {
      */
     checkDirectioSplash(x, direction) {
         if (direction == 'yes') {
-            this.x = x-100;
+            this.x = x;
         } else {
             this.x = x;
         }

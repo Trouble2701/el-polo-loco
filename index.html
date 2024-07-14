@@ -43,8 +43,9 @@
         <div id="wonScreen">
             <h1>!!You Won!!</h1>
             <div id="score"></div>
-            <button onclick="closedWonScreen()">Back to Menu</button>
+            <button id="wonButton" onclick="closedWonScreen()">Back to Menu</button>
         </div>
+        <div id="gameOverScreen"><img src="./img/9_intro_outro_screens/game_over/oh no you lost!.png"></div>
         <div id="startscreen">
             <div class="letsPlay" onclick="startPage(), setWindowResize()">Let's Play</div>
             <img src="./img/9_intro_outro_screens/start/startscreen_2.png">
@@ -63,7 +64,7 @@
         <h1 id="headline">El Pollo Loco</h1>
         <div id="newGame" class="newGame">
             <div id="showScreens">
-                <button onclick="initLevel()">Start New Game</button>
+                <button id="startButton" onclick="initLevel()">Start New Game</button>
                 <button onclick="privatePolicy()">Private Policy</button>
                 <button onclick="impressum()">Impressum</button>
             </div>
