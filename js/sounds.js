@@ -14,57 +14,74 @@ let endboss_hurt_sound = new Audio('./audio/hurtBoss.mp3');
  * This function start the Startsound and replayed this sound after end
  */
 function startSoundPlay() {
+    if (world == undefined) {
+        playStartSound();
+    } else {
+        stopStartSound();
+    }
+}
+
+function playStartSound() {
+    timeOfSound = 0;
     startSound.play();
     setInterval(() => {
-        if (time > 61 && pepeDead == 1) {
+        if (timeOfSound > 61 && pepeDead == 1) {
             startSound.pause();
+            startSound.currentTime = 0;
             startSound.play();
-            time = 0;
+            timeOfSound = 0;
         }
-        time++;
+        timeOfSound++;
+        console.log(timeOfSound);
     }, 1000);
+}
+
+function stopStartSound() {
+    startSound.pause();
+    startSound.currentTime = 0;
+    timeOfSound = 0;
 }
 
 /**
  * The function with Start on the End start the Sound
  */
-function pepeWalkStart(){
+function pepeWalkStart() {
     pepe_walking_sound.play();
 }
 
-function pepeJumpStart(){
+function pepeJumpStart() {
     pepe_jump_sound.play();
 }
 
-function pepeShootStart(){
+function pepeShootStart() {
     pepe_shoot_sound.play();
 }
 
-function pepeSleepStart(){
+function pepeSleepStart() {
     pepe_sleep_sound.play();
 }
 
-function pepeOuchStart(){
+function pepeOuchStart() {
     pepe_ouch_sound.play();
 }
 
-function chickenStart(){
+function chickenStart() {
     chick_walking_sound.play();
 }
 
-function smallChickenStart(){
+function smallChickenStart() {
     smallChicken_walking_sound.play();
 }
 
-function endbossAlertStart(){
+function endbossAlertStart() {
     endboss_alert_sound.play();
 }
 
-function endbossHurtStart(){
+function endbossHurtStart() {
     endboss_hurt_sound.play();
 }
 
-function endbossWalkingStart(){
+function endbossWalkingStart() {
     endboss_walking_sound.play();
 }
 
@@ -72,61 +89,76 @@ function endbossWalkingStart(){
 /**
  * The function with Stop on the End stop the Sound
  */
-function pepeWalkStop(){
+function pepeWalkStop() {
     pepe_walking_sound.pause();
+    pepe_walking_sound.currentTime = 0;
 }
 
-function pepeJumpStop(){
+function pepeJumpStop() {
     pepe_jump_sound.pause();
+    pepe_jump_sound.currentTime = 0;
 }
 
-function pepeShootStop(){
+function pepeShootStop() {
     pepe_shoot_sound.pause();
+    pepe_shoot_sound.currentTime = 0;
 }
 
-function pepeSleepStop(){
+function pepeSleepStop() {
     pepe_sleep_sound.pause();
+    pepe_sleep_sound.currentTime = 0;
 }
 
-function pepeOuchStop(){
+function pepeOuchStop() {
     pepe_ouch_sound.pause();
+    pepe_ouch_sound.currentTime = 0;
 }
 
-function pepeSoundStop(){
+function pepeSoundStop() {
     pepe_jump_sound.pause();
+    pepe_jump_sound.currentTime = 0;
     pepe_walking_sound.pause();
+    pepe_walking_sound.currentTime = 0;
     pepe_sleep_sound.pause();
+    pepe_sleep_sound.currentTime = 0;
     pepe_shoot_sound.pause();
+    pepe_shoot_sound.currentTime = 0;
     pepe_ouch_sound.pause();
+    pepe_ouch_sound.currentTime = 0;
 }
 
-function chickenStop(){
+function chickenStop() {
     chick_walking_sound.pause();
+    chick_walking_sound.currentTime = 0;
 }
 
-function smallChickenStop(){
+function smallChickenStop() {
     smallChicken_walking_sound.pause();
+    smallChicken_walking_sound.currentTime = 0;
 }
 
-function endbossAlertStop(){
+function endbossAlertStop() {
     endboss_alert_sound.pause();
+    endboss_alert_sound.currentTime = 0;
 }
 
-function endbossHurtStop(){
+function endbossHurtStop() {
     endboss_hurt_sound.pause();
+    endboss_hurt_sound.currentTime = 0;
 }
 
-function endbossWalkingStop(){
+function endbossWalkingStop() {
     endboss_walking_sound.pause();
+    endboss_walking_sound.currentTime = 0;
 }
 
-function endbossStop(){
+function endbossStop() {
     endbossAlertStop();
     endbossHurtStop();
     endbossWalkingStop();
 }
 
-function allSoundsStop(){
+function allSoundsStop() {
     pepeSoundStop();
     chickenStop();
     smallChickenStop();

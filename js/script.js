@@ -3,12 +3,12 @@ let world;
 let keyboard = new Keyboard();
 let pepeDead = 1;
 let endbossDead = 1;
-let time = 0;
+let timeOfSound = 0;
 let sound = 0;
 let keyShow = 0;
 let i = 0;
-let intervalIds = [];
 let animationFrame;
+let intervals = 11000;
 
 /**
  * This funtion returned the document id
@@ -27,27 +27,28 @@ function startPage() {
     canvas = sdoc('canvas');
     sdoc('configGame').style.display = 'none';
     sdoc('newGame').style.display = 'flex';
+    if (sdoc('newGame').style.display == 'flex') gameOverOut();
+    clearAll();
     if (sound == 0) startSoundPlay();
     setTimeout(() => sdoc('headline').style.display = 'unset', 100);
-    stopGame();
-    clearAll();
-    gameOverOut();
-    cancelAnimationFrame(animationFrame);
 }
 
 /**
  * this funtion stop all Intervals and set world to undefined
  */
+function setDefault() {
+    setTimeout(() => {
+        cancelAnimationFrame(animationFrame);
+        world = undefined;
+        i = 0;
+        setTimeout(() => startButton(), 1000);
+        setTimeout(() => startPage(), 1050);
+    }, 1500);
+}
+
 function clearAll() {
-    for (i = 0; i < intervalIds.length; i++) {
+    for (i = 0; i < intervals; i++) {
         window.clearInterval(i);
-        setTimeout(() => {
-            if (world != undefined && i == intervalIds.length) {
-                world = undefined;
-                intervalIds = [];
-                startButton();
-            }
-        }, 2000);
     };
 }
 
@@ -64,12 +65,12 @@ function initLevel() {
     keyShow = 0;
     pepeDead = 0;
     endbossDead = 0;
-    startSound.pause();
     sdoc('newGame').style.display = 'none';
     sdoc('configGame').style.display = 'flex';
     initFirstLevel();
     world = new World(canvas, keyboard);
-    setStopAbleInterval(gameOver, 100);
+    setInterval(() => gameOver(), 100);
+    if (sound == 0) startSoundPlay();
 }
 
 function stopButton() {
@@ -128,6 +129,8 @@ function checkendDead() {
 function soundOff() {
     sound = 1;
     startSound.pause();
+    startSound.currentTime = 0;
+    timeOfSound = 0;
     allSoundsStop();
     sdoc('sound').setAttribute('onclick', 'soundOn()');
     sdoc('soundGame').setAttribute('onclick', 'soundOn()');
@@ -138,6 +141,8 @@ function soundOff() {
  */
 function soundOn() {
     sound = 0;
+    startSound.currentTime = 0;
+    timeOfSound = 0;
     if (sdoc('newGame').style.display == 'flex') startSound.play();
     sdoc('sound').setAttribute('onclick', 'soundOff()');
     sdoc('soundGame').setAttribute('onclick', 'soundOff()');
@@ -243,13 +248,4 @@ function mouseUp(key) {
     if (key == 'shoot') {
         keyboard.shoot = false;
     }
-}
-
-function setStopAbleInterval(fn, time) {
-    let id = setInterval(fn, time);
-    intervalIds.push(id);
-}
-
-function stopGame() {
-    intervalIds.forEach(clearInterval);
 }

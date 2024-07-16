@@ -22,7 +22,7 @@ class MoveableObject extends DrawableObject {
                 this.lastY = this.y;
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
-            }else{
+            } else {
                 this.lastY = 0;
             }
         }, jumpSpeed);
@@ -189,4 +189,25 @@ class MoveableObject extends DrawableObject {
             GameDead('pepe');
         }
     }
+
+    /**
+     * This function animates the coins and bottles when they are collected
+     * @param {*} item - coin oder bottle
+     */
+    itemAnimation(item) {
+        if (item.x <= -2000 || item.y <= -2000) item.x = -2000; item.y = -2000;
+    }
+
+    /**
+    * this function resets the incorrect ones if the character has missed all of them
+    */
+    bottleReplace() {
+        this.world.level.bottle.forEach((bottles) => {
+            if(bottles.y < -1999 || bottles.x < -1999){
+                bottles.y = 380;
+                bottles.x = this.calcPosition(150, 1980);
+            }
+        });
+    }
+
 }

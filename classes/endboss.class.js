@@ -2,7 +2,6 @@
  * This class positions the Endboss on the map and controls various movements
  */
 class Endboss extends MoveableObject {
-    hit;
     power = 100;
     i = 0;
     offsetx = 115;
@@ -88,25 +87,25 @@ class Endboss extends MoveableObject {
      */
     animation() {
         endbossStop();
-        setStopAbleInterval(this.checkDirection, 1000/60);
-        setStopAbleInterval(this.endBossHurt, 100);
-        setStopAbleInterval(this.endBossHurtAnimation, 250);
-        setStopAbleInterval(this.endBossRun, 80);
-        setStopAbleInterval(this.walkAnimation, 150);
-        setStopAbleInterval(this.walkSide, 100);
-        setStopAbleInterval(this.dontAttack, 100);
-        setStopAbleInterval(this.attack, 100);
-        setStopAbleInterval(this.endBossStart, 100);
+        setInterval(() => this.checkDirection(), 1000/60);
+        setInterval(() => this.endBossHurt(), 100);
+        setInterval(() => this.endBossHurtAnimation(), 250);
+        setInterval(() => this.endBossRun(), 80);
+        setInterval(() => this.walkAnimation(), 150);
+        setInterval(() => this.walkSide(), 100);
+        setInterval(() => this.dontAttack(), 100);
+        setInterval(() => this.attack(), 100);
+        setInterval(() => this.endBossStart(), 100);
     }
 
     /**
      * this function check the endboss direction
      */
     checkDirection(){
-        if(world.endboss.direction && !world.endboss.otherDirection){
-            world.endboss.otherDirection = true;
-        }else if(!world.endboss.direction && world.endboss.otherDirection){
-            world.endboss.otherDirection = false;
+        if(this.direction && !this.otherDirection){
+            this.otherDirection = true;
+        }else if(!this.direction && this.otherDirection){
+            this.otherDirection = false;
         }
     }
 
@@ -114,10 +113,10 @@ class Endboss extends MoveableObject {
      * this function start Endboss Intro
      */
     endBossStart(){
-        if (world.endboss.checkCharacterInPosition() && world.endboss.thisRun == 0){
-            world.endboss.playAnimation(world.endboss.IMAGES_ALERT);
-            world.endboss.characterInPositionSound();
-            setTimeout(() =>  world.endboss.thisRun = 1, 2000);
+        if (this.checkCharacterInPosition() && this.thisRun == 0){
+            this.playAnimation(this.IMAGES_ALERT);
+            this.characterInPositionSound();
+            setTimeout(() =>  this.thisRun = 1, 2000);
         }
     }
     /**
@@ -139,11 +138,11 @@ class Endboss extends MoveableObject {
      * this function play hurt animation 
      */
     endBossHurt() {
-        if (world.endboss.endBossHurtCheck() && world.endboss.checkEndBossPower()) {
+        if (this.endBossHurtCheck() && this.checkEndBossPower()) {
             endbossAlertStop();
             endbossWalkingStop();
             if (sound == 0) endbossHurtStart();
-            setTimeout(() => world.endboss.stopAttack(), 500);
+            setTimeout(() => this.stopAttack(), 500);
         }
     }
 
@@ -151,7 +150,7 @@ class Endboss extends MoveableObject {
      * this function played the walking animation 
      */
     endBossHurtAnimation(){
-        if(world.endboss.endBossHurtCheck() && world.endboss.checkEndBossPower()) world.endboss.playAnimation(world.endboss.IMAGES_HURT);
+        if(this.endBossHurtCheck() && this.checkEndBossPower()) this.playAnimation(this.IMAGES_HURT);
     }
 
     /**
@@ -166,13 +165,13 @@ class Endboss extends MoveableObject {
      * this function play walking animation 
      */
     endBossRun() {
-        if (world.endboss.checkRunEndBoss() && world.endboss.checkEndBossPower() && !world.endboss.endBossHurtCheck()) {
+        if (this.checkRunEndBoss() && this.checkEndBossPower() && !this.endBossHurtCheck()) {
             if (sound == 0) endbossWalkingStart();
             endbossAlertStop();
             endbossHurtStop();
-            world.endboss.walktime -= 1;
-            if (world.endboss.checkMoving() && !world.endboss.otherDirection) world.endboss.moveLeft(70); else world.endboss.moveLeft('none');
-            if (world.endboss.checkMoving() && world.endboss.otherDirection) world.endboss.moveRight(70); else world.endboss.moveRight('none');
+            this.walktime -= 1;
+            if (this.checkMoving() && !this.otherDirection) this.moveLeft(70); else this.moveLeft('none');
+            if (this.checkMoving() && this.otherDirection) this.moveRight(70); else this.moveRight('none');
         }
     }
 
@@ -180,10 +179,10 @@ class Endboss extends MoveableObject {
      * this function set the endboss direction
      */
     walkSide(){
-        if(world.endboss.x < -100 && !world.endboss.direction){
-            world.endboss.direction = true;
-        }else if(world.endboss.x > 2400 && world.endboss.direction){
-            world.endboss.direction = false;
+        if(this.x < -100 && !this.direction){
+            this.direction = true;
+        }else if(this.x > 2400 && this.direction){
+            this.direction = false;
         }
     }
 
@@ -191,7 +190,7 @@ class Endboss extends MoveableObject {
      * this function animated the walking
      */
     walkAnimation() {
-        if(world.endboss.checkRunEndBoss()) world.endboss.playAnimation(world.endboss.IMAGES_WALK);
+        if(this.checkRunEndBoss()) this.playAnimation(this.IMAGES_WALK);
     }
 
     /**
@@ -206,13 +205,13 @@ class Endboss extends MoveableObject {
      * This function plays the alarm animation when the character is in the right position
      */
     dontAttack() {
-        if (world.endboss.canDontAttack() && !world.endboss.endBossHurtCheck() && !world.endboss.canAttack() && world.endboss.checkEndBossPower()) {
-            world.endboss.time -= 1;
-            world.endboss.playAnimation(world.endboss.IMAGES_ALERT);
-            if (world.endboss.checkCharacterInPosition() && !world.endboss.direction) world.endboss.characterInPositionSound();
-            if (world.endboss.checkCharacterInPositionOther() && world.endboss.direction) world.endboss.characterInPositionSound();
-            if (world.endboss.checkCharacterPosition() && !world.endboss.direction) world.endboss.characterDontInPositionSound();
-            if (world.endboss.checkCharacterPositionOther() && world.endboss.direction) world.endboss.characterDontInPositionSound();
+        if (this.canDontAttack() && !this.endBossHurtCheck() && !this.canAttack() && this.checkEndBossPower()) {
+            this.time -= 1;
+            this.playAnimation(this.IMAGES_ALERT);
+            if (this.checkCharacterInPosition() && !this.direction) this.characterInPositionSound();
+            if (this.checkCharacterInPositionOther() && this.direction) this.characterInPositionSound();
+            if (this.checkCharacterPosition() && !this.direction) this.characterDontInPositionSound();
+            if (this.checkCharacterPositionOther() && this.direction) this.characterDontInPositionSound();
         }
     }
 
@@ -228,10 +227,10 @@ class Endboss extends MoveableObject {
      * This function animated the attack or stop the attack
      */
     attack() {
-        if (world.endboss.canAttack() && !world.endboss.canDontAttack() && !world.endboss.endBossHurtCheck() && world.endboss.walktime == 0 && world.endboss.time > 0) {
-            world.endboss.startAttack();
+        if (this.canAttack() && !this.canDontAttack() && !this.endBossHurtCheck() && this.walktime == 0 && this.time > 0) {
+            this.startAttack();
         } else {
-            if (world.endboss.canDontAttack()) world.endboss.stopAttack();
+            if (this.canDontAttack()) this.stopAttack();
         }
     }
 
@@ -268,7 +267,7 @@ class Endboss extends MoveableObject {
      * @returns return true if less than 0
      */
     checkDead() {
-        setStopAbleInterval(this.powerReturn, 20);
+        setInterval(() => this.powerReturn(), 20);
     }
 
     /**
@@ -343,14 +342,5 @@ class Endboss extends MoveableObject {
             this.endBossDead();
             GameDead('endboss');
         }
-    }
-
-    /**
-     * This function resets the endboss parameters when you restart the game
-     */
-    endbossReset() {
-        this.power = 100;
-        this.x = 2350;
-        this.thisRun = 0;
     }
 }

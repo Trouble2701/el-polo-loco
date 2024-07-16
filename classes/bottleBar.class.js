@@ -32,17 +32,4 @@ class BottleBar extends DrawableObject {
         let path = this.bottleIMAGES[this.resolveImageIndex(this.bottles)]
         this.img = this.ImageCache[path];
     }
-
-/**
- * this function resets the incorrect ones if the character has missed all of them
- */
-    bottleReplace() {
-        this.world.level.bottle = [
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle()
-        ]
-    }
 }
