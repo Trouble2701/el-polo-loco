@@ -32,7 +32,6 @@ function playStartSound() {
             timeOfSound = 0;
         }
         timeOfSound++;
-        console.log(timeOfSound);
     }, 1000);
 }
 
