@@ -133,10 +133,8 @@ function gameOver(){
     if(pepeDead == 1){
         sdoc('gameOverScreen').style.display = 'flex';
     }
-    //console.log(sdoc('gameOverScreen').style.display);
 }
 
 function gameOverOut(){
     sdoc('gameOverScreen').style.display = 'none';
-    //console.log(sdoc('gameOverScreen').style.display);
 }
