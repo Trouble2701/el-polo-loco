@@ -196,6 +196,9 @@ class World {
         return direction;
     }
 
+    /**
+     * this function clear all intervals
+     */
     clearAll() {
         if(this.checkAllDead()){
             setTimeout(() => {
@@ -210,15 +213,24 @@ class World {
         }
     }
 
+    /** 
+     * this function check dead of Endboss
+     */
     checkAllDead(){
         return checkendDead() == true || checkpepeDead() == true
     }
 
+    /** 
+     * this function changed time for timeout
+     */
     checkTime(){
         if(checkendDead() == true) this.time = 2000
         return this.time;
     }
 
+    /** 
+     * this function check dead of Endboss end returns won
+     */
     checkWon(){
         if(checkendDead() == true) this.won = 'won';
         return this.won;
@@ -268,6 +280,9 @@ class World {
         setInterval(() => this.splashOfBottle(), time);
     }
 
+    /**
+     * this funtion splash the bottle end reset this
+     */
     splashOfBottle() {
         this.splashBottle.forEach((splash) => {
             splash.y = 1000;

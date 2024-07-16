@@ -31,16 +31,19 @@ let world;
 let keyboard = new Keyboard();
 let pepeDead = 1;
 let endbossDead = 1;
-let time = 0;
+let timeOfSound = 0;
 let sound = 0;
 let keyShow = 0;
+let i = 0;
+let animationFrame;
+let intervals = 11000;
 
 /**
  * This funtion returned the document id
  * @param {*} id - this is the variable of document
  * @returns - document
  */
-function sdoc(id){
+function sdoc(id) {
     return document.getElementById(id);
 }
 
@@ -48,24 +51,42 @@ function sdoc(id){
  * This function closed startscreen and Open the startPage of Game and Starts the Startsound
  */
 function startPage() {
-    if(sdoc('startscreen').style.transform == '') sdoc('startscreen').style.transform = 'translateY(-2000px)';
+    if (sdoc('startscreen').style.transform == '') sdoc('startscreen').style.transform = 'translateY(-2000px)';
     canvas = sdoc('canvas');
     sdoc('configGame').style.display = 'none';
     sdoc('newGame').style.display = 'flex';
-    clearAllIntervals();
-    if(sound == 0) startSoundPlay();
+    if (sdoc('newGame').style.display == 'flex') gameOverOut();
+    clearAll();
+    if (sound == 0) startSoundPlay();
     setTimeout(() => sdoc('headline').style.display = 'unset', 100);
 }
 
 /**
  * this funtion stop all Intervals and set world to undefined
  */
-function clearAllIntervals() {
-    world = undefined;
-    for (let i = 1; i &lt; 9999; i++) window.clearInterval(i);
+function setDefault() {
+    setTimeout(() => {
+        cancelAnimationFrame(animationFrame);
+        world = undefined;
+        i = 0;
+        setTimeout(() => startButton(), 1000);
+        setTimeout(() => startPage(), 1050);
+    }, 1500);
 }
 
-function closedWonScreen(){
+/**
+ * this function clear all intervals 
+ */
+function clearAll() {
+    for (i = 0; i &lt; intervals; i++) {
+        window.clearInterval(i);
+    };
+}
+
+/**
+ * this function closed won Screen
+ */
+function closedWonScreen() {
     sdoc('wonScreen').style.display = 'none';
 }
 
@@ -73,14 +94,41 @@ function closedWonScreen(){
  * This function start the game and initials the first level
  */
 function initLevel() {
+    closedShowScreen();
+    stopButton()
     keyShow = 0;
     pepeDead = 0;
     endbossDead = 0;
-    startSound.pause();
     sdoc('newGame').style.display = 'none';
     sdoc('configGame').style.display = 'flex';
     initFirstLevel();
     world = new World(canvas, keyboard);
+    setInterval(() => gameOver(), 100);
+    if (sound == 0) startSoundPlay();
+}
+
+/**
+ * this function changed start and back button
+ */
+function stopButton() {
+    sdoc('startButton').setAttribute('onclick', '');
+    sdoc('wonButton').setAttribute('onclick', '');
+    sdoc('startButton').innerHTML = 'Loading';
+    sdoc('wonButton').innerHTML = 'Loading';
+    sdoc('startButton').style.backgroundColor = 'rgba(128, 128, 128)';
+    sdoc('wonButton').style.backgroundColor = 'rgba(128, 128, 128)';
+}
+
+/**
+ * this function changed start and back button
+ */
+function startButton() {
+    sdoc('startButton').setAttribute('onclick', 'initLevel()');
+    sdoc('wonButton').setAttribute('onclick', 'closedWonScreen()');
+    sdoc('startButton').innerHTML = 'Start New Game';
+    sdoc('wonButton').innerHTML = 'Back to Menu';
+    sdoc('startButton').style.backgroundColor = '#FFA300';
+    sdoc('wonButton').style.backgroundColor = '#FFDF00';
 }
 
 /**
@@ -121,6 +169,8 @@ function checkendDead() {
 function soundOff() {
     sound = 1;
     startSound.pause();
+    startSound.currentTime = 0;
+    timeOfSound = 0;
     allSoundsStop();
     sdoc('sound').setAttribute('onclick', 'soundOn()');
     sdoc('soundGame').setAttribute('onclick', 'soundOn()');
@@ -131,7 +181,9 @@ function soundOff() {
  */
 function soundOn() {
     sound = 0;
-    if(sdoc('newGame').style.display == 'flex') startSound.play();
+    startSound.currentTime = 0;
+    timeOfSound = 0;
+    if (sdoc('newGame').style.display == 'flex') startSound.play();
     sdoc('sound').setAttribute('onclick', 'soundOff()');
     sdoc('soundGame').setAttribute('onclick', 'soundOff()');
 }
@@ -139,7 +191,7 @@ function soundOn() {
 /**
  * this function stop game for show Keys of game
  */
-function keys(){
+function keys() {
     keyShow = 1;
     sdoc('controlsInGame').style.display = 'flex';
     sdoc('keyGame').setAttribute('onclick', 'keysStop()');
@@ -148,7 +200,7 @@ function keys(){
 /**
  * this function start game and Closed show Keys of game
  */
-function keysStop(){
+function keysStop() {
     keyShow = 0;
     sdoc('controlsInGame').style.display = 'none';
     sdoc('keyGame').setAttribute('onclick', 'keys()');
@@ -201,6 +253,7 @@ window.addEventListener('keyup', (event) => {
  */
 function mouseDown(key) {
     if (key == 'left') {
+        intervalIds
         keyboard.left = true;
     }
 
@@ -245,13 +298,13 @@ function mouseUp(key) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="BottleBar.html">BottleBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Clouds.html">Clouds</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CoinBar.html">CoinBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossBar.html">EndbossBar</a></li><li><a href="GameOver.html">GameOver</a></li><li><a href="Healthbar.html">Healthbar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MoveableObject.html">MoveableObject</a></li><li><a href="SmallChicken.html">SmallChicken</a></li><li><a href="SplahObject.html">SplahObject</a></li><li><a href="ThrowAbleObject.html">ThrowAbleObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GameDead">GameDead</a></li><li><a href="global.html#checkendDead">checkendDead</a></li><li><a href="global.html#checkpepeDead">checkpepeDead</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#closedShowScreen">closedShowScreen</a></li><li><a href="global.html#fullOff">fullOff</a></li><li><a href="global.html#fullOn">fullOn</a></li><li><a href="global.html#impressum">impressum</a></li><li><a href="global.html#impressumScreen">impressumScreen</a></li><li><a href="global.html#initFirstLevel">initFirstLevel</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#keys">keys</a></li><li><a href="global.html#keysStop">keysStop</a></li><li><a href="global.html#landscapeScreen">landscapeScreen</a></li><li><a href="global.html#mouseDown">mouseDown</a></li><li><a href="global.html#mouseUp">mouseUp</a></li><li><a href="global.html#pepeWalkStart">pepeWalkStart</a></li><li><a href="global.html#pepeWalkStop">pepeWalkStop</a></li><li><a href="global.html#privatePolicy">privatePolicy</a></li><li><a href="global.html#privatePolicyScreen">privatePolicyScreen</a></li><li><a href="global.html#resizeAction">resizeAction</a></li><li><a href="global.html#sdoc">sdoc</a></li><li><a href="global.html#setWindowResize">setWindowResize</a></li><li><a href="global.html#showEndScore">showEndScore</a></li><li><a href="global.html#soundOff">soundOff</a></li><li><a href="global.html#soundOn">soundOn</a></li><li><a href="global.html#startPage">startPage</a></li><li><a href="global.html#startSoundPlay">startSoundPlay</a></li><li><a href="global.html#windowResize">windowResize</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="BottleBar.html">BottleBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Clouds.html">Clouds</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CoinBar.html">CoinBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossBar.html">EndbossBar</a></li><li><a href="GameOver.html">GameOver</a></li><li><a href="Healthbar.html">Healthbar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MoveableObject.html">MoveableObject</a></li><li><a href="SmallChicken.html">SmallChicken</a></li><li><a href="SplahObject.html">SplahObject</a></li><li><a href="ThrowAbleObject.html">ThrowAbleObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GameDead">GameDead</a></li><li><a href="global.html#checkendDead">checkendDead</a></li><li><a href="global.html#checkpepeDead">checkpepeDead</a></li><li><a href="global.html#clearAll">clearAll</a></li><li><a href="global.html#closedShowScreen">closedShowScreen</a></li><li><a href="global.html#closedWonScreen">closedWonScreen</a></li><li><a href="global.html#fullOff">fullOff</a></li><li><a href="global.html#fullOn">fullOn</a></li><li><a href="global.html#impressum">impressum</a></li><li><a href="global.html#impressumScreen">impressumScreen</a></li><li><a href="global.html#initFirstLevel">initFirstLevel</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#keys">keys</a></li><li><a href="global.html#keysStop">keysStop</a></li><li><a href="global.html#landscapeScreen">landscapeScreen</a></li><li><a href="global.html#mouseDown">mouseDown</a></li><li><a href="global.html#mouseUp">mouseUp</a></li><li><a href="global.html#pepeWalkStart">pepeWalkStart</a></li><li><a href="global.html#pepeWalkStop">pepeWalkStop</a></li><li><a href="global.html#privatePolicy">privatePolicy</a></li><li><a href="global.html#privatePolicyScreen">privatePolicyScreen</a></li><li><a href="global.html#resizeAction">resizeAction</a></li><li><a href="global.html#sdoc">sdoc</a></li><li><a href="global.html#setDefault">setDefault</a></li><li><a href="global.html#setWindowResize">setWindowResize</a></li><li><a href="global.html#showEndScore">showEndScore</a></li><li><a href="global.html#soundOff">soundOff</a></li><li><a href="global.html#soundOn">soundOn</a></li><li><a href="global.html#startButton">startButton</a></li><li><a href="global.html#startPage">startPage</a></li><li><a href="global.html#startSoundPlay">startSoundPlay</a></li><li><a href="global.html#stopButton">stopButton</a></li><li><a href="global.html#windowResize">windowResize</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jul 01 2024 17:47:15 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jul 16 2024 20:09:51 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>

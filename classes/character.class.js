@@ -133,7 +133,6 @@ class Character extends MoveableObject {
 
     /**
      * this function is the Pepe Dead Animation
-     * @returns
      */
     deadAnimation(){
         return this.y += 50

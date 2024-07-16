@@ -47,11 +47,10 @@ class MoveableObject extends DrawableObject {
     applyGravity(jumpSpeed) {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
-                console.log(this.speedY);
                 this.lastY = this.y;
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
-            }else{
+            } else {
                 this.lastY = 0;
             }
         }, jumpSpeed);
@@ -218,6 +217,27 @@ class MoveableObject extends DrawableObject {
             GameDead('pepe');
         }
     }
+
+    /**
+     * This function animates the coins and bottles when they are collected
+     * @param {*} item - coin oder bottle
+     */
+    itemAnimation(item) {
+        if (item.x &lt;= -2000 || item.y &lt;= -2000) item.x = -2000; item.y = -2000;
+    }
+
+    /**
+    * this function resets the incorrect ones if the character has missed all of them
+    */
+    bottleReplace() {
+        this.world.level.bottle.forEach((bottles) => {
+            if(bottles.y &lt; -1999 || bottles.x &lt; -1999){
+                bottles.y = 380;
+                bottles.x = this.calcPosition(150, 1980);
+            }
+        });
+    }
+
 }</code></pre>
         </article>
     </section>
@@ -228,13 +248,13 @@ class MoveableObject extends DrawableObject {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="BottleBar.html">BottleBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Clouds.html">Clouds</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CoinBar.html">CoinBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossBar.html">EndbossBar</a></li><li><a href="GameOver.html">GameOver</a></li><li><a href="Healthbar.html">Healthbar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MoveableObject.html">MoveableObject</a></li><li><a href="SmallChicken.html">SmallChicken</a></li><li><a href="SplahObject.html">SplahObject</a></li><li><a href="ThrowAbleObject.html">ThrowAbleObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GameDead">GameDead</a></li><li><a href="global.html#checkendDead">checkendDead</a></li><li><a href="global.html#checkpepeDead">checkpepeDead</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#closedShowScreen">closedShowScreen</a></li><li><a href="global.html#fullOff">fullOff</a></li><li><a href="global.html#fullOn">fullOn</a></li><li><a href="global.html#impressum">impressum</a></li><li><a href="global.html#impressumScreen">impressumScreen</a></li><li><a href="global.html#initFirstLevel">initFirstLevel</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#keys">keys</a></li><li><a href="global.html#keysStop">keysStop</a></li><li><a href="global.html#landscapeScreen">landscapeScreen</a></li><li><a href="global.html#mouseDown">mouseDown</a></li><li><a href="global.html#mouseUp">mouseUp</a></li><li><a href="global.html#pepeWalkStart">pepeWalkStart</a></li><li><a href="global.html#pepeWalkStop">pepeWalkStop</a></li><li><a href="global.html#privatePolicy">privatePolicy</a></li><li><a href="global.html#privatePolicyScreen">privatePolicyScreen</a></li><li><a href="global.html#resizeAction">resizeAction</a></li><li><a href="global.html#sdoc">sdoc</a></li><li><a href="global.html#setWindowResize">setWindowResize</a></li><li><a href="global.html#showEndScore">showEndScore</a></li><li><a href="global.html#soundOff">soundOff</a></li><li><a href="global.html#soundOn">soundOn</a></li><li><a href="global.html#startPage">startPage</a></li><li><a href="global.html#startSoundPlay">startSoundPlay</a></li><li><a href="global.html#windowResize">windowResize</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="BottleBar.html">BottleBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Clouds.html">Clouds</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CoinBar.html">CoinBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossBar.html">EndbossBar</a></li><li><a href="GameOver.html">GameOver</a></li><li><a href="Healthbar.html">Healthbar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MoveableObject.html">MoveableObject</a></li><li><a href="SmallChicken.html">SmallChicken</a></li><li><a href="SplahObject.html">SplahObject</a></li><li><a href="ThrowAbleObject.html">ThrowAbleObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GameDead">GameDead</a></li><li><a href="global.html#checkendDead">checkendDead</a></li><li><a href="global.html#checkpepeDead">checkpepeDead</a></li><li><a href="global.html#clearAll">clearAll</a></li><li><a href="global.html#closedShowScreen">closedShowScreen</a></li><li><a href="global.html#closedWonScreen">closedWonScreen</a></li><li><a href="global.html#fullOff">fullOff</a></li><li><a href="global.html#fullOn">fullOn</a></li><li><a href="global.html#impressum">impressum</a></li><li><a href="global.html#impressumScreen">impressumScreen</a></li><li><a href="global.html#initFirstLevel">initFirstLevel</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#keys">keys</a></li><li><a href="global.html#keysStop">keysStop</a></li><li><a href="global.html#landscapeScreen">landscapeScreen</a></li><li><a href="global.html#mouseDown">mouseDown</a></li><li><a href="global.html#mouseUp">mouseUp</a></li><li><a href="global.html#pepeWalkStart">pepeWalkStart</a></li><li><a href="global.html#pepeWalkStop">pepeWalkStop</a></li><li><a href="global.html#privatePolicy">privatePolicy</a></li><li><a href="global.html#privatePolicyScreen">privatePolicyScreen</a></li><li><a href="global.html#resizeAction">resizeAction</a></li><li><a href="global.html#sdoc">sdoc</a></li><li><a href="global.html#setDefault">setDefault</a></li><li><a href="global.html#setWindowResize">setWindowResize</a></li><li><a href="global.html#showEndScore">showEndScore</a></li><li><a href="global.html#soundOff">soundOff</a></li><li><a href="global.html#soundOn">soundOn</a></li><li><a href="global.html#startButton">startButton</a></li><li><a href="global.html#startPage">startPage</a></li><li><a href="global.html#startSoundPlay">startSoundPlay</a></li><li><a href="global.html#stopButton">stopButton</a></li><li><a href="global.html#windowResize">windowResize</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jul 01 2024 17:47:15 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jul 16 2024 20:09:51 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>

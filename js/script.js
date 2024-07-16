@@ -46,12 +46,18 @@ function setDefault() {
     }, 1500);
 }
 
+/**
+ * this function clear all intervals 
+ */
 function clearAll() {
     for (i = 0; i < intervals; i++) {
         window.clearInterval(i);
     };
 }
 
+/**
+ * this function closed won Screen
+ */
 function closedWonScreen() {
     sdoc('wonScreen').style.display = 'none';
 }
@@ -73,6 +79,9 @@ function initLevel() {
     if (sound == 0) startSoundPlay();
 }
 
+/**
+ * this function changed start and back button
+ */
 function stopButton() {
     sdoc('startButton').setAttribute('onclick', '');
     sdoc('wonButton').setAttribute('onclick', '');
@@ -82,6 +91,9 @@ function stopButton() {
     sdoc('wonButton').style.backgroundColor = 'rgba(128, 128, 128)';
 }
 
+/**
+ * this function changed start and back button
+ */
 function startButton() {
     sdoc('startButton').setAttribute('onclick', 'initLevel()');
     sdoc('wonButton').setAttribute('onclick', 'closedWonScreen()');
